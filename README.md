@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://gitlab.com/zarlo/cosmos.limine.git
+git remote add origin https://gitlab.com/zarlo/Cosmos.Limine.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](https://gitlab.com/zarlo/cosmos.limine/-/settings/integrations)
+- [ ] [Set up project integrations](https://gitlab.com/zarlo/Cosmos.Limine/-/settings/integrations)
 
 ## Collaborate with your team
 
