@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace Cosmos.Limine.Struct;
+namespace Cosmos.Zarlo.Limine.Struct;
 
 // typedef void (*limine_terminal_callback)(struct limine_terminal *, uint64_t, uint64_t, uint64_t, uint64_t);
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

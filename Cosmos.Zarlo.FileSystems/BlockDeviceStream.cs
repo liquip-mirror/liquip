@@ -1,0 +1,126 @@
+using System;
+using System.IO;
+using Cosmos.Core.Memory;
+using Cosmos.HAL.BlockDevice;
+
+namespace Cosmos.Zarlo.FileSystems;
+
+public class BlockDeviceStream : Stream
+{
+    private Partition blockDevice;
+
+    private long BlockSize => (long)blockDevice.BlockSize;
+
+    public override bool CanRead => true;
+    public override bool CanSeek => true;
+    public override bool CanWrite => true;
+    public override long Length { get; }
+    long position = 0;
+    public override long Position { 
+        get {
+            return position;
+        } 
+        set {
+            if(value < 0) new IndexOutOfRangeException("");
+            if(value > Length) new IndexOutOfRangeException("longer then th block device size");
+            position = value;
+        } 
+    }
+
+    public BlockDeviceStream(Partition blockDevice)
+    {
+        this.blockDevice = blockDevice;
+
+        Length = (long)(blockDevice.BlockCount * blockDevice.BlockSize);
+    }
+
+    public BlockDeviceStream(Partition blockDevice, long length)
+    {
+        this.blockDevice = blockDevice;
+
+        Length = length;
+    }
+
+    public override int Read(byte[] buffer, int offset, int count)
+    {
+        var startBlock = GetOffsetBlock(offset);
+        var blockCount = GetOffsetBlock(count) + 1;
+        byte[] temp = blockDevice.NewBlockArray((uint)blockCount);
+        blockDevice.ReadBlock((ulong)startBlock, (ulong)blockCount, ref temp);
+        var start = (uint)(blockDevice.BlockSize * (ulong)startBlock) - offset;
+        Array.Copy(temp, start, buffer, 0, count);
+        return count;
+    }
+
+    public int ReadBlock(byte[] buffer, int offset, int count)
+    {
+        blockDevice.ReadBlock((ulong)offset, (ulong)count, ref buffer);
+        return buffer.Length;
+    }
+
+    public override long Seek(long offset, SeekOrigin origin)
+    {
+        switch (origin)
+        {
+            case SeekOrigin.Begin:
+                Position = offset;
+                break;
+            case SeekOrigin.Current:
+                Position += offset;
+                break;
+            case SeekOrigin.End:
+                Position = Length - 1 - offset;
+                break;
+            default:
+                throw new ArgumentException("origin");
+        }
+        return Position;
+    }
+
+    private long GetOffsetBlock(long offset)
+    {
+        var index = (double)offset / BlockSize;
+        return (long)Math.Floor(index);
+    }
+
+    public void WriteBlock(byte[] buffer, int offset, int count)
+    {
+        blockDevice.WriteBlock((ulong)offset, (ulong)count, ref buffer);
+    }
+
+    public override void Write(byte[] buffer, int offset, int count)
+    {
+        var startBlock = GetOffsetBlock(offset);
+        var blockCount = GetOffsetBlock(count) + 1;
+        byte[] newBuffer = blockDevice.NewBlockArray((uint)blockCount);
+
+        if(blockCount == 1)
+        {
+            ReadBlock(newBuffer, (int)startBlock, 1);
+        }
+        else
+        {
+            byte[] temp = blockDevice.NewBlockArray(1);
+            ReadBlock(temp, (int)startBlock, 1);
+            Array.Copy(temp, newBuffer, temp.Length);
+            ReadBlock(temp, (int)startBlock, 1);
+            Array.Copy(temp, 0, newBuffer, (blockCount - 1) * (int)blockDevice.BlockSize, temp.Length);
+        }
+
+        var start = (uint)(blockDevice.BlockSize * (ulong)startBlock) - offset;
+        Array.Copy(buffer, start, newBuffer, 0, count);
+        WriteBlock(newBuffer, (int)startBlock, (int)blockCount);
+
+    }
+
+    public override void Flush()
+    {
+        
+    }
+
+    public override void SetLength(long value)
+    {
+        throw new Exception("Unable to SetLength on BLOCK_DEVICE_STREAM");
+    }
+
+}

@@ -1,4 +1,4 @@
-namespace Cosmos.Limine;
+namespace Cosmos.Zarlo.Limine;
 
 public static class MagicNumbers
 {

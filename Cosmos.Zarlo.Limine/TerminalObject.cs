@@ -1,6 +1,6 @@
-using Cosmos.Limine.Struct;
+using Cosmos.Zarlo.Limine.Struct;
 
-namespace Cosmos.Limine;
+namespace Cosmos.Zarlo.Limine;
 
 public class TerminalObject
 {

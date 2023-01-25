@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace Cosmos.Limine.Struct;
+namespace Cosmos.Zarlo.Limine.Struct;
 
 
 
