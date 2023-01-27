@@ -18,11 +18,11 @@ public static class RDseed
             //mov eax, 7     ; set EAX to request function 7
             //mov ecx, 0     ; set ECX to request subfunction 0
             //cpuid
-            int eax = 7;
+            int eax = 0;
             int ebx = 0;
             int ecx = 0;
             int edx = 0; 
-            CPU.ReadCPUID(0, ref eax, ref ebx, ref ecx, ref edx);
+            CPU.ReadCPUID(7, ref eax, ref ebx, ref ecx, ref edx);
 
             //shr ebx, 18
             var flag = ebx >> 18;

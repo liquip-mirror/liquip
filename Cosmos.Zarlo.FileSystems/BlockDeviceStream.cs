@@ -7,7 +7,7 @@ namespace Cosmos.Zarlo.FileSystems;
 
 public class BlockDeviceStream : Stream
 {
-    private Partition blockDevice;
+    private BlockDevice blockDevice;
 
     private long BlockSize => (long)blockDevice.BlockSize;
 
@@ -27,14 +27,14 @@ public class BlockDeviceStream : Stream
         } 
     }
 
-    public BlockDeviceStream(Partition blockDevice)
+    public BlockDeviceStream(BlockDevice blockDevice)
     {
         this.blockDevice = blockDevice;
 
         Length = (long)(blockDevice.BlockCount * blockDevice.BlockSize);
     }
 
-    public BlockDeviceStream(Partition blockDevice, long length)
+    public BlockDeviceStream(BlockDevice blockDevice, long length)
     {
         this.blockDevice = blockDevice;
 
