@@ -12,6 +12,7 @@ public class BlockDeviceFileSystem : FileSystem
     public BlockDeviceFileSystem(Disk disk, string aRootPath) : base(null, aRootPath, 0)
     {
         _disk = disk;
+        
         long total = 0;
         foreach(var item in _disk.Partitions)
         {

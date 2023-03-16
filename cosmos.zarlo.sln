@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmos.Zarlo", "Cosmos.Zarl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{89B3756A-6F5B-4021-A371-C1ACBA38D51C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmos.Zarlo.Plugs", "Cosmos.Zarlo.Plugs\Cosmos.Zarlo.Plugs.csproj", "{3A7368D9-CA9B-4AF4-A316-5B10ECAA61B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmos.Zarlo.Logger", "Cosmos.Zarlo.Logger\Cosmos.Zarlo.Logger.csproj", "{3DF4A038-9836-4512-8E31-41679C2012FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,13 @@ Global
 		{89B3756A-6F5B-4021-A371-C1ACBA38D51C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89B3756A-6F5B-4021-A371-C1ACBA38D51C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89B3756A-6F5B-4021-A371-C1ACBA38D51C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A7368D9-CA9B-4AF4-A316-5B10ECAA61B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A7368D9-CA9B-4AF4-A316-5B10ECAA61B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A7368D9-CA9B-4AF4-A316-5B10ECAA61B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A7368D9-CA9B-4AF4-A316-5B10ECAA61B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DF4A038-9836-4512-8E31-41679C2012FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DF4A038-9836-4512-8E31-41679C2012FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DF4A038-9836-4512-8E31-41679C2012FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DF4A038-9836-4512-8E31-41679C2012FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

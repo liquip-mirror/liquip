@@ -15,12 +15,24 @@ namespace Test
         
         protected override void Run()
         {
-            Console.WriteLine(Cosmos.Zarlo.RDseed.GetRDSeed64());
-            Console.WriteLine(Cosmos.Zarlo.RDseed.GetRDSeed16());
-            Console.Write("Input: ");
-            var input = Console.ReadLine();
-            Console.Write("Text typed: ");
-            Console.WriteLine(input);
+            var rdSeed64 = Cosmos.Zarlo.RDseed.GetRDSeed64();
+            var rdSeed32 = Cosmos.Zarlo.RDseed.GetRDSeed32();
+            var rdSeed16 = Cosmos.Zarlo.RDseed.GetRDSeed16();
+            Console.WriteLine(rdSeed64);
+            Console.WriteLine(rdSeed32);
+            Console.WriteLine(rdSeed16);
+
+            var rdSeed64_0 = Cosmos.Zarlo.RDseed.GetRDSeed64();
+            var rdSeed32_0 = Cosmos.Zarlo.RDseed.GetRDSeed32();
+            var rdSeed16_0 = Cosmos.Zarlo.RDseed.GetRDSeed16();
+            Console.WriteLine(rdSeed64_0);
+            Console.WriteLine(rdSeed32_0);
+            Console.WriteLine(rdSeed16_0);
+            
+            Console.WriteLine(rdSeed64 != rdSeed64_0);
+            Console.WriteLine(rdSeed32 != rdSeed32_0);
+            Console.WriteLine(rdSeed16 != rdSeed16_0);
+            
         }
     }
 }

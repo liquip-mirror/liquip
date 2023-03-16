@@ -72,7 +72,7 @@ public class CPUID
             case 32: maskBinary = 0b11111111_11111111_11111111_11111111; break;
 
             default:
-            throw new ArgumentOutOfRangeException("end");
+            throw new ArgumentOutOfRangeException($@"end {rangeLength}");
         }
 
         return (shifted & maskBinary);

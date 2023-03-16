@@ -28,8 +28,15 @@ public class UnixVFS : VFSBase
         {
             if(path.StartsWith(item.RootPath)) filtered.Add(item);
         }
-        if(filtered.Count == 0) return null;
-        if(filtered.Count == 1) return (filtered[0].RootPath, filtered[0].FileSystem);
+        
+        switch (filtered.Count)
+        {
+            case 0:
+                return null;
+            case 1:
+                return (filtered[0].RootPath, filtered[0].FileSystem);
+        }
+
         int longest = 0;
         MountPoint output = null;
         foreach (var item in filtered)
@@ -407,7 +414,7 @@ public class UnixVFS : VFSBase
         {
             var xFileSystem = GetFileSystemFromPath(aPath);
             var xEntry = DoGetDirectoryEntry(aPath, xFileSystem.Value.FS);
-            if ((xEntry != null) && (xEntry.mEntryType == DirectoryEntryTypeEnum.Directory))
+            if (xEntry is { mEntryType: DirectoryEntryTypeEnum.Directory })
             {
                 return xEntry;
             }
@@ -432,7 +439,7 @@ public class UnixVFS : VFSBase
         {
             var xFS = GetFileSystemFromPath(aPath);
             var xEntry = DoGetDirectoryEntry(aPath, xFS.Value.FS);
-            if ((xEntry != null) && (xEntry.mEntryType == DirectoryEntryTypeEnum.File))
+            if (xEntry is { mEntryType: DirectoryEntryTypeEnum.File })
             {
                 return xEntry;
             }
@@ -456,9 +463,9 @@ public class UnixVFS : VFSBase
     {
         List<DirectoryEntry> xVolumes = new List<DirectoryEntry>();
 
-        for (int i = 0; i < mFileSystems.Count; i++)
+        foreach (var t in mFileSystems)
         {
-            xVolumes.Add(GetVolume(mFileSystems[i]));
+            xVolumes.Add(GetVolume(t));
         }
 
         return xVolumes;
@@ -481,12 +488,7 @@ public class UnixVFS : VFSBase
         }
 
         var xFS = GetFileSystemFromPath(aPath);
-        if (xFS != null)
-        {
-            return GetVolume(xFS.Value.FS);
-        }
-
-        return null;
+        return xFS != null ? GetVolume(xFS.Value.FS) : null;
     }
 
     /// <summary>
@@ -579,7 +581,6 @@ public class UnixVFS : VFSBase
         {
             case DirectoryEntryTypeEnum.File:
                 Global.mFileSystemDebugger.SendInternal($"It is a File");
-                
                 break;
 
             case DirectoryEntryTypeEnum.Directory:
