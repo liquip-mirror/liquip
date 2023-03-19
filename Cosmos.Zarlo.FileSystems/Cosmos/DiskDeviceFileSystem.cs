@@ -2,14 +2,14 @@ using Cosmos.HAL.BlockDevice;
 using Cosmos.System.FileSystem;
 using Cosmos.System.FileSystem.Listing;
 
-namespace Cosmos.Zarlo.FileSystems.Cosmos.BlockDevice;
+namespace Cosmos.Zarlo.FileSystems.Cosmos;
 
-public class BlockDeviceFileSystem : FileSystem
+public class DiskDeviceFileSystem : FileSystem
 {
     private readonly Disk _disk;
     private readonly long _availableFreeSpace;
 
-    public BlockDeviceFileSystem(Disk disk, string aRootPath) : base(null, aRootPath, 0)
+    public DiskDeviceFileSystem(Disk disk, string aRootPath) : base(null, aRootPath, 0)
     {
         _disk = disk;
         
@@ -27,7 +27,11 @@ public class BlockDeviceFileSystem : FileSystem
 
     public override string Type => "BlockFS";
 
-    public override string Label { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public override string Label
+    {
+        get => _disk.GetHashCode().ToString();
+        set { }
+    }
 
     public override DirectoryEntry CreateDirectory(DirectoryEntry aParentDirectory, string aNewDirectory)
     {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable InconsistentNaming
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Sys = Cosmos.System;
@@ -15,6 +17,7 @@ namespace Test
         
         protected override void Run()
         {
+            
             var rdSeed64 = Cosmos.Zarlo.RDseed.GetRDSeed64();
             var rdSeed32 = Cosmos.Zarlo.RDseed.GetRDSeed32();
             var rdSeed16 = Cosmos.Zarlo.RDseed.GetRDSeed16();
@@ -32,6 +35,12 @@ namespace Test
             Console.WriteLine(rdSeed64 != rdSeed64_0);
             Console.WriteLine(rdSeed32 != rdSeed32_0);
             Console.WriteLine(rdSeed16 != rdSeed16_0);
+
+            var speed = Cosmos.Zarlo.CPUID.ProcessorFrequencyInformation.CoreBaseFrequency;
+            var maxSpeed = Cosmos.Zarlo.CPUID.ProcessorFrequencyInformation.CoreMaximumFrequency;
+
+            Console.WriteLine(speed);
+            Console.WriteLine(maxSpeed);
             
         }
     }
