@@ -11,4 +11,10 @@
       <PackageReference Include="Cosmos.Core" Version="0.1.0-localbuild" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Cosmos.Core">
+        <HintPath>..\..\..\..\..\.nuget\packages\cosmos.core\0.1.0-localbuild\lib\net6.0\Cosmos.Core.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

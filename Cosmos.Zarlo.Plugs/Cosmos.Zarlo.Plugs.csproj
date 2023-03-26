@@ -4,12 +4,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cosmos.Zarlo\Cosmos.Zarlo.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="build\**" Pack="True" PackagePath="build\" />
   </ItemGroup>
   <PropertyGroup>
       <InternalsAssemblyNames>System.Private.CoreLib</InternalsAssemblyNames>
