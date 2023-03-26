@@ -7,23 +7,18 @@ namespace Cosmos.Zarlo.FileSystems.Cosmos;
 public class DiskDeviceFileSystem : FileSystem
 {
     private readonly Disk _disk;
-    private readonly long _availableFreeSpace;
+
 
     public DiskDeviceFileSystem(Disk disk, string aRootPath) : base(null, aRootPath, 0)
     {
         _disk = disk;
         
-        long total = 0;
-        foreach(var item in _disk.Partitions)
-        {
-            total += item.MountedFS.Size;
-        }
-        _availableFreeSpace = total;
+
     }
 
-    public override long AvailableFreeSpace => _availableFreeSpace;
+    public override long AvailableFreeSpace => 0;
 
-    public override long TotalFreeSpace => throw new NotImplementedException();
+    public override long TotalFreeSpace => 0;
 
     public override string Type => "BlockFS";
 

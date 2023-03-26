@@ -1,3 +1,4 @@
+using System.Text;
 using Cosmos.Core;
 
 namespace Cosmos.Zarlo.CPUIDObjects;
@@ -5,10 +6,10 @@ namespace Cosmos.Zarlo.CPUIDObjects;
 public class PowerManagementInformationObject
 {
 
-    public int eax { get; private set; } = 0;
-    public int ebx { get; private set; } = 0;
-    public int ecx { get; private set; } = 0;
-    public int edx { get; private set; } = 0;
+    public int eax { get; private set; }
+    public int ebx { get; private set; }
+    public int ecx { get; private set; }
+    public int edx { get; private set; }
 
     public PowerManagementInformationObject()
     {
@@ -27,7 +28,6 @@ public class PowerManagementInformationObject
         DTS = CPUID.HasFlag(eax, 0);
         DA = CPUID.HasFlag(eax, 1);
         ARAT = CPUID.HasFlag(eax, 2);
-
         PLN = CPUID.HasFlag(eax, 4);
         ECMD = CPUID.HasFlag(eax, 5);
         PTM = CPUID.HasFlag(eax, 6);
@@ -59,5 +59,18 @@ public class PowerManagementInformationObject
     //ebx
     public byte ProgrammableDigitalThermalSensorInterruptThresholds { get; init; }
 
+    public string DebugString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("eax0: ");
+        sb.Append(eax);
+        sb.Append(" ebx0: ");
+        sb.Append(ebx);
+        sb.Append(" ecx0: ");
+        sb.Append(ecx);
+        sb.Append(" edx0: ");
+        sb.Append(edx);
+        return sb.ToString();
+    }
 
 }

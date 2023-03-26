@@ -6,6 +6,8 @@ using Cosmos.Zarlo.FileSystems.NTFS.IO;
 using Cosmos.Zarlo.FileSystems.NTFS.Model;
 using Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes;
 using Cosmos.Zarlo.FileSystems.NTFS.Model.Enums;
+using Cosmos.Zarlo.Logger;
+using Cosmos.Zarlo.Logger.Interfaces;
 
 namespace Cosmos.Zarlo.FileSystems.NTFS
 {
@@ -31,6 +33,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS
 
         private FileRecord[] FileRecords { get; set; }
 
+        private ILogger _logger = Log.GetLogger("Ntfs");
+        
         public static Ntfs Create(BlockDeviceStream diskStream)
         {
             var ntfs = new Ntfs {DiskStream = diskStream};
@@ -67,7 +71,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS
             FileRecords = new FileRecord[FileRecordCount];
             FileRecords[0] = MftFile;
 
-            Console.WriteLine("[NTFSDRV2] Initialized with " + FileRecordCount + " file records");
+            _logger.Info("[NTFSDRV2] Initialized with " + FileRecordCount + " file records");
         }
 
         public FileRecord ReadMftRecord(uint number, bool parseAttributeLists = true)

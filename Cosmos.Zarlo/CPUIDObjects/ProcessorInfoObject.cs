@@ -1,3 +1,4 @@
+using System.Text;
 using Cosmos.Core;
 
 namespace Cosmos.Zarlo.CPUIDObjects;
@@ -24,82 +25,81 @@ public class ProcessorInfoObject
         this.ebx = ebx;
         this.ecx = ecx;
         this.edx = edx;
-
-        SteppingID = (byte)CPUID.GetBitRange(eax, 0, 3);
-        Model      = (byte)CPUID.GetBitRange(eax, 4, 7);
-        FamilyID   = (byte)CPUID.GetBitRange(eax, 8, 11);
-        ProcessorType    = (byte)CPUID.GetBitRange(eax, 12, 13);
-        ExtendedModelID  = (byte)CPUID.GetBitRange(eax, 16, 19);
-        ExtendedFamilyID = (byte)CPUID.GetBitRange(eax, 20, 27);
-
-        BrandID  = (byte)CPUID.GetBitRange(ebx, 0, 7);
-        CLFLUSH  = (byte)CPUID.GetBitRange(ebx, 8, 15);
-        CPUcount = (byte)CPUID.GetBitRange(ebx, 16, 23);
-        APICID   = (byte)CPUID.GetBitRange(ebx, 24, 31);
-        
-        
-        SSE3    = CPUID.HasFlag(ecx, 0);
-        PCLMUL  = CPUID.HasFlag(ecx, 1);
-        DTES64  = CPUID.HasFlag(ecx, 2);
-        MON     = CPUID.HasFlag(ecx, 3);
-        DSCPL   = CPUID.HasFlag(ecx, 4);
-        VMX     = CPUID.HasFlag(ecx, 5);
-        SMX     = CPUID.HasFlag(ecx, 6);
-        EST     = CPUID.HasFlag(ecx, 7);
-        TM2     = CPUID.HasFlag(ecx, 8);
-        SSSE3   = CPUID.HasFlag(ecx, 9);
-        CID     = CPUID.HasFlag(ecx, 10);
-        SDBG    = CPUID.HasFlag(ecx, 11);
-        FMA     = CPUID.HasFlag(ecx, 12);
-        CX16    = CPUID.HasFlag(ecx, 13);
-        ETPRD   = CPUID.HasFlag(ecx, 14);
-        PDCM    = CPUID.HasFlag(ecx, 15);
-        PCID    = CPUID.HasFlag(ecx, 17);
-        DCA     = CPUID.HasFlag(ecx, 18);
-        SSE4_1  = CPUID.HasFlag(ecx, 19);
-        SSE4_2  = CPUID.HasFlag(ecx, 20);
-        x2APIC  = CPUID.HasFlag(ecx, 21);
-        MOVBE   = CPUID.HasFlag(ecx, 22);
-        POPCNT  = CPUID.HasFlag(ecx, 23);
-        TSCD    = CPUID.HasFlag(ecx, 24);
-        AES     = CPUID.HasFlag(ecx, 25);
-        XSAVE   = CPUID.HasFlag(ecx, 26);
-        OSXSAVE = CPUID.HasFlag(ecx, 27);
-        AVX     = CPUID.HasFlag(ecx, 28);
-        F16C    = CPUID.HasFlag(ecx, 29);
-        RDRAND  = CPUID.HasFlag(ecx, 30);
-        HV      = CPUID.HasFlag(ecx, 31);
-
-        FPU   = CPUID.HasFlag(edx, 0);
-        VME   = CPUID.HasFlag(edx, 1);
-        DE    = CPUID.HasFlag(edx, 2);
-        PSE   = CPUID.HasFlag(edx, 3);
-        TSC   = CPUID.HasFlag(edx, 4);
-        MSR   = CPUID.HasFlag(edx, 5);
-        PAE   = CPUID.HasFlag(edx, 6);
-        MCE   = CPUID.HasFlag(edx, 7);
-        CX8   = CPUID.HasFlag(edx, 8);
-        APIC  = CPUID.HasFlag(edx, 9);
-        SEP   = CPUID.HasFlag(edx, 11);
-        MTRR  = CPUID.HasFlag(edx, 12);
-        PGE   = CPUID.HasFlag(edx, 13);
-        MCA   = CPUID.HasFlag(edx, 14);
-        CMOV  = CPUID.HasFlag(edx, 15);
-        PAT   = CPUID.HasFlag(edx, 16);
-        PSE36 = CPUID.HasFlag(edx, 17);
-        PSN   = CPUID.HasFlag(edx, 18);
-        CLFL  = CPUID.HasFlag(edx, 19);
-        DTES  = CPUID.HasFlag(edx, 21);
-        ACPI  = CPUID.HasFlag(edx, 22);
-        MMX   = CPUID.HasFlag(edx, 23);
-        FXSR  = CPUID.HasFlag(edx, 24);
-        SSE   = CPUID.HasFlag(edx, 25);
-        SSE2  = CPUID.HasFlag(edx, 26);
-        SS    = CPUID.HasFlag(edx, 27);
-        HTT   = CPUID.HasFlag(edx, 28);
-        TM1   = CPUID.HasFlag(edx, 29);
-        IA_64 = CPUID.HasFlag(edx, 30);
-        PBE   = CPUID.HasFlag(edx, 31);
+        // SteppingID = (byte)CPUID.GetBitRange(eax, 0, 3);
+        // Model      = (byte)CPUID.GetBitRange(eax, 4, 7);
+        // FamilyID   = (byte)CPUID.GetBitRange(eax, 8, 11);
+        // ProcessorType    = (byte)CPUID.GetBitRange(eax, 12, 13);
+        // ExtendedModelID  = (byte)CPUID.GetBitRange(eax, 16, 19);
+        // ExtendedFamilyID = (byte)CPUID.GetBitRange(eax, 20, 27);
+        //
+        // BrandID  = (byte)CPUID.GetBitRange(ebx, 0, 7);
+        // CLFLUSH  = (byte)CPUID.GetBitRange(ebx, 8, 15);
+        // CPUcount = (byte)CPUID.GetBitRange(ebx, 16, 23);
+        // APICID   = (byte)CPUID.GetBitRange(ebx, 24, 31);
+        //
+        //
+        // SSE3    = CPUID.HasFlag(ecx, 0);
+        // PCLMUL  = CPUID.HasFlag(ecx, 1);
+        // DTES64  = CPUID.HasFlag(ecx, 2);
+        // MON     = CPUID.HasFlag(ecx, 3);
+        // DSCPL   = CPUID.HasFlag(ecx, 4);
+        // VMX     = CPUID.HasFlag(ecx, 5);
+        // SMX     = CPUID.HasFlag(ecx, 6);
+        // EST     = CPUID.HasFlag(ecx, 7);
+        // TM2     = CPUID.HasFlag(ecx, 8);
+        // SSSE3   = CPUID.HasFlag(ecx, 9);
+        // CID     = CPUID.HasFlag(ecx, 10);
+        // SDBG    = CPUID.HasFlag(ecx, 11);
+        // FMA     = CPUID.HasFlag(ecx, 12);
+        // CX16    = CPUID.HasFlag(ecx, 13);
+        // ETPRD   = CPUID.HasFlag(ecx, 14);
+        // PDCM    = CPUID.HasFlag(ecx, 15);
+        // PCID    = CPUID.HasFlag(ecx, 17);
+        // DCA     = CPUID.HasFlag(ecx, 18);
+        // SSE4_1  = CPUID.HasFlag(ecx, 19);
+        // SSE4_2  = CPUID.HasFlag(ecx, 20);
+        // x2APIC  = CPUID.HasFlag(ecx, 21);
+        // MOVBE   = CPUID.HasFlag(ecx, 22);
+        // POPCNT  = CPUID.HasFlag(ecx, 23);
+        // TSCD    = CPUID.HasFlag(ecx, 24);
+        // AES     = CPUID.HasFlag(ecx, 25);
+        // XSAVE   = CPUID.HasFlag(ecx, 26);
+        // OSXSAVE = CPUID.HasFlag(ecx, 27);
+        // AVX     = CPUID.HasFlag(ecx, 28);
+        // F16C    = CPUID.HasFlag(ecx, 29);
+        // RDRAND  = CPUID.HasFlag(ecx, 30);
+        // HV      = CPUID.HasFlag(ecx, 31);
+        //
+        // FPU   = CPUID.HasFlag(edx, 0);
+        // VME   = CPUID.HasFlag(edx, 1);
+        // DE    = CPUID.HasFlag(edx, 2);
+        // PSE   = CPUID.HasFlag(edx, 3);
+        // TSC   = CPUID.HasFlag(edx, 4);
+        // MSR   = CPUID.HasFlag(edx, 5);
+        // PAE   = CPUID.HasFlag(edx, 6);
+        // MCE   = CPUID.HasFlag(edx, 7);
+        // CX8   = CPUID.HasFlag(edx, 8);
+        // APIC  = CPUID.HasFlag(edx, 9);
+        // SEP   = CPUID.HasFlag(edx, 11);
+        // MTRR  = CPUID.HasFlag(edx, 12);
+        // PGE   = CPUID.HasFlag(edx, 13);
+        // MCA   = CPUID.HasFlag(edx, 14);
+        // CMOV  = CPUID.HasFlag(edx, 15);
+        // PAT   = CPUID.HasFlag(edx, 16);
+        // PSE36 = CPUID.HasFlag(edx, 17);
+        // PSN   = CPUID.HasFlag(edx, 18);
+        // CLFL  = CPUID.HasFlag(edx, 19);
+        // DTES  = CPUID.HasFlag(edx, 21);
+        // ACPI  = CPUID.HasFlag(edx, 22);
+        // MMX   = CPUID.HasFlag(edx, 23);
+        // FXSR  = CPUID.HasFlag(edx, 24);
+        // SSE   = CPUID.HasFlag(edx, 25);
+        // SSE2  = CPUID.HasFlag(edx, 26);
+        // SS    = CPUID.HasFlag(edx, 27);
+        // HTT   = CPUID.HasFlag(edx, 28);
+        // TM1   = CPUID.HasFlag(edx, 29);
+        // IA_64 = CPUID.HasFlag(edx, 30);
+        // PBE   = CPUID.HasFlag(edx, 31);
 
     }
 
@@ -182,4 +182,18 @@ public class ProcessorInfoObject
     public bool IA_64 { get; init; }
     public bool PBE { get; init; }
 
+    public string DebugString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("eax0: ");
+        sb.Append(eax);
+        sb.Append(" ebx0: ");
+        sb.Append(ebx);
+        sb.Append(" ecx0: ");
+        sb.Append(ecx);
+        sb.Append(" edx0: ");
+        sb.Append(edx);
+        return sb.ToString();
+    }
+    
 } 

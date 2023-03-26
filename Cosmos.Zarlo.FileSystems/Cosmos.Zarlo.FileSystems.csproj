@@ -3,11 +3,14 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>Cosmos.Zarlo.FileSystems</Title>
+    <Authors>Zarlo</Authors>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Cosmos\BlockDevice\" />
+    <ProjectReference Include="..\Cosmos.Zarlo.Logger\Cosmos.Zarlo.Logger.csproj" />
   </ItemGroup>
 </Project>

@@ -4,29 +4,34 @@ using Cosmos.HAL.BlockDevice;
 using Cosmos.System.FileSystem;
 using Cosmos.System.FileSystem.Listing;
 using Cosmos.Zarlo.FileSystems.NTFS.IO;
+using Cosmos.Zarlo.Logger;
+using Cosmos.Zarlo.Logger.Interfaces;
 
 namespace Cosmos.Zarlo.FileSystems.NTFS.Cosmos
 {
     public class NtfsFileSystem : FileSystem
     {
-        private readonly Partition device;
-        private readonly string rootPath;
-        private readonly long size;
+        private readonly Partition _device;
+        private readonly string _rootPath;
+        private readonly long _size;
 
-        private Ntfs ntfs;
+        private Ntfs _ntfs;
 
+        private readonly ILogger _Logger;
+        
         public NtfsFileSystem(Partition aDevice, string aRootPath, long aSize) : base(aDevice, aRootPath, aSize)
         {
-            device = aDevice;
-            rootPath = aRootPath;
-            size = aSize;
+            _Logger = Log.GetLogger("NtfsFileSystem");
+            _device = aDevice;
+            _rootPath = aRootPath;
+            _size = aSize;
             Initialize();
         }
 
         private void Initialize()
         {
-            Console.WriteLine("[NTFSDRV2] Initializing NTFS file system on drive " + rootPath);
-            ntfs = Ntfs.Create(new BlockDeviceStream(device, size));
+            _Logger.Info("[NTFSDRV2] Initializing NTFS file system on drive " + _rootPath);
+            _ntfs = Ntfs.Create(new BlockDeviceStream(_device, _size));
         }
 
         public override void DisplayFileSystemInfo()
@@ -50,7 +55,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Cosmos
 
         public override DirectoryEntry GetRootDirectory()
         {
-            return new NtfsDirectoryEntry(this, null, "\\", rootPath, size, DirectoryEntryTypeEnum.Directory, ntfs.GetRootDirectory());
+            return new NtfsDirectoryEntry(this, null, "\\", _rootPath, _size, DirectoryEntryTypeEnum.Directory, _ntfs.GetRootDirectory());
         }
 
         public override DirectoryEntry CreateDirectory(DirectoryEntry aParentDirectory, string aNewDirectory)
@@ -80,7 +85,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Cosmos
         }
 
         public override long AvailableFreeSpace { get; }
-        public override long TotalFreeSpace => size;
+        public override long TotalFreeSpace => _size;
         public override string Type => "NTFS";
         public override string Label { get; set; }
     }

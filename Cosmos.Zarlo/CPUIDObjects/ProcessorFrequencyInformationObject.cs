@@ -1,3 +1,4 @@
+using System.Text;
 using Cosmos.Core;
 
 namespace Cosmos.Zarlo.CPUIDObjects;
@@ -5,15 +6,15 @@ namespace Cosmos.Zarlo.CPUIDObjects;
 public class ProcessorFrequencyInformationObject
 {
 
-    public int eax0 { get; private set; } = 0;
-    public int ebx0 { get; private set; } = 0;
-    public int ecx0 { get; private set; } = 0;
-    public int edx0 { get; private set; } = 0;
+    public int eax0 { get; private set; }
+    public int ebx0 { get; private set; }
+    public int ecx0 { get; private set; }
+    public int edx0 { get; private set; }
 
-    public int eax1 { get; private set; } = 0;
-    public int ebx1 { get; private set; } = 0;
-    public int ecx1 { get; private set; } = 0;
-    public int edx1 { get; private set; } = 0;
+    public int eax1 { get; private set; }
+    public int ebx1 { get; private set; }
+    public int ecx1 { get; private set; }
+    public int edx1 { get; private set; }
 
     public ProcessorFrequencyInformationObject()
     {
@@ -61,4 +62,28 @@ public class ProcessorFrequencyInformationObject
     public short CoreBaseFrequency { get; init; }
     public short CoreMaximumFrequency { get; init; }
     public short BusFrequency { get; init; }
+    
+    public string DebugString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("eax0: ");
+        sb.Append(eax0);
+        sb.Append(" ebx0: ");
+        sb.Append(ebx0);
+        sb.Append(" ecx0: ");
+        sb.Append(ecx0);
+        sb.Append(" edx0: ");
+        sb.Append(edx0);
+        
+        sb.Append(" eax1: ");
+        sb.Append(eax1);
+        sb.Append(" ebx1: ");
+        sb.Append(ebx1);
+        sb.Append(" ecx1: ");
+        sb.Append(ecx1);
+        sb.Append(" edx1: ");
+        sb.Append(edx1);
+        
+        return sb.ToString();
+    }
 }

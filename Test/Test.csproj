@@ -2,12 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <Platform>cosmos</Platform>
-        <SupportsX86Intrinsics>false</SupportsX86Intrinsics>
         <SelfContained>True</SelfContained>
     </PropertyGroup>
 
     <PropertyGroup>
+        <Platform>cosmos</Platform>
+        <SupportsX86Intrinsics>false</SupportsX86Intrinsics>
         <EnableGDB>False</EnableGDB>
         <StartCosmosGDB>False</StartCosmosGDB>
         <VisualStudioDebugPort>Pipe: Cosmos\Serial</VisualStudioDebugPort>
@@ -16,6 +16,19 @@
         <Profile>VMware</Profile>
         <Description>Use VMware Player or Workstation to deploy and debug.</Description>
         <PxeInterface>192.168.0.8</PxeInterface>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <CompileVBEMultiboot>False</CompileVBEMultiboot>
+        <VBEResolution>1280x720x32</VBEResolution>
+        <VMWareEdition>Workstation</VMWareEdition>
+        <DebugEnabled>False</DebugEnabled>
+        <EnableBochsDebug>True</EnableBochsDebug>
+        <StartBochsDebugGui>True</StartBochsDebugGui>
+        <ExtractMapFile>False</ExtractMapFile>
+        <StackCorruptionDetectionLevel>AllInstructions</StackCorruptionDetectionLevel>
+        <DebugType>none</DebugType>
+        <CompressionType>Gzip</CompressionType>
+        <RemoveBootDebugOutput>True</RemoveBootDebugOutput>
+        <OptimizationLevel>2</OptimizationLevel>
     </PropertyGroup>
 
     <ItemGroup>
@@ -28,4 +41,8 @@
       <ProjectReference Include="..\Cosmos.Zarlo\Cosmos.Zarlo.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <PlugsReference Include="$(MSBuildProjectDirectory)\..\Cosmos.Zarlo.Plugs\bin\Debug\net6.0\Cosmos.Zarlo.Plugs.dll" />
+    </ItemGroup>
+    
 </Project>

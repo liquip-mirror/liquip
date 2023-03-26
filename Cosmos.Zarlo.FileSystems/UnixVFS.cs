@@ -1,5 +1,8 @@
+using System.Security;
+using System.Text;
 using Cosmos.HAL.BlockDevice;
 using Cosmos.System.FileSystem;
+using Cosmos.System.FileSystem.FAT;
 using Cosmos.System.FileSystem.ISO9660;
 using Cosmos.System.FileSystem.Listing;
 using Cosmos.System.FileSystem.VFS;
@@ -65,7 +68,7 @@ public class UnixVFS : VFSBase
     /// <exception cref="ArgumentException">Thrown on memory error.</exception>
     /// <exception cref="ArgumentOutOfRangeException">Thrown on memory error.</exception>
     /// <exception cref="PathTooLongException">Thrown on fatal error.</exception>
-    /// <exception cref="System.Security.SecurityException">Thrown on fatal error.</exception>
+    /// <exception cref="SecurityException">Thrown on fatal error.</exception>
     /// <exception cref="FileNotFoundException">Thrown on memory error.</exception>
     /// <exception cref="DirectoryNotFoundException">Thrown on fatal error.</exception>
     public override void Initialize(bool i)
@@ -644,7 +647,7 @@ public class UnixVFS : VFSBase
     /// <exception cref="ArgumentOutOfRangeException">Thrown on memory error.</exception>
     /// <exception cref="IOException">Thrown on I/O exception.</exception>
     /// <exception cref="PathTooLongException">Thrown on fatal error.</exception>
-    /// <exception cref="System.Security.SecurityException">Thrown on fatal error.</exception>
+    /// <exception cref="SecurityException">Thrown on fatal error.</exception>
     /// <exception cref="FileNotFoundException">Thrown on memory error.</exception>
     /// <exception cref="DirectoryNotFoundException">Thrown on fatal error.</exception>
     protected virtual void InitializeFileSystems()

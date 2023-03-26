@@ -1,5 +1,6 @@
 // ReSharper disable MemberCanBePrivate.Global
 
+using System;
 using Cosmos.Zarlo.CPUIDObjects;
 
 namespace Cosmos.Zarlo;

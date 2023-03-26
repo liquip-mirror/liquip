@@ -5,6 +5,7 @@ using Cosmos.Zarlo.FileSystems.NTFS.IO;
 using Cosmos.Zarlo.FileSystems.NTFS.Model;
 using Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes;
 using Cosmos.Zarlo.FileSystems.NTFS.Model.Enums;
+using Cosmos.Zarlo.Logger;
 
 namespace Cosmos.Zarlo.FileSystems.NTFS.Parser
 {
@@ -77,7 +78,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Parser
 
            CurrentMftRecordNumber = 0;
            FileRecordCount = (uint)(mftStream.Length / BytesPerFileRecord);
-            Console.WriteLine("[NTFS DRIVER] " + FileRecordCount + " file records found");
+           Log.Logger.Info("[NTFS DRIVER] " + FileRecordCount + " file records found");
         }
 
         public FileRecord NextMFTRecord()

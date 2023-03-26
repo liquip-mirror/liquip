@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using IL2CPU.API;
@@ -43,8 +45,18 @@ public unsafe class ArgumentBuilder
     
     public unsafe void Add(Type type, string name, uint? index = null)
     {
-        
-        Add((uint)Marshal.SizeOf(type), name, index);
+        uint size = 0;
+        if (type.IsClass)
+        {
+            size = 4; // hard coded for now
+            //size = (uint)IntPtr.Size;
+        }
+        else
+        {
+            size = (uint)Marshal.SizeOf(type);
+        }
+
+        Add(size, name, index);
     }
     
     public void Add(uint typeSize, string name, uint? index = null)
@@ -57,6 +69,12 @@ public unsafe class ArgumentBuilder
         {
             _index.Add((name, (int)typeSize));
         }
+    }
+
+    [Pure]
+    public int Get<T>(Expression<Func<T>> expr)
+    {
+        return Get((expr.Body as MemberExpression)?.Member.Name);
     }
 
     public int Get(string name)
@@ -79,6 +97,11 @@ public unsafe class ArgumentBuilder
         
     }
     
+    [Pure]
+    public string GetOffset(Expression<Func<object, object>> f)
+    {
+        return GetOffset((f.Body as MemberExpression)?.Member.Name);
+    }
     public string GetOffset(string name)
     {
         return $@"[esp + {Get(name)}]";

@@ -1,3 +1,4 @@
+using System.Text;
 using Cosmos.Core;
 
 namespace Cosmos.Zarlo.CPUIDObjects;
@@ -14,6 +15,18 @@ public class CacheConfigurationObject {
     public CacheObject L1I = new CacheObject(1);
     public CacheObject L2 = new CacheObject(2);
 
+    public string DebugString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("L1D: ");
+        sb.AppendLine(L1D.DebugString());
+        sb.Append("L1I: ");
+        sb.AppendLine(L1I.DebugString());
+        sb.Append("L2: ");
+        sb.Append(L2.DebugString());
+        return sb.ToString();
+    }
+    
 }
 
 public class CacheObject {
@@ -78,4 +91,18 @@ public class CacheObject {
     public bool Write_BackInvalidate { get; init; }
     public bool InclusiveOfLowerLevels { get; init; }
     public bool ComplexIndexing { get; init; }
+    
+    public string DebugString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("eax0: ");
+        sb.Append(eax);
+        sb.Append(" ebx0: ");
+        sb.Append(ebx);
+        sb.Append(" ecx0: ");
+        sb.Append(ecx);
+        sb.Append(" edx0: ");
+        sb.Append(edx);
+        return sb.ToString();
+    }
 }

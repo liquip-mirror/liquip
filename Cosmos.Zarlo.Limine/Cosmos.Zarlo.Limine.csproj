@@ -4,5 +4,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Title>Cosmos.Zarlo.Limine</Title>
+    <Authors>Zarlo</Authors>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cosmos.Zarlo.Logger\Cosmos.Zarlo.Logger.csproj" />
+  </ItemGroup>
 </Project>
