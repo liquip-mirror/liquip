@@ -1,0 +1,49 @@
+image: mcr.microsoft.com/dotnet/sdk:6.0
+
+stages:
+  - test
+  - deploy
+
+XSharp-test:
+  stage: test
+  script:
+    - ./.devcontainer/bin/InstallCosmos
+    - cd ./XSharp.Zarlo.Test
+    - dotnet test
+
+XSharp-deploy:
+  stage: deploy
+  script:
+    - ./.devcontainer/bin/InstallCosmos
+    - ./CICD/build_and_push.sh ./XSharp.Zarlo
+
+Plugs:
+  stage: deploy
+  script:
+    - ./.devcontainer/bin/InstallCosmos
+    - ./CICD/build_and_push.sh ./Cosmos.Zarlo.Plugs
+
+Zarlo:
+  stage: deploy
+  script:
+    - ./.devcontainer/bin/InstallCosmos
+    - ./CICD/build_and_push.sh ./Cosmos.Zarlo
+
+Logger:
+  stage: deploy
+  script:
+    - ./.devcontainer/bin/InstallCosmos
+    - ./CICD/build_and_push.sh ./Cosmos.Zarlo.Logger
+
+Memory:
+  stage: deploy
+  script:
+    - ./.devcontainer/bin/InstallCosmos
+    - ./CICD/build_and_push.sh ./Cosmos.Zarlo.Memory
+
+FileSystems:
+  stage: deploy
+  script:
+    - ./.devcontainer/bin/InstallCosmos
+    - ./CICD/build_and_push.sh ./Cosmos.Zarlo.FileSystems
+
