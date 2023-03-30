@@ -11,10 +11,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
 
         public override AttributeResidentAllow AllowedResidentStates
         {
-            get
-            {
-                return AttributeResidentAllow.Resident | AttributeResidentAllow.NonResident;
-            }
+            get { return AttributeResidentAllow.Resident | AttributeResidentAllow.NonResident; }
         }
 
         internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
@@ -26,9 +23,10 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
             List<AttributeListItem> results = new List<AttributeListItem>();
 
             int pointer = offset;
-            while (pointer + 26 <= offset + maxLength)      // 26 is the smallest possible MFTAttributeListItem
+            while (pointer + 26 <= offset + maxLength) // 26 is the smallest possible MFTAttributeListItem
             {
-                AttributeListItem item = AttributeListItem.ParseListItem(data, Math.Min(data.Length - pointer, maxLength), pointer);
+                AttributeListItem item =
+                    AttributeListItem.ParseListItem(data, Math.Min(data.Length - pointer, maxLength), pointer);
 
                 if (item.Type == AttributeType.EndOfAttributes)
                     break;
@@ -52,8 +50,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
             List<AttributeListItem> results = new List<AttributeListItem>();
 
             int pointer = 0;
-            int contentSize = (int) NonResidentHeader.ContentSize;
-            while (pointer + 26 <= contentSize)     // 26 is the smallest possible MFTAttributeListItem
+            int contentSize = (int)NonResidentHeader.ContentSize;
+            while (pointer + 26 <= contentSize) // 26 is the smallest possible MFTAttributeListItem
             {
                 AttributeListItem item = AttributeListItem.ParseListItem(data, data.Length - pointer, pointer);
 

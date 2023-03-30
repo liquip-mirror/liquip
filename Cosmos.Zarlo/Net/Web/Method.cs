@@ -14,9 +14,8 @@ public enum HttpMethod
     Patch
 }
 
-
-public static class MethodEx {
-
+public static class MethodEx
+{
     public static string AsString(this HttpMethod me)
     {
         return me switch
@@ -32,5 +31,4 @@ public static class MethodEx {
             _ => throw new ArgumentOutOfRangeException(nameof(me), me, null)
         };
     }
-
 }

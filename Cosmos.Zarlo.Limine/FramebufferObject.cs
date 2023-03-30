@@ -6,22 +6,23 @@ namespace Cosmos.Zarlo.Limine;
 
 public class FramebufferObject
 {
-
-    public class Mode {
+    public class Mode
+    {
         public Mode(VideoMode mode)
         {
-            Pitch = mode.pitch; 
-            Width = mode.width; 
-            Height = mode.height; 
-            BPP = mode.bpp; 
-            MemoryModel = mode.memory_model; 
-            RedMaskSize = mode.red_mask_size; 
-            RedMaskShift = mode.red_mask_shift; 
-            GreenMaskSize = mode.green_mask_size; 
-            GreenMaskShift = mode.green_mask_shift; 
-            BlueMaskSize = mode.blue_mask_size; 
-            BlueMaskShift = mode.blue_mask_shift; 
+            Pitch = mode.pitch;
+            Width = mode.width;
+            Height = mode.height;
+            BPP = mode.bpp;
+            MemoryModel = mode.memory_model;
+            RedMaskSize = mode.red_mask_size;
+            RedMaskShift = mode.red_mask_shift;
+            GreenMaskSize = mode.green_mask_size;
+            GreenMaskShift = mode.green_mask_shift;
+            BlueMaskSize = mode.blue_mask_size;
+            BlueMaskShift = mode.blue_mask_shift;
         }
+
         public ulong Pitch;
         public ulong Width;
         public ulong Height;
@@ -51,9 +52,11 @@ public class FramebufferObject
 
     public static FramebufferRequest GetRaw => framebufferRequest;
 
-    private static FramebufferRequest framebufferRequest = new FramebufferRequest() {
-        id = new ulong[] {
-            0xc7b1dd30df4c8b88, 
+    private static FramebufferRequest framebufferRequest = new FramebufferRequest()
+    {
+        id = new ulong[]
+        {
+            0xc7b1dd30df4c8b88,
             0x0a82e883a194f07b,
             0x9d5827dcd881dd75,
             0xa3148604f6fab11b
@@ -78,8 +81,8 @@ public class FramebufferObject
         var offset = x + (y * _framebuffer.pitch);
         unsafe
         {
-            fixed(int* ptr = buffer)
-            Buffer.MemoryCopy(_framebuffer.address + offset, ptr, buffer.Length * 4, buffer.Length * 4);
+            fixed (int* ptr = buffer)
+                Buffer.MemoryCopy(_framebuffer.address + offset, ptr, buffer.Length * 4, buffer.Length * 4);
         }
     }
 
@@ -88,9 +91,8 @@ public class FramebufferObject
         var offset = x + (y * _framebuffer.pitch);
         unsafe
         {
-            fixed(int* ptr = buffer)
-            Buffer.MemoryCopy(ptr, _framebuffer.address + offset, buffer.Length * 4, buffer.Length * 4);
+            fixed (int* ptr = buffer)
+                Buffer.MemoryCopy(ptr, _framebuffer.address + offset, buffer.Length * 4, buffer.Length * 4);
         }
     }
-
 }

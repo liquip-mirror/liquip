@@ -21,10 +21,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
 
         public override AttributeResidentAllow AllowedResidentStates
         {
-            get
-            {
-                return AttributeResidentAllow.Resident | AttributeResidentAllow.NonResident;
-            }
+            get { return AttributeResidentAllow.Resident | AttributeResidentAllow.NonResident; }
         }
 
         internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)

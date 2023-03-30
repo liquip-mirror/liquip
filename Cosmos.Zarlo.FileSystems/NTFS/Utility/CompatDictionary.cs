@@ -45,6 +45,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Utility
 
         public int Count => list.Count;
         public bool IsReadOnly => false;
+
         public void Add(TKey key, TValue value)
         {
             list.Add(new KeyValuePair<TKey, TValue>(key, value));
@@ -102,7 +103,6 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Utility
                     if (kvp.Key.Equals(key))
                         list[i] = new KeyValuePair<TKey, TValue>(kvp.Key, value);
                 }
-
             }
         }
 
@@ -113,7 +113,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Utility
             get
             {
                 List<TValue> values = new List<TValue>();
-                foreach(var v in list)
+                foreach (var v in list)
                     values.Add(v.Value);
                 return values;
             }

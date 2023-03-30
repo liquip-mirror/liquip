@@ -16,7 +16,6 @@ public class TaskMethodBuilder
 
     public void SetStateMachine(IAsyncStateMachine stateMachine)
     {
-        
     }
 
     public void SetException(Exception exception)

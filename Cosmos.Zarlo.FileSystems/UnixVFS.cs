@@ -11,9 +11,9 @@ namespace Cosmos.Zarlo.FileSystems;
 
 public class UnixVFS : VFSBase
 {
-
-    private class MountPoint {
-        public string RootPath { get; set;}
+    private class MountPoint
+    {
+        public string RootPath { get; set; }
         public FileSystem FileSystem { get; set; }
     }
 
@@ -23,15 +23,15 @@ public class UnixVFS : VFSBase
     /// List of disks.
     /// </summary>
     public List<Disk> Disks { get; } = new List<Disk>();
-    
+
     (string Path, FileSystem FS)? GetFileSystemFromPath(string path)
     {
         var filtered = new List<MountPoint>();
         foreach (var item in MountPoints)
         {
-            if(path.StartsWith(item.RootPath)) filtered.Add(item);
+            if (path.StartsWith(item.RootPath)) filtered.Add(item);
         }
-        
+
         switch (filtered.Count)
         {
             case 0:
@@ -44,12 +44,13 @@ public class UnixVFS : VFSBase
         MountPoint output = null;
         foreach (var item in filtered)
         {
-            if(longest < item.RootPath.Length)
+            if (longest < item.RootPath.Length)
             {
                 longest = item.RootPath.Length;
                 output = item;
             }
         }
+
         return (output.RootPath, output.FileSystem);
     }
 
@@ -135,7 +136,6 @@ public class UnixVFS : VFSBase
     /// <exception cref="PathTooLongException">Thrown when The aPath is longer than the system defined maximum length.</exception>
     public override DirectoryEntry CreateFile(string aPath)
     {
-        
         Global.mFileSystemDebugger.SendInternal("--- UnixVFS.CreateFile ---");
 
         if (aPath == null)
@@ -156,6 +156,7 @@ public class UnixVFS : VFSBase
             Global.mFileSystemDebugger.SendInternal("File already exists.");
             return GetFile(aPath);
         }
+
         Global.mFileSystemDebugger.SendInternal("File doesn't exist.");
 
         string xFileToCreate = Path.GetFileName(aPath);
@@ -174,6 +175,7 @@ public class UnixVFS : VFSBase
             Global.mFileSystemDebugger.SendInternal("Parent directory doesn't exist.");
             xParentEntry = CreateDirectory(xParentDirectory);
         }
+
         Global.mFileSystemDebugger.SendInternal("Parent directory exists.");
 
         var xFS = GetFileSystemFromPath(xParentDirectory);
@@ -424,9 +426,11 @@ public class UnixVFS : VFSBase
         }
         catch (Exception)
         {
-            Global.mFileSystemDebugger.SendInternal("UnixVFS.GetDirectory - DoGetDirectoryEntry failed, returning null. aPath = " + aPath);
+            Global.mFileSystemDebugger.SendInternal(
+                "UnixVFS.GetDirectory - DoGetDirectoryEntry failed, returning null. aPath = " + aPath);
             return null;
         }
+
         throw new Exception(aPath + " was found, but is not a directory.");
     }
 
@@ -449,9 +453,11 @@ public class UnixVFS : VFSBase
         }
         catch (Exception)
         {
-            Global.mFileSystemDebugger.SendInternal("UnixVFS.GetFile - DoGetDirectoryEntry failed, returning null. aPath = " + aPath);
+            Global.mFileSystemDebugger.SendInternal(
+                "UnixVFS.GetFile - DoGetDirectoryEntry failed, returning null. aPath = " + aPath);
             return null;
         }
+
         throw new Exception(aPath + " was found, but is not a file.");
     }
 
@@ -605,7 +611,7 @@ public class UnixVFS : VFSBase
         for (int i = 0; i < BlockDevice.Devices.Count; i++)
         {
             var device = BlockDevice.Devices[i];
-            
+
             if (device is Partition)
             {
                 mPartitions.Add((Partition)device);
@@ -628,7 +634,8 @@ public class UnixVFS : VFSBase
                 global::System.Console.WriteLine("Block Count: " + partition.BlockCount);
                 Global.mFileSystemDebugger.SendInternal("Size:");
                 Global.mFileSystemDebugger.SendInternal(partition.BlockCount * partition.BlockSize / 1024 / 1024);
-                global::System.Console.WriteLine("Size: " + partition.BlockCount * partition.BlockSize / 1024 / 1024 + " MB");
+                global::System.Console.WriteLine("Size: " + partition.BlockCount * partition.BlockSize / 1024 / 1024 +
+                                                 " MB");
             }
         }
         else
@@ -652,11 +659,10 @@ public class UnixVFS : VFSBase
     /// <exception cref="DirectoryNotFoundException">Thrown on fatal error.</exception>
     protected virtual void InitializeFileSystems()
     {
-
         for (int i = 0; i < mPartitions.Count; i++)
         {
             var partition = mPartitions[i];
-            
+
             string xRootPath = string.Concat("/dev/partition", i);
             var xSize = (long)(partition.BlockCount * partition.BlockSize / 1024 / 1024);
 

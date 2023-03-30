@@ -1,14 +1,28 @@
 namespace Cosmos.Zarlo.Threading.Tasks;
 
-public class Task
+public abstract class Task
 {
-    public void Dispose()
+    public static FakeTask Completed {
+        get
+        {
+            var t = new FakeTask();
+            t.GetAwaiter().IsCompleted = true;
+            return t;
+        }
+    }
+    public abstract void Dispose();
+
+    public abstract Awaiter GetAwaiter();
+}
+
+public abstract class Task<T>
+{
+    public static FakeTask<T> FromResult(T result)
     {
-        throw new NotImplementedException();
+        return new FakeTask<T>(result);
     }
 
-    public Awaiter GetAwaiter()
-    {
-        throw new NotImplementedException();
-    }
+    public abstract void Dispose();
+
+    public abstract Awaiter<T> GetAwaiter();
 }

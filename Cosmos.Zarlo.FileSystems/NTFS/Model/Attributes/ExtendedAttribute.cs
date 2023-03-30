@@ -1,5 +1,4 @@
 ﻿using System;
-
 using System.Text;
 using Cosmos.Zarlo.FileSystems.NTFS.Model.Enums;
 
@@ -21,7 +20,6 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
 
         public static ExtendedAttribute ParseData(byte[] data, int maxLength, int offset)
         {
-
             ExtendedAttribute res = new ExtendedAttribute();
 
             res.Size = BitConverter.ToInt32(data, offset);

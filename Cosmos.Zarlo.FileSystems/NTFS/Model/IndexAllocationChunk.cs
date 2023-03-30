@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using System.Text;
 using Cosmos.Zarlo.FileSystems.NTFS.Model.Enums;
 using Cosmos.Zarlo.FileSystems.NTFS.Utility;
@@ -60,17 +59,19 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model
             Array.Copy(data, offset + res.OffsetToUSN + 2, res.USNData, 0, res.USNData.Length);
 
             // Patch USN Data
-            NtfsUtils.ApplyUSNPatch(data, offset, (res.SizeOfIndexAllocated + 24) / ntfsInfo.BytesPerSector, (ushort)ntfsInfo.BytesPerSector, res.USNNumber, res.USNData);
+            NtfsUtils.ApplyUSNPatch(data, offset, (res.SizeOfIndexAllocated + 24) / ntfsInfo.BytesPerSector,
+                (ushort)ntfsInfo.BytesPerSector, res.USNNumber, res.USNData);
 
             // Debug.Assert(offset + res.SizeOfIndexTotal <= data.Length);
 
             // Parse entries
             List<IndexEntry> entries = new List<IndexEntry>();
 
-            int pointer = offset + (int)(res.OffsetToFirstIndex + 24);       // Offset is relative to 0x18
+            int pointer = offset + (int)(res.OffsetToFirstIndex + 24); // Offset is relative to 0x18
             while (pointer <= offset + res.SizeOfIndexTotal + 24)
             {
-                IndexEntry entry = IndexEntry.ParseData(data, offset + (int)res.SizeOfIndexTotal - pointer + 24, pointer);
+                IndexEntry entry =
+                    IndexEntry.ParseData(data, offset + (int)res.SizeOfIndexTotal - pointer + 24, pointer);
 
                 if ((entry.Flags & MFTIndexEntryFlags.LastEntry) != 0)
                     break;

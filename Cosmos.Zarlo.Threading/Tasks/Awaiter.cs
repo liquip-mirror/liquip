@@ -1,20 +1,23 @@
+using System.Runtime.CompilerServices;
+
 namespace Cosmos.Zarlo.Threading.Tasks;
 
-public class Awaiter
+public abstract class Awaiter: INotifyCompletion
 {
-    public void OnCompleted(Action continuation)
-    {
-        throw new NotImplementedException();
-    }
+    public abstract void OnCompleted(Action continuation);
 
-    public void UnsafeOnCompleted(Action continuation)
-    {
-        throw new NotImplementedException();
-    }
+    public abstract void UnsafeOnCompleted(Action continuation);
 
     public bool IsCompleted { get; internal set; }
-    public void GetResult()
-    {
-        throw new NotImplementedException();
-    }
+    public abstract void GetResult();
+}
+
+public abstract class Awaiter<T>: INotifyCompletion
+{
+    public abstract void OnCompleted(Action continuation);
+
+    public abstract void UnsafeOnCompleted(Action continuation);
+
+    public bool IsCompleted { get; internal set; }
+    public abstract T GetResult();
 }

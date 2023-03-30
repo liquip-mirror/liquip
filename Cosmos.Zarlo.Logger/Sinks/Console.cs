@@ -1,12 +1,12 @@
 using System.Diagnostics;
 using Cosmos.Zarlo.Logger.Interfaces;
+
 // ReSharper disable InvocationIsSkipped
 
 namespace Cosmos.Zarlo.Logger.Sinks;
 
-public class ConsoleSink: ISink
+public class ConsoleSink : ISink
 {
-
     public void Raw(string context, LogLevel logLevel, string message)
     {
         Raw(context, logLevel, message, Array.Empty<object>());
@@ -17,7 +17,7 @@ public class ConsoleSink: ISink
         DoRaw(context, logLevel, message, data.ToArray());
     }
 
-    
+
     void DoRaw(string context, LogLevel logLevel, string message, params object[] data)
     {
         var logLevelMessage = logLevel switch
@@ -35,9 +35,9 @@ public class ConsoleSink: ISink
 
         Console.BackgroundColor = ConsoleColor.Black;
         Console.BackgroundColor = ConsoleColor.White;
-        
+
         Console.Write("[");
-        
+
         Console.ForegroundColor = logLevel switch
         {
             LogLevel.Info => ConsoleColor.Green,
@@ -46,20 +46,18 @@ public class ConsoleSink: ISink
             LogLevel.Debug => ConsoleColor.White,
             LogLevel.Exception => ConsoleColor.Magenta
         };
-        
+
         Console.Write(logLevelMessage);
         Console.BackgroundColor = ConsoleColor.White;
         Console.Write("] ");
         Console.Write(message, data.ToArray());
-        if(!message.EndsWith(Environment.NewLine)) Console.Write(Environment.NewLine);
-        
+        if (!message.EndsWith(Environment.NewLine)) Console.Write(Environment.NewLine);
+
         Console.BackgroundColor = bg;
         Console.ForegroundColor = fg;
-        
     }
-    
+
     public void Dispose()
     {
     }
-
 }

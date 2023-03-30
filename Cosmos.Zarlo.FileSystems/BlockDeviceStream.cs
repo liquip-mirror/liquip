@@ -16,13 +16,16 @@ public class BlockDeviceStream : Stream
     public override bool CanWrite => true;
     public override long Length { get; }
     long position = 0;
-    public override long Position { 
+
+    public override long Position
+    {
         get => position;
-        set {
-            if(value < 0) throw new IndexOutOfRangeException("");
-            if(value > Length) throw new IndexOutOfRangeException("longer then th block device size");
+        set
+        {
+            if (value < 0) throw new IndexOutOfRangeException("");
+            if (value > Length) throw new IndexOutOfRangeException("longer then th block device size");
             position = value;
-        } 
+        }
     }
 
     public BlockDeviceStream(BlockDevice blockDevice)
@@ -72,6 +75,7 @@ public class BlockDeviceStream : Stream
             default:
                 throw new ArgumentException(null, nameof(origin));
         }
+
         return Position;
     }
 
@@ -92,7 +96,7 @@ public class BlockDeviceStream : Stream
         var blockCount = GetOffsetBlock(count) + 1;
         byte[] newBuffer = _blockDevice.NewBlockArray((uint)blockCount);
 
-        if(blockCount == 1)
+        if (blockCount == 1)
         {
             ReadBlock(newBuffer, (int)startBlock, 1);
         }
@@ -108,17 +112,14 @@ public class BlockDeviceStream : Stream
         var start = (uint)(_blockDevice.BlockSize * (ulong)startBlock) - offset;
         Array.Copy(buffer, start, newBuffer, 0, count);
         WriteBlock(newBuffer, (int)startBlock, (int)blockCount);
-
     }
 
     public override void Flush()
     {
-        
     }
 
     public override void SetLength(long value)
     {
         throw new Exception($@"Unable to SetLength on {nameof(BlockDeviceStream)}");
     }
-
 }

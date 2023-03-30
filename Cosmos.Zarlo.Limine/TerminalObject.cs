@@ -20,9 +20,11 @@ public class TerminalObject
 
     public static TerminalRequest GetRaw => terminalRequest;
 
-    private static TerminalRequest terminalRequest = new TerminalRequest() {
-        id = new ulong[] {
-            0xc7b1dd30df4c8b88, 
+    private static TerminalRequest terminalRequest = new TerminalRequest()
+    {
+        id = new ulong[]
+        {
+            0xc7b1dd30df4c8b88,
             0x0a82e883a194f07b,
             0xc8ac59310c2b0844,
             0xa68d0c7265d38878
@@ -39,5 +41,4 @@ public class TerminalObject
     }
 
     public FramebufferObject GetFramebuffer() => new FramebufferObject(_terminal.framebuffer);
-
 }

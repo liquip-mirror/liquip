@@ -4,7 +4,6 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Utility
 {
     public class Util
     {
-
         public static List<T> Sort<T>(List<T> t, IComparer<T> comparer)
         {
             var array = t.ToArray();
@@ -34,9 +33,9 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Utility
                     j--;
                 }
             } while (i <= j);
+
             if (left < j) Quicksort(data, left, j, comparer);
             if (i < right) Quicksort(data, i, right, comparer);
         }
-
     }
 }

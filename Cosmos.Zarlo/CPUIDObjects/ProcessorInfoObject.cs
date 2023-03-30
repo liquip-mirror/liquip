@@ -5,7 +5,6 @@ namespace Cosmos.Zarlo.CPUIDObjects;
 
 public class ProcessorInfoObject
 {
-
     public int eax { get; private set; } = 0;
     public int ebx { get; private set; } = 0;
     public int ecx { get; private set; } = 0;
@@ -13,7 +12,6 @@ public class ProcessorInfoObject
 
     public ProcessorInfoObject()
     {
-
         int eax = 0;
         int ebx = 0;
         int ecx = 0;
@@ -100,7 +98,6 @@ public class ProcessorInfoObject
         // TM1   = CPUID.HasFlag(edx, 29);
         // IA_64 = CPUID.HasFlag(edx, 30);
         // PBE   = CPUID.HasFlag(edx, 31);
-
     }
 
     // eax
@@ -118,7 +115,7 @@ public class ProcessorInfoObject
     public byte APICID { get; init; }
 
     // ecx
-    public bool SSE3 { get; init; } 
+    public bool SSE3 { get; init; }
     public bool PCLMUL { get; init; }
     public bool DTES64 { get; init; }
     public bool MON { get; init; }
@@ -128,7 +125,7 @@ public class ProcessorInfoObject
     public bool EST { get; init; }
     public bool TM2 { get; init; }
     public bool SSSE3 { get; init; }
-    public bool CID { get; init; }  
+    public bool CID { get; init; }
     public bool SDBG { get; init; }
     public bool FMA { get; init; }
     public bool CX16 { get; init; }
@@ -148,10 +145,10 @@ public class ProcessorInfoObject
     public bool AVX { get; init; }
     public bool F16C { get; init; }
     public bool RDRAND { get; init; }
-    public bool HV { get; init; }  
+    public bool HV { get; init; }
 
     // edx
-    public bool FPU { get; init; } 
+    public bool FPU { get; init; }
     public bool VME { get; init; }
     public bool DE { get; init; }
     public bool PSE { get; init; }
@@ -161,7 +158,7 @@ public class ProcessorInfoObject
     public bool MCE { get; init; }
     public bool CX8 { get; init; }
     public bool APIC { get; init; }
-    public bool SEP { get; init; }  
+    public bool SEP { get; init; }
     public bool MTRR { get; init; }
     public bool PGE { get; init; }
     public bool MCA { get; init; }
@@ -195,5 +192,4 @@ public class ProcessorInfoObject
         sb.Append(edx);
         return sb.ToString();
     }
-    
-} 
+}

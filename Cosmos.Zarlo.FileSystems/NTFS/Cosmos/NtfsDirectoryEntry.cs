@@ -11,19 +11,19 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Cosmos
     {
         public NtfsFileEntry NtfsEntry;
 
-        public NtfsDirectoryEntry(FileSystem aFileSystem, DirectoryEntry aParent, string aFullPath, string aName, long aSize, DirectoryEntryTypeEnum aEntryType, NtfsFileEntry entry) : base(aFileSystem, aParent, aFullPath, aName, aSize, aEntryType)
+        public NtfsDirectoryEntry(FileSystem aFileSystem, DirectoryEntry aParent, string aFullPath, string aName,
+            long aSize, DirectoryEntryTypeEnum aEntryType, NtfsFileEntry entry) : base(aFileSystem, aParent, aFullPath,
+            aName, aSize, aEntryType)
         {
             NtfsEntry = entry;
         }
 
         public override void SetName(string aName)
         {
-            
         }
 
         public override void SetSize(long aSize)
         {
-            
         }
 
         public override Stream GetFileStream()
@@ -39,6 +39,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Cosmos
                         return new MemoryStream(data.DataBytes);
                 }
             }
+
             throw new Exception("ntfs: data attribute not found");
         }
 

@@ -5,7 +5,6 @@ namespace Cosmos.Zarlo.CPUIDObjects;
 
 public class PowerManagementInformationObject
 {
-
     public int eax { get; private set; }
     public int ebx { get; private set; }
     public int ecx { get; private set; }
@@ -72,5 +71,4 @@ public class PowerManagementInformationObject
         sb.Append(edx);
         return sb.ToString();
     }
-
 }

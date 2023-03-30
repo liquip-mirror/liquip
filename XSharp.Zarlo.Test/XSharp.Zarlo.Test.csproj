@@ -11,26 +11,26 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <PlatformTarget>AnyCPU</PlatformTarget>
-      <Prefer32bit>false</Prefer32bit>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <Prefer32bit>false</Prefer32bit>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <PlatformTarget>AnyCPU</PlatformTarget>
-      <Prefer32bit>false</Prefer32bit>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <Prefer32bit>false</Prefer32bit>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="IL2CPU.API" Version="0.1.0-localbuild" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-        <PackageReference Include="NUnit" Version="3.13.3" />
-        <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
-        <PackageReference Include="NUnit.Analyzers" Version="3.3.0" />
-        <PackageReference Include="coverlet.collector" Version="3.1.2" />
+        <PackageReference Include="IL2CPU.API" Version="0.1.0-localbuild"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0"/>
+        <PackageReference Include="NUnit" Version="3.13.3"/>
+        <PackageReference Include="NUnit3TestAdapter" Version="4.2.1"/>
+        <PackageReference Include="NUnit.Analyzers" Version="3.3.0"/>
+        <PackageReference Include="coverlet.collector" Version="3.1.2"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\XSharp.Zarlo\XSharp.Zarlo.csproj" />
+        <ProjectReference Include="..\XSharp.Zarlo\XSharp.Zarlo.csproj"/>
     </ItemGroup>
 
 </Project>

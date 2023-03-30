@@ -1,12 +1,12 @@
 using System.Diagnostics;
 using Cosmos.Zarlo.Logger.Interfaces;
+
 // ReSharper disable InvocationIsSkipped
 
 namespace Cosmos.Zarlo.Logger.Sinks;
 
-public class CosmosDebugger: ISink
+public class CosmosDebugger : ISink
 {
-
     public void Raw(string context, LogLevel logLevel, string message)
     {
         Raw(context, logLevel, message, Array.Empty<object>());
@@ -24,11 +24,9 @@ public class CosmosDebugger: ISink
 
         logger.SendInternal(string.Format(message, data.ToArray()));
         // should we clean up the logger here or cache it?
-        
     }
-    
+
     public void Dispose()
     {
     }
-
 }

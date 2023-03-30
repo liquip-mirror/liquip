@@ -20,7 +20,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.IO
             else
             {
                 ulong tmp = (ulong)(-filenameHashcode);
-                tmp += (uint)1 << 31;     // the 1-bit that's normally the sign bit
+                tmp += (uint)1 << 31; // the 1-bit that's normally the sign bit
                 key |= tmp;
             }
 

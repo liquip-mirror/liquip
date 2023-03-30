@@ -184,7 +184,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
 
                 // Debug.Assert(offset + maxLength >= bodyOffset + length);
 
-                res.NonResidentHeader.Fragments = DataFragment.ParseFragments(data, length, bodyOffset, res.NonResidentHeader.StartingVCN, res.NonResidentHeader.EndingVCN);
+                res.NonResidentHeader.Fragments = DataFragment.ParseFragments(data, length, bodyOffset,
+                    res.NonResidentHeader.StartingVCN, res.NonResidentHeader.EndingVCN);
 
                 // Compact compressed fragments
                 if (res.NonResidentHeader.CompressionUnitSize != 0)

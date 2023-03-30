@@ -5,7 +5,7 @@ using Cosmos.System.Graphics;
 using Cosmos.Zarlo.Memory;
 using XSharp.Tokens;
 
-namespace Cosmos.Zarlo.Console;
+namespace Cosmos.Zarlo.GConsole;
 
 public struct CharData
 {
@@ -20,10 +20,10 @@ public struct Point
     public int Y { get; set; }
 }
 
-public class VBEConsole: TextScreenBase, IDisposable
+public class VBEConsole : TextScreenBase, IDisposable
 {
-    
     public List<CharData[]> TextBuffer = new List<CharData[]>();
+
     public Point CursorPos = new Point()
     {
         X = 0,
@@ -31,7 +31,7 @@ public class VBEConsole: TextScreenBase, IDisposable
     };
 
     private unsafe Pointer _frameBuffer;
-    
+
     public override void Clear()
     {
         TextBuffer.Clear();
@@ -39,7 +39,6 @@ public class VBEConsole: TextScreenBase, IDisposable
         {
             TextBuffer.Add(new CharData[Cols]);
         }
-        
     }
 
     public override void SetColors(ConsoleColor aForeground, ConsoleColor aBackground)
@@ -59,14 +58,14 @@ public class VBEConsole: TextScreenBase, IDisposable
 
     public override void ScrollUp()
     {
-        if(TextBuffer.Count == Rows)
+        if (TextBuffer.Count == Rows)
             TextBuffer.Insert(0, new CharData[Cols]);
 
         TextBuffer.RemoveAt(TextBuffer.Count);
         var bufferIndex = TextBuffer.Count - Rows;
         if (bufferIndex < 0) bufferIndex = 0;
         DrawLine(bufferIndex, 0);
-        
+
 
         CursorPos.Y--;
         if (CursorPos.Y <= 0)
@@ -104,6 +103,7 @@ public class VBEConsole: TextScreenBase, IDisposable
         {
             throw new ArgumentOutOfRangeException(nameof(x));
         }
+
         if (y > Rows || y < 0)
         {
             throw new ArgumentOutOfRangeException(nameof(y));
@@ -122,11 +122,11 @@ public class VBEConsole: TextScreenBase, IDisposable
     public virtual Pointer Render(
         CharData[] c
     ) => Pointer.Null;
-    
+
     public virtual Pointer Render(
         CharData c
     ) => Pointer.Null;
-    
+
     public override byte this[int x, int y]
     {
         get => (byte)TextBuffer[^y][x].Char;
@@ -141,7 +141,7 @@ public class VBEConsole: TextScreenBase, IDisposable
     }
 
     public int Size => (int)_frameBuffer.Size;
-    
+
     public void Dispose()
     {
         // If the buffer is allocated, free it.

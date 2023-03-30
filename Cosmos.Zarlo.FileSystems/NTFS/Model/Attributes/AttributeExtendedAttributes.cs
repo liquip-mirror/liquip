@@ -10,10 +10,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
 
         public override AttributeResidentAllow AllowedResidentStates
         {
-            get
-            {
-                return AttributeResidentAllow.Resident | AttributeResidentAllow.NonResident;
-            }
+            get { return AttributeResidentAllow.Resident | AttributeResidentAllow.NonResident; }
         }
 
         internal override void ParseAttributeNonResidentBody(Ntfs ntfsInfo)
@@ -28,7 +25,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
 
             List<ExtendedAttribute> extendedAttributes = new List<ExtendedAttribute>();
             int pointer = 0;
-            while (pointer + 8 <= data.Length)       // 8 is the minimum size of an ExtendedAttribute
+            while (pointer + 8 <= data.Length) // 8 is the minimum size of an ExtendedAttribute
             {
                 if (ExtendedAttribute.GetSize(data, pointer) <= 0)
                     break;
@@ -51,7 +48,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
 
             List<ExtendedAttribute> extendedAttributes = new List<ExtendedAttribute>();
             int pointer = offset;
-            while (pointer + 8 <= offset + maxLength)       // 8 is the minimum size of an ExtendedAttribute
+            while (pointer + 8 <= offset + maxLength) // 8 is the minimum size of an ExtendedAttribute
             {
                 if (ExtendedAttribute.GetSize(data, pointer) < 0)
                     break;

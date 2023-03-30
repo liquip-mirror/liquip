@@ -10,6 +10,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model
         /// Be warned when using it.
         /// </summary>
         public byte FragmentSizeBytes { get; set; }
+
         public long Clusters { get; set; }
         public byte CompressedClusters { get; set; }
         public long LCN { get; set; }
@@ -160,7 +161,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model
                 return res;
             }
 
-            offsetBytes = (byte)(offsetBytes & 0xF7);    // 0xF7: 1111 0111
+            offsetBytes = (byte)(offsetBytes & 0xF7); // 0xF7: 1111 0111
             //// Debug.Assert(countBytes <= 8, "Fragment metadata exceeded 8 bytes");
             //// Debug.Assert(offsetBytes <= 8, "Fragment metadata exceeded 8 bytes");
 
@@ -212,7 +213,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model
             return res;
         }
 
-        public static List<DataFragment> ParseFragments(byte[] data, int maxLength, int offset, long startingVCN, long endingVCN)
+        public static List<DataFragment> ParseFragments(byte[] data, int maxLength, int offset, long startingVCN,
+            long endingVCN)
         {
             //// Debug.Assert(data.Length - offset >= maxLength);
             //// Debug.Assert(0 <= offset && offset <= data.Length);
@@ -225,7 +227,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model
             long lastLcn = 0;
             while (pointer < offset + maxLength)
             {
-               // // Debug.Assert(pointer <= offset + maxLength);
+                // // Debug.Assert(pointer <= offset + maxLength);
 
                 DataFragment fragment = ParseFragment(data, lastLcn, pointer);
 

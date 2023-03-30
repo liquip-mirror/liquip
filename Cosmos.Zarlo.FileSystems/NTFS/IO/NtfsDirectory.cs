@@ -27,6 +27,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.IO
                         exists = true;
                         break;
                     }
+
                 if (!exists)
                     output.Add(CreateEntry(ntfs, e.FileRefence.FileId));
             }
@@ -59,6 +60,5 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.IO
 
             return result;
         }
-
     }
 }

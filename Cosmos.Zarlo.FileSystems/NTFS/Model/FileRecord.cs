@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -99,7 +98,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model
             // Debug.Assert(Signature == "FILE");
 
             int attribOffset = offset;
-            for (int attribId = 0; ; attribId++)
+            for (int attribId = 0;; attribId++)
             {
                 AttributeType attributeType = Attribute.GetType(data, attribOffset);
                 if (attributeType == AttributeType.EndOfAttributes)
@@ -124,14 +123,13 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model
                 if (!(att is AttributeList list)) continue;
 
                 foreach (var otherAtt in record.Attributes)
-                    foreach (var itm in list.Items)
-                        if (itm.AttributeId == otherAtt.Id && itm.BaseFile == otherAtt.OwningRecord)
-                        {
-                            _externalAttributes.Add(otherAtt);
-                            break;
-                        }
+                foreach (var itm in list.Items)
+                    if (itm.AttributeId == otherAtt.Id && itm.BaseFile == otherAtt.OwningRecord)
+                    {
+                        _externalAttributes.Add(otherAtt);
+                        break;
+                    }
             }
         }
     }
-
 }

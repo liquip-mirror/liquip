@@ -18,7 +18,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Cosmos
         private Ntfs _ntfs;
 
         private readonly ILogger _Logger;
-        
+
         public NtfsFileSystem(Partition aDevice, string aRootPath, long aSize) : base(aDevice, aRootPath, aSize)
         {
             _Logger = Log.GetLogger("NtfsFileSystem");
@@ -46,8 +46,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Cosmos
             foreach (var f in ntfsDir.ListFiles())
             {
                 result.Add(new NtfsDirectoryEntry(this, null, baseDirectory.mFullPath + "\\" + f.Name, f.Name,
-                        0,
-                        f is NtfsFile ? DirectoryEntryTypeEnum.File : DirectoryEntryTypeEnum.Directory, f));
+                    0,
+                    f is NtfsFile ? DirectoryEntryTypeEnum.File : DirectoryEntryTypeEnum.Directory, f));
             }
 
             return result;
@@ -55,12 +55,12 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Cosmos
 
         public override DirectoryEntry GetRootDirectory()
         {
-            return new NtfsDirectoryEntry(this, null, "\\", _rootPath, _size, DirectoryEntryTypeEnum.Directory, _ntfs.GetRootDirectory());
+            return new NtfsDirectoryEntry(this, null, "\\", _rootPath, _size, DirectoryEntryTypeEnum.Directory,
+                _ntfs.GetRootDirectory());
         }
 
         public override DirectoryEntry CreateDirectory(DirectoryEntry aParentDirectory, string aNewDirectory)
         {
-            
             return null;
         }
 
@@ -71,17 +71,14 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Cosmos
 
         public override void DeleteDirectory(DirectoryEntry aPath)
         {
-
         }
 
         public override void DeleteFile(DirectoryEntry aPath)
         {
-
         }
 
         public override void Format(string aDriveFormat, bool aQuick)
         {
-
         }
 
         public override long AvailableFreeSpace { get; }

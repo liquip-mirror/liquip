@@ -10,7 +10,6 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Utility
 {
     public static class NtfsUtils
     {
-
         private static readonly long MaxFileTime = 9999; // DateTime.MaxValue.ToFileTimeUtc();
 
         public static DateTime FromWinFileTime(byte[] data, int offset)
@@ -39,14 +38,15 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Utility
 
         public static byte[] ReadFragments(Ntfs ntfsInfo, List<DataFragment> fragments)
         {
-            long totalLength = 0; 
+            long totalLength = 0;
             foreach (var frag in fragments)
                 totalLength += frag.Clusters * ntfsInfo.BytesPerCluster;
 
             var data = new byte[totalLength];
 
             Stream diskStream = ntfsInfo.DiskStream;
-            using (NtfsDiskStream stream = new NtfsDiskStream(diskStream, false, fragments, ntfsInfo.BytesPerCluster, 0, totalLength))
+            using (NtfsDiskStream stream =
+                   new NtfsDiskStream(diskStream, false, fragments, ntfsInfo.BytesPerCluster, 0, totalLength))
             {
                 stream.Read(data, 0, data.Length);
             }
@@ -55,7 +55,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Utility
             return data;
         }
 
-        public static void ApplyUSNPatch(byte[] data, int offset, uint sectors, ushort bytesPrSector, byte[] usnNumber, byte[] usnData)
+        public static void ApplyUSNPatch(byte[] data, int offset, uint sectors, ushort bytesPrSector, byte[] usnNumber,
+            byte[] usnData)
         {
             // // Debug.Assert(data.Length >= offset + sectors * bytesPrSector);
             // // Debug.Assert(usnNumber.Length == 2);
@@ -75,6 +76,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Utility
                 data[blockOffset + 1] = usnData[i * 2 + 1];
             }
         }
+
         public static AttributeFileName GetPreferredDisplayName(FileRecord record)
         {
             AttributeFileName posix = null;

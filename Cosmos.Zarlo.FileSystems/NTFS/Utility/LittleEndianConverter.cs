@@ -56,7 +56,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Utility
             buffer[offset + 7] = (byte)((value >> 56) & 0xFF);
         }
 
-        public static void GetBytes(byte[] buffer, int offset, DateTime value, DatetimeBinaryFormat format = DatetimeBinaryFormat.WinFileTime)
+        public static void GetBytes(byte[] buffer, int offset, DateTime value,
+            DatetimeBinaryFormat format = DatetimeBinaryFormat.WinFileTime)
         {
             switch (format)
             {
@@ -67,12 +68,10 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Utility
                     throw new ArgumentOutOfRangeException("format");
             }
         }
-
     }
 
     public enum DatetimeBinaryFormat
     {
         WinFileTime
     }
-
 }

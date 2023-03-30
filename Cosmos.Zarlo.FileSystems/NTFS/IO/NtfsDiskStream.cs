@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using System.IO;
 using Cosmos.Zarlo.FileSystems.NTFS.Compression;
 using Cosmos.Zarlo.FileSystems.NTFS.Model;
@@ -24,13 +23,14 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.IO
             get { return _position >= _length; }
         }
 
-        public NtfsDiskStream(Stream diskStream, bool ownsStream, List<DataFragment> fragments, uint bytesPrCluster, ushort compressionClusterCount, long length)
+        public NtfsDiskStream(Stream diskStream, bool ownsStream, List<DataFragment> fragments, uint bytesPrCluster,
+            ushort compressionClusterCount, long length)
         {
             _diskStream = diskStream;
             _ownsStream = ownsStream;
             _bytesPrCluster = bytesPrCluster;
             _compressionClusterCount = compressionClusterCount;
-            
+
             _fragments = Utility.Util.Sort(fragments, new DataFragmentComparer());
 
             _length = length;
@@ -54,7 +54,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.IO
             }
 
             //if (_compressionClusterCount == 0)
-                // Debug.Assert(!hasCompression);
+            // Debug.Assert(!hasCompression);
         }
 
         public override void Flush()
@@ -117,7 +117,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.IO
                     _diskStream.Read(compressedData, 0, compressedData.Length);
 
                     int decompressedLength = (int)((fragment.Clusters + fragment.CompressedClusters) * _bytesPrCluster);
-                    int toRead = (int)Math.Min(decompressedLength - fragmentOffset, Math.Min(_length - _position, count));
+                    int toRead = (int)Math.Min(decompressedLength - fragmentOffset,
+                        Math.Min(_length - _position, count));
 
                     // Debug.Assert(decompressedLength == _compressionClusterCount * _bytesPrCluster);
 
@@ -182,7 +183,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.IO
             for (int i = 0; i < _fragments.Count; i++)
             {
                 long fragmentStart = _fragments[i].StartingVCN * _bytesPrCluster;
-                long fragmentEnd = fragmentStart + (_fragments[i].Clusters + _fragments[i].CompressedClusters) * _bytesPrCluster;
+                long fragmentEnd = fragmentStart +
+                                   (_fragments[i].Clusters + _fragments[i].CompressedClusters) * _bytesPrCluster;
 
                 if (fragmentStart <= fileIndex && fileIndex < fragmentEnd)
                 {

@@ -23,10 +23,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
 
         public override AttributeResidentAllow AllowedResidentStates
         {
-            get
-            {
-                return AttributeResidentAllow.Resident;
-            }
+            get { return AttributeResidentAllow.Resident; }
         }
 
         internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
@@ -43,7 +40,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
             FileFlags = (FileAttributes)BitConverter.ToInt32(data, offset + 56);
             ReservedEAsReparse = BitConverter.ToUInt32(data, offset + 60);
             FilenameLength = data[offset + 64];
-            FilenameNamespace = (FileNamespace) data[offset + 65];
+            FilenameNamespace = (FileNamespace)data[offset + 65];
 
             // Debug.Assert(maxLength >= 66 + FilenameLength * 2);
 

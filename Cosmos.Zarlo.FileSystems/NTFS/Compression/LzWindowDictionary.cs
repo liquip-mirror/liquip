@@ -19,6 +19,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
+
 using System;
 using System.Collections.Generic;
 
@@ -81,8 +82,10 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Compression
                     break;
                 }
 
-                int maxMatchSize = (int)Math.Min(Math.Min(MaxMatchAmount, BlockSize), Math.Min(length - index, length - matchStart));
-                while (matchSize < maxMatchSize && decompressedData[decompressedDataOffset + index + matchSize] == decompressedData[decompressedDataOffset + matchStart + matchSize])
+                int maxMatchSize = (int)Math.Min(Math.Min(MaxMatchAmount, BlockSize),
+                    Math.Min(length - index, length - matchStart));
+                while (matchSize < maxMatchSize && decompressedData[decompressedDataOffset + index + matchSize] ==
+                       decompressedData[decompressedDataOffset + matchStart + matchSize])
                 {
                     matchSize++;
                 }

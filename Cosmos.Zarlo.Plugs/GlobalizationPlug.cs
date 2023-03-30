@@ -5,7 +5,6 @@ namespace Cosmos.Zarlo.Plugs;
 [Plug("Interop+Globalization, System.Private.CoreLib")]
 public class GlobalizationPlug
 {
-
     // [PlugMethod(Signature = 
     //     "System_Int32__Interop_Globalization_ToAscii_System_UInt32__System_Char#__System_Int32__System_Char#__System_Int32_"
     // )]
@@ -36,14 +35,13 @@ public class GlobalizationPlug
         for (var i = 0; i < srcLen; i++)
         {
             var c = src[i];
-    
+
             if (dstIndex > dstBufferCapacity - 1) return 0; // error need a bigger buffer
             dstBuffer[dstIndex] = c;
             dstIndex++;
-            
         }
+
         dstBuffer[dstIndex] = (Char)0x00;
         return dstIndex;
     }
-    
 }

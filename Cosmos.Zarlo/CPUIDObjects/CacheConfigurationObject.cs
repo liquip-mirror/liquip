@@ -3,10 +3,10 @@ using Cosmos.Core;
 
 namespace Cosmos.Zarlo.CPUIDObjects;
 
-public class CacheConfigurationObject {
-
-    public CacheConfigurationObject() {         
-
+public class CacheConfigurationObject
+{
+    public CacheConfigurationObject()
+    {
     }
 
     public CacheObject GetCache(int index) => new CacheObject(index);
@@ -26,21 +26,22 @@ public class CacheConfigurationObject {
         sb.Append(L2.DebugString());
         return sb.ToString();
     }
-    
 }
 
-public class CacheObject {
+public class CacheObject
+{
     public int eax { get; private set; } = 0;
     public int ebx { get; private set; } = 0;
     public int ecx { get; private set; } = 0;
     public int edx { get; private set; } = 0;
+
     public CacheObject(int id)
     {
         int eax = 0;
         int ebx = 0;
         int ecx = id;
         int edx = 0;
-        
+
         CPU.ReadCPUID(4, ref eax, ref ebx, ref ecx, ref edx);
 
         this.eax = eax;
@@ -91,7 +92,7 @@ public class CacheObject {
     public bool Write_BackInvalidate { get; init; }
     public bool InclusiveOfLowerLevels { get; init; }
     public bool ComplexIndexing { get; init; }
-    
+
     public string DebugString()
     {
         StringBuilder sb = new StringBuilder();

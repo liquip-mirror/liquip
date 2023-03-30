@@ -32,6 +32,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="BouncyCastle.NetCore" Version="1.9.0" />
         <PackageReference Include="Cosmos.Build" Version="0-*" NoWarn="NU1604" />
         <PackageReference Include="Cosmos.Debug.Kernel" Version="0-*" NoWarn="NU1604" />
         <PackageReference Include="Cosmos.Plugs" Version="0.1.0-localbuild" />
@@ -39,12 +40,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Cosmos.Zarlo.Plugs\Cosmos.Zarlo.Plugs.csproj" />
-      <ProjectReference Include="..\Cosmos.Zarlo\Cosmos.Zarlo.csproj" />
+        <ProjectReference Include="..\Cosmos.Zarlo.Plugs\Cosmos.Zarlo.Plugs.csproj" />
+        <ProjectReference Include="..\Cosmos.Zarlo.Threading\Cosmos.Zarlo.Threading.csproj" />
+        <ProjectReference Include="..\Cosmos.Zarlo\Cosmos.Zarlo.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <PlugsReference Include="$(MSBuildProjectDirectory)\..\Cosmos.Zarlo.Plugs\bin\Debug\net6.0\Cosmos.Zarlo.Plugs.dll" />
     </ItemGroup>
-    
+
 </Project>

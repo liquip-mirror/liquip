@@ -13,9 +13,9 @@ namespace Cosmos.Zarlo;
 
 public static class RDseed
 {
-
-    public static bool IsSupported() {
-        if(CPU.CanReadCPUID() > 0)
+    public static bool IsSupported()
+    {
+        if (CPU.CanReadCPUID() > 0)
         {
             //mov eax, 7     ; set EAX to request function 7
             //mov ecx, 0     ; set ECX to request subfunction 0
@@ -23,7 +23,7 @@ public static class RDseed
             int eax = 0;
             int ebx = 0;
             int ecx = 0;
-            int edx = 0; 
+            int edx = 0;
             CPU.ReadCPUID(7, ref eax, ref ebx, ref ecx, ref edx);
 
             //shr ebx, 18
@@ -31,6 +31,7 @@ public static class RDseed
             //and ebx, 1 
             return (flag & 1) == 1;
         }
+
         return false;
     }
 
@@ -40,16 +41,12 @@ public static class RDseed
         return GetRDSeed32() << 32 | GetRDSeed32();
     }
 
-    [PlugMethod(Assembler = typeof(GetRDSeed32Asm))]
     // ReSharper disable once InconsistentNaming
-    public static int GetRDSeed32()
-    {        
-        throw new NotImplementedException();
-    }
-    
+    [PlugMethod(Assembler = typeof(GetRDSeed32Asm))]
+    public static int GetRDSeed32() => throw new ImplementedInPlugException(typeof(GetRDSeed32Asm));
 }
 
-public class GetRDSeed32Asm: AssemblerMethod
+public class GetRDSeed32Asm : AssemblerMethod
 {
     public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
     {
@@ -60,22 +57,12 @@ public class GetRDSeed32Asm: AssemblerMethod
             .Group(i =>
             {
                 i.LiteralCode("rdseed eax")
-                .Jump(Label.Get(".done"), ConditionalTestEnum.Carry)
-                .Decrement(ECX)
-                .Jump(retry, ConditionalTestEnum.NotZero)
-                .Jump(retry);
+                    .Jump(Label.Get(".done"), ConditionalTestEnum.Carry)
+                    .Decrement(ECX)
+                    .Jump(retry, ConditionalTestEnum.NotZero)
+                    .Jump(retry);
             })
             .Label(".done")
             .Push(EAX);
-        // XS.Comment("GetRDSeed32");
-        // XS.Set(ECX, 100);
-        // XS.Label(".retry");
-        // XS.LiteralCode("rdseed eax");
-        // XS.Jump(ConditionalTestEnum.Carry, ".done");
-        // XS.Decrement(ECX);
-        // XS.Jump(ConditionalTestEnum.NotZero, ".retry");
-        // XS.Jump(".retry");
-        // XS.Label(".done");
-        // XS.Push(EAX);
     }
 }

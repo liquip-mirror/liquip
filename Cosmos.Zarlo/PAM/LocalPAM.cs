@@ -2,12 +2,11 @@ namespace Cosmos.Zarlo.PAM;
 
 public class LocalPAM : IPluggableAuthenticationModule
 {
-
     public const string DefaultDbPath = "/etc/passwd";
 
     public LocalPAM(string? dbPath = null)
     {
-        if(dbPath == null) dbPath = DefaultDbPath;
+        if (dbPath == null) dbPath = DefaultDbPath;
     }
 
     public void ChangePassword(uint userId, string? password)

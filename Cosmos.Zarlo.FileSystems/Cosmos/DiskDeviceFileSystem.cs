@@ -12,8 +12,6 @@ public class DiskDeviceFileSystem : FileSystem
     public DiskDeviceFileSystem(Disk disk, string aRootPath) : base(null, aRootPath, 0)
     {
         _disk = disk;
-        
-
     }
 
     public override long AvailableFreeSpace => 0;

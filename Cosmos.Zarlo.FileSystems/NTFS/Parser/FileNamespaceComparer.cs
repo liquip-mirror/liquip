@@ -5,8 +5,9 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Parser
 {
     public class FileNamespaceComparer : IComparer<FileNamespace>
     {
-        static FileNamespace[] _order = new[] { FileNamespace.Win32, FileNamespace.Win32AndDOS, FileNamespace.POSIX, FileNamespace.DOS };
-        
+        static FileNamespace[] _order = new[]
+            { FileNamespace.Win32, FileNamespace.Win32AndDOS, FileNamespace.POSIX, FileNamespace.DOS };
+
         public int Compare(FileNamespace x, FileNamespace y)
         {
             foreach (FileNamespace fileNamespace in _order)

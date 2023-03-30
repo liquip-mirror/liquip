@@ -58,7 +58,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Compression
             BlockSize = 4096;
         }
 
-        public CompressionResult Compress(byte[] source, int sourceOffset, int sourceLength, byte[] compressed, int compressedOffset, ref int compressedLength)
+        public CompressionResult Compress(byte[] source, int sourceOffset, int sourceLength, byte[] compressed,
+            int compressedOffset, ref int compressedLength)
         {
             uint sourcePointer = 0;
             uint sourceCurrentBlock = 0;
@@ -102,7 +103,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Compression
 
                         lzDictionary.MaxMatchAmount = Math.Min(1 << lengthBits, BlockSize - 1);
 
-                        int[] lzSearchMatch = lzDictionary.Search(source, sourceOffset + subBlock, (uint)(sourcePointer - subBlock), decompressedSize);
+                        int[] lzSearchMatch = lzDictionary.Search(source, sourceOffset + subBlock,
+                            (uint)(sourcePointer - subBlock), decompressedSize);
                         if (lzSearchMatch[1] > 0)
                         {
                             // There is a compression match
@@ -122,7 +124,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Compression
                             ushort convertedData = (ushort)(convertedOffset | convertedSize);
                             WriteBytesLittleEndian(convertedData, compressed, compressedOffset + (int)destPointer);
 
-                            lzDictionary.AddEntryRange(source, sourceOffset + subBlock, (int)(sourcePointer - subBlock), lzSearchMatch[1]);
+                            lzDictionary.AddEntryRange(source, sourceOffset + subBlock, (int)(sourcePointer - subBlock),
+                                lzSearchMatch[1]);
                             sourcePointer += (uint)lzSearchMatch[1];
                             destPointer += 2;
                             compressedSize += 2;
@@ -165,9 +168,11 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Compression
                 if (compressedSize >= BlockSize)
                 {
                     // Set the header to indicate non-compressed block
-                    WriteBytesLittleEndian((ushort)(0x3000 | (BlockSize - 1)), compressed, compressedOffset + (int)headerPosition);
+                    WriteBytesLittleEndian((ushort)(0x3000 | (BlockSize - 1)), compressed,
+                        compressedOffset + (int)headerPosition);
 
-                    Array.Copy(source, sourceOffset + sourceCurrentBlock, compressed, compressedOffset + headerPosition + 2, BlockSize);
+                    Array.Copy(source, sourceOffset + sourceCurrentBlock, compressed,
+                        compressedOffset + headerPosition + 2, BlockSize);
                     destPointer = (uint)(headerPosition + 2 + BlockSize);
 
                     // Make sure decompression stops by setting the next two bytes to null, prevents us from having to 
@@ -178,7 +183,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Compression
                 else
                 {
                     // Set the header to indicate compressed and the right length
-                    WriteBytesLittleEndian((ushort)(0xb000 | (compressedSize - 1)), compressed, compressedOffset + (int)headerPosition);
+                    WriteBytesLittleEndian((ushort)(0xb000 | (compressedSize - 1)), compressed,
+                        compressedOffset + (int)headerPosition);
                 }
 
                 lzDictionary.Reset();
@@ -201,7 +207,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Compression
             }
         }
 
-        public int Decompress(byte[] source, int sourceOffset, int sourceLength, byte[] decompressed, int decompressedOffset)
+        public int Decompress(byte[] source, int sourceOffset, int sourceLength, byte[] decompressed,
+            int decompressedOffset)
         {
             int sourceIdx = 0;
             int destIdx = 0;
@@ -267,7 +274,8 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Compression
 
                                 for (int i = 0; i < length; ++i)
                                 {
-                                    decompressed[decompressedOffset + destIdx++] = decompressed[decompressedOffset + destBackAddr++];
+                                    decompressed[decompressedOffset + destIdx++] =
+                                        decompressed[decompressedOffset + destBackAddr++];
                                 }
                             }
 

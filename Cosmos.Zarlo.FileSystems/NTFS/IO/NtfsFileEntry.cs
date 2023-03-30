@@ -14,13 +14,17 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.IO
         internal AttributeFileName FileName;
         private AttributeStandardInformation _standardInformation;
 
-        public DateTime TimeCreation => _standardInformation == null ? DateTime.MinValue : _standardInformation.TimeCreated;
+        public DateTime TimeCreation =>
+            _standardInformation == null ? DateTime.MinValue : _standardInformation.TimeCreated;
 
-        public DateTime TimeModified => _standardInformation == null ? DateTime.MinValue : _standardInformation.TimeModified;
+        public DateTime TimeModified =>
+            _standardInformation == null ? DateTime.MinValue : _standardInformation.TimeModified;
 
-        public DateTime TimeAccessed => _standardInformation == null ? DateTime.MinValue : _standardInformation.TimeAccessed;
+        public DateTime TimeAccessed =>
+            _standardInformation == null ? DateTime.MinValue : _standardInformation.TimeAccessed;
 
-        public DateTime TimeMftModified => _standardInformation == null ? DateTime.MinValue : _standardInformation.TimeMftModified;
+        public DateTime TimeMftModified =>
+            _standardInformation == null ? DateTime.MinValue : _standardInformation.TimeMftModified;
 
         public string Name => FileName.FileName;
 
@@ -36,7 +40,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.IO
 
         private void Init()
         {
-            foreach(var att in MFTRecord.Attributes)
+            foreach (var att in MFTRecord.Attributes)
                 if (att is AttributeStandardInformation info)
                     _standardInformation = info;
         }
@@ -56,6 +60,5 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.IO
                 return new NtfsDirectory(ntfs, record, fileName);
             return new NtfsFile(ntfs, record, fileName);
         }
-
     }
 }

@@ -1,4 +1,3 @@
-
 namespace Cosmos.Zarlo.Memory;
 
 public static unsafe class BufferUtils
@@ -13,31 +12,29 @@ public static unsafe class BufferUtils
     ) => MemoryCopy(source, destination, destinationIndex, source.Size);
     
     public static void MemoryCopy(
-        Pointer source, 
-        Pointer destination, 
-        uint destinationIndex, 
+        Pointer source,
+        Pointer destination,
+        uint destinationIndex,
         uint size
-        ) =>
+    ) =>
         Buffer.MemoryCopy(
-            source.Ptr, 
-            destination.Ptr + destinationIndex, 
-            source.Size, 
+            source.Ptr,
+            destination.Ptr + destinationIndex,
+            source.Size,
             size
-            );
-    
+        );
+
     public static void MemoryCopy(
-        Pointer source, 
-        Pointer destination, 
+        Pointer source,
+        Pointer destination,
         uint destinationIndex,
         uint sourceIndex,
         uint size
     ) =>
         Buffer.MemoryCopy(
-            source.Ptr + sourceIndex, 
-            destination.Ptr + destinationIndex, 
-            source.Size, 
+            source.Ptr + sourceIndex,
+            destination.Ptr + destinationIndex,
+            source.Size,
             size
         );
-   
-    
 }

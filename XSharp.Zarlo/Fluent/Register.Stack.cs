@@ -2,7 +2,15 @@ namespace XSharp.Zarlo.Fluent;
 
 public static partial class RegisterEx
 {
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="me"></param>
+    /// <param name="destinationValue"></param>
+    /// <param name="isIndirect"></param>
+    /// <param name="displacement"></param>
+    /// <param name="size"></param>
+    /// <returns></returns>
     public static FluentXSharp Push(
         this FluentXSharp me,
         uint destinationValue,
@@ -14,6 +22,15 @@ public static partial class RegisterEx
         return me;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="me"></param>
+    /// <param name="register"></param>
+    /// <param name="isIndirect"></param>
+    /// <param name="displacement"></param>
+    /// <param name="size"></param>
+    /// <returns></returns>
     public static FluentXSharp Push(
         this FluentXSharp me,
         XSRegisters.Register register,
@@ -25,6 +42,15 @@ public static partial class RegisterEx
         return me;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="me"></param>
+    /// <param name="label"></param>
+    /// <param name="isIndirect"></param>
+    /// <param name="displacement"></param>
+    /// <param name="size"></param>
+    /// <returns></returns>
     public static FluentXSharp Push(
         this FluentXSharp me,
         string label,
@@ -36,6 +62,12 @@ public static partial class RegisterEx
         return me;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="me"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
     public static FluentXSharp Pop(
         this FluentXSharp me,
         XSRegisters.Register value
@@ -45,16 +77,38 @@ public static partial class RegisterEx
         return me;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="me"></param>
+    /// <returns></returns>
     public static FluentXSharp Pushfd(this FluentXSharp me)
     {
         me.Pushfd();
         return me;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="me"></param>
+    /// <returns></returns>
     public static FluentXSharp Popfd(this FluentXSharp me)
     {
         me.Popfd();
         return me;
     }
+    
+    public static FluentXSharp PopAllRegisters(this FluentXSharp me)
+    {
+        XS.PopAllRegisters();
+        return me;
+    }
 
+    public static FluentXSharp PushAllRegisters(this FluentXSharp me)
+    {
+        XS.PushAllRegisters();
+        return me;
+    }
+    
 }

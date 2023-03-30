@@ -11,10 +11,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
 
         public override AttributeResidentAllow AllowedResidentStates
         {
-            get
-            {
-                return AttributeResidentAllow.Resident | AttributeResidentAllow.NonResident;
-            }
+            get { return AttributeResidentAllow.Resident | AttributeResidentAllow.NonResident; }
         }
 
         internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
@@ -35,7 +32,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
 
             // Get all chunks
             byte[] data = NtfsUtils.ReadFragments(ntfsInfo, NonResidentHeader.Fragments);
-            
+
             // Parse
             Bitfield = new BitArray(data);
         }

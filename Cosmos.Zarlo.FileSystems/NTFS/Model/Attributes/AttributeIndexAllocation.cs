@@ -11,10 +11,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
 
         public override AttributeResidentAllow AllowedResidentStates
         {
-            get
-            {
-                return AttributeResidentAllow.NonResident;
-            }
+            get { return AttributeResidentAllow.NonResident; }
         }
 
         internal override void ParseAttributeNonResidentBody(Ntfs ntfsInfo)
@@ -29,7 +26,10 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
             {
                 for (int j = 0; j < NonResidentHeader.Fragments[i].Clusters; j++)
                 {
-                    int offset = (int)((NonResidentHeader.Fragments[i].StartingVCN - NonResidentHeader.Fragments[0].StartingVCN) * ntfsInfo.BytesPerCluster + j * ntfsInfo.BytesPerCluster);
+                    int offset =
+                        (int)((NonResidentHeader.Fragments[i].StartingVCN -
+                               NonResidentHeader.Fragments[0].StartingVCN) * ntfsInfo.BytesPerCluster +
+                              j * ntfsInfo.BytesPerCluster);
 
                     if (!IndexAllocationChunk.IsIndexAllocationChunk(data, offset))
                         continue;
@@ -37,7 +37,7 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model.Attributes
                     IndexAllocationChunk index = IndexAllocationChunk.ParseBody(ntfsInfo, data, offset);
 
                     indexes.Add(index);
-                    foreach(var f in index.Entries)
+                    foreach (var f in index.Entries)
                         entries.Add(f);
                 }
             }

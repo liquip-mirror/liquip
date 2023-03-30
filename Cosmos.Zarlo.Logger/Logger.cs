@@ -4,7 +4,7 @@ using Cosmos.Zarlo.Logger.Interfaces;
 
 namespace Cosmos.Zarlo.Logger;
 
-public class BaseLogger: ILogger
+public class BaseLogger : ILogger
 {
     private readonly string? _context;
 

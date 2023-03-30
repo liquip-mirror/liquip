@@ -5,7 +5,6 @@ namespace Cosmos.Zarlo.CPUIDObjects;
 
 public class ProcessorFrequencyInformationObject
 {
-
     public int eax0 { get; private set; }
     public int ebx0 { get; private set; }
     public int ecx0 { get; private set; }
@@ -48,7 +47,6 @@ public class ProcessorFrequencyInformationObject
         CoreBaseFrequency = (short)CPUID.GetBitRange(eax1, 0, 15);
         CoreMaximumFrequency = (short)CPUID.GetBitRange(ebx1, 0, 15);
         BusFrequency = (short)CPUID.GetBitRange(ecx1, 0, 15);
-
     }
 
     // 0
@@ -62,7 +60,7 @@ public class ProcessorFrequencyInformationObject
     public short CoreBaseFrequency { get; init; }
     public short CoreMaximumFrequency { get; init; }
     public short BusFrequency { get; init; }
-    
+
     public string DebugString()
     {
         StringBuilder sb = new StringBuilder();
@@ -74,7 +72,7 @@ public class ProcessorFrequencyInformationObject
         sb.Append(ecx0);
         sb.Append(" edx0: ");
         sb.Append(edx0);
-        
+
         sb.Append(" eax1: ");
         sb.Append(eax1);
         sb.Append(" ebx1: ");
@@ -83,7 +81,7 @@ public class ProcessorFrequencyInformationObject
         sb.Append(ecx1);
         sb.Append(" edx1: ");
         sb.Append(edx1);
-        
+
         return sb.ToString();
     }
 }

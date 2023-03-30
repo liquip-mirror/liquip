@@ -8,13 +8,12 @@ namespace Cosmos.Zarlo.Logger;
 
 public static class Log
 {
-
     public static ISink[] DefaultSinks = new ISink[]
     {
         new ConsoleSink(),
         new CosmosDebugger()
     };
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ILogger GetLogger()
     {
@@ -26,7 +25,7 @@ public static class Log
     {
         return new BaseLogger(DefaultSinks, context);
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ILogger GetLogger<T>()
     {

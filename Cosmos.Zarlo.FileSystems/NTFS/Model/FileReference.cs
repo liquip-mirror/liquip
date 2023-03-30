@@ -10,10 +10,12 @@ namespace Cosmos.Zarlo.FileSystems.NTFS.Model
 
         public FileReference(ulong rawId)
         {
-            FileSequenceNumber = (ushort)(rawId >> 48);     // Get the high-order 16 bites
-            FileId = (uint)(rawId & 0xFFFFFFFFUL);         // Get the low-order 32 bits
+            FileSequenceNumber = (ushort)(rawId >> 48); // Get the high-order 16 bites
+            FileId = (uint)(rawId & 0xFFFFFFFFUL); // Get the low-order 32 bits
 
-            ushort middleSpace = (ushort)((rawId >> 32) & 0xFFFFUL);    // Get the 16 bits in-between the Id and the SequenceNumber
+            ushort
+                middleSpace =
+                    (ushort)((rawId >> 32) & 0xFFFFUL); // Get the 16 bits in-between the Id and the SequenceNumber
             //// Debug.Assert(middleSpace == 0);
 
             RawId = rawId;

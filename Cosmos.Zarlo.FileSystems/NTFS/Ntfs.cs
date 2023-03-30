@@ -34,10 +34,10 @@ namespace Cosmos.Zarlo.FileSystems.NTFS
         private FileRecord[] FileRecords { get; set; }
 
         private ILogger _logger = Log.GetLogger("Ntfs");
-        
+
         public static Ntfs Create(BlockDeviceStream diskStream)
         {
-            var ntfs = new Ntfs {DiskStream = diskStream};
+            var ntfs = new Ntfs { DiskStream = diskStream };
             ntfs.Initialize();
             return ntfs;
         }
@@ -104,12 +104,12 @@ namespace Cosmos.Zarlo.FileSystems.NTFS
             {
                 if (!(att is AttributeList listAttr)) continue;
 
-                if(listAttr.NonResidentFlag == ResidentFlag.NonResident)
+                if (listAttr.NonResidentFlag == ResidentFlag.NonResident)
                     listAttr.ParseAttributeNonResidentBody(this);
 
                 foreach (var listItem in listAttr.Items)
                 {
-                    if(listItem.BaseFile.Equals(record.FileReference) || completedFiles.Contains(listItem.BaseFile))
+                    if (listItem.BaseFile.Equals(record.FileReference) || completedFiles.Contains(listItem.BaseFile))
                         continue;
                     completedFiles.Add(listItem.BaseFile);
 
@@ -158,24 +158,25 @@ namespace Cosmos.Zarlo.FileSystems.NTFS
 
             var fragments = new List<DataFragment>();
             foreach (var attrib in dataAttribs)
-                foreach (var frag in attrib.DataFragments)
-                    fragments.Add(frag);
+            foreach (var frag in attrib.DataFragments)
+                fragments.Add(frag);
 
             var compressionUnitSize = dataAttribs[0].NonResidentHeader.CompressionUnitSize;
             var compressionClusterCount = (ushort)(compressionUnitSize == 0 ? 0 : Math.Pow(2, compressionUnitSize));
             var contentSize = (long)dataAttribs[0].NonResidentHeader.ContentSize;
 
-            return new NtfsDiskStream(DiskStream, false, fragments, BytesPerCluster, compressionClusterCount, contentSize);
+            return new NtfsDiskStream(DiskStream, false, fragments, BytesPerCluster, compressionClusterCount,
+                contentSize);
         }
 
         public NtfsDirectory GetRootDirectory()
         {
-            return (NtfsDirectory) NtfsFileEntry.CreateEntry(this, (uint) MetadataMftFiles.RootDir);
+            return (NtfsDirectory)NtfsFileEntry.CreateEntry(this, (uint)MetadataMftFiles.RootDir);
         }
 
         public void ParseNonResidentAttribute(AttributeIndexAllocation alloc)
         {
-            if(alloc.NonResidentHeader.Fragments.Count > 0)   
+            if (alloc.NonResidentHeader.Fragments.Count > 0)
                 alloc.ParseAttributeNonResidentBody(this);
         }
     }

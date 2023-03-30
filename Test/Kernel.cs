@@ -3,18 +3,21 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Cosmos.Core_Plugs.System;
 using Cosmos.System.Network;
 using Cosmos.System.Network.Config;
 using Cosmos.System.Network.IPv4;
 using Cosmos.System.Network.IPv4.UDP.DHCP;
+using Cosmos.Zarlo.ELF;
 using Cosmos.Zarlo.Net.Web;
+using Cosmos.Zarlo.Threading.Tasks;
+using Org.BouncyCastle.Security;
 using Sys = Cosmos.System;
 
 namespace Test
 {
-    public class Kernel: Sys.Kernel
+    public class Kernel : Sys.Kernel
     {
-
         protected override void BeforeRun()
         {
             Console.Clear();
@@ -23,6 +26,9 @@ namespace Test
         
         protected override void Run()
         {
+    
+            // var invoker = new Invoker(1024);
+            // invoker.CallCode();
             // Console.Write("RDseed.IsSupported: ");
             // Console.WriteLine(Cosmos.Zarlo.RDseed.IsSupported());
             // var rdSeed64 = Cosmos.Zarlo.RDseed.GetRDSeed64();
@@ -44,33 +50,39 @@ namespace Test
             // Console.WriteLine(rdSeed64 != rdSeed64_0);
             // Console.Write("rdSeed32:");
             // Console.WriteLine(rdSeed32 != rdSeed32_0);
-            // // Console.WriteLine(rdSeed16 != rdSeed16_0);
+            //
+            // GC.Collect();
             //
             // var powerManagementInformation = Cosmos.Zarlo.CPUID.PowerManagementInformation;
-            //
             // Console.WriteLine("PowerManagementInformation");
             // Console.WriteLine(powerManagementInformation.DebugString());
             //
-            // var cacheConfiguration = Cosmos.Zarlo.CPUID.CacheConfiguration;
+            // GC.Collect();
             //
+            // var cacheConfiguration = Cosmos.Zarlo.CPUID.CacheConfiguration;
             // Console.WriteLine("CacheConfiguration");
             // Console.WriteLine(cacheConfiguration.DebugString());
             //
-            // var processorFrequencyInformation = Cosmos.Zarlo.CPUID.ProcessorFrequencyInformation;
+            // GC.Collect();
             //
+            // var processorFrequencyInformation = Cosmos.Zarlo.CPUID.ProcessorFrequencyInformation;
             // Console.WriteLine("ProcessorFrequencyInformation");
             // Console.WriteLine(processorFrequencyInformation.DebugString());
+            //
+            // GC.Collect();
+            //
+            // var featureFlags = Cosmos.Zarlo.CPUID.FeatureFlags;
+            // Console.WriteLine("FeatureFlags");
+            // Console.Write("eax0: ");
+            // Console.Write(featureFlags.eax);
+            // Console.Write(" ebx0: ");
+            // Console.Write(featureFlags.ebx);
+            // Console.Write(" ecx0: ");
+            // Console.Write(featureFlags.ecx);
+            // Console.Write(" edx0: ");
+            // Console.Write(featureFlags.edx);
 
-            new Uri("http://google.com");
-            
-            // var wc = new HttpClient();
-            // wc.Get(new Uri("http://google.com"));
-            
             Console.WriteLine("DONE");
-            while (true)
-            {
-            }
-            
         }
     }
 }
