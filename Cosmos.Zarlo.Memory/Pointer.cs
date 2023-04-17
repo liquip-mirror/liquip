@@ -33,6 +33,21 @@ public struct Pointer : IDisposable
 
     /// <summary>
     /// get a pointer to of an object with the given size
+    /// </summary>
+    /// <param name="ptr"></param>
+    /// <param name="size">size in bytes</param>
+    /// <param name="autoCleanUp"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe Pointer MakeFrom(uint* ptr, uint size, bool autoCleanUp)
+    {
+        var p = new Pointer(NativeMemory.Alloc(size), size);
+        Buffer.MemoryCopy(ptr, p.Ptr, p.Size, p.Size);
+        return p;
+    }
+    
+    /// <summary>
+    /// get a pointer to of an object with the given size
     /// auto cleans up
     /// </summary>
     /// <param name="size">size in bytes</param>

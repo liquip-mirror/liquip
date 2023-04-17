@@ -149,7 +149,6 @@ public unsafe class UnmanagedExecutable
                 invoker.Offset =
                     (uint) _finalExecutable + _elf.Symbols[i].Value +
                     _elf.SectionHeaders[_elf.Symbols[i].Shndx].Offset;
-
                 
                 invoker.CallCode();
                 

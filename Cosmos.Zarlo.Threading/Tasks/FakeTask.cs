@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 
 namespace Cosmos.Zarlo.Threading.Tasks;
 
-[System.Runtime.CompilerServices.AsyncMethodBuilder(typeof(FakeTsakMethodBuilder))]
+[System.Runtime.CompilerServices.AsyncMethodBuilder(typeof(FakeTsakMethodBuilder_T<>))]
 public class FakeTask<T> : Task<T>
 {
     private T _result;

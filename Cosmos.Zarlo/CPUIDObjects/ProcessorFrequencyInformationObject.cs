@@ -22,7 +22,7 @@ public class ProcessorFrequencyInformationObject
         int ecx0 = 0;
         int edx0 = 0;
 
-        CPU.ReadCPUID(21, ref eax0, ref ebx0, ref ecx0, ref edx0);
+        CPUID.Raw(21, ref eax0, ref ebx0, ref ecx0, ref edx0);
 
         this.eax0 = eax0;
         this.ebx0 = ebx0;
@@ -37,7 +37,7 @@ public class ProcessorFrequencyInformationObject
         int ecx1 = 0;
         int edx1 = 0;
 
-        CPU.ReadCPUID(22, ref eax1, ref ebx1, ref ecx1, ref edx1);
+        CPUID.Raw(22, ref eax1, ref ebx1, ref ecx1, ref edx1);
 
         this.eax1 = eax1;
         this.ebx1 = ebx1;

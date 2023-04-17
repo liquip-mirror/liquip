@@ -42,7 +42,7 @@ public class CacheObject
         int ecx = id;
         int edx = 0;
 
-        CPU.ReadCPUID(4, ref eax, ref ebx, ref ecx, ref edx);
+        CPUID.Raw(4, ref eax, ref ebx, ref ecx, ref edx);
 
         this.eax = eax;
         this.ebx = ebx;

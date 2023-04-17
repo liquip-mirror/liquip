@@ -17,7 +17,7 @@ public class PowerManagementInformationObject
         int ecx = 0;
         int edx = 0;
 
-        CPU.ReadCPUID(6, ref eax, ref ebx, ref ecx, ref edx);
+        CPUID.Raw(6, ref eax, ref ebx, ref ecx, ref edx);
 
         this.eax = eax;
         this.ebx = ebx;

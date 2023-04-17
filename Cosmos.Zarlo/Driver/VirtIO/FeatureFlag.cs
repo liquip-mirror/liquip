@@ -5,6 +5,14 @@
 namespace Cosmos.Zarlo.Driver.VirtIO;
 
 [Flags]
+public enum GPUDeviceFeatureFlag : byte
+{
+    VIRGL = 1,
+    EDID = 1 << 1
+}
+    
+    
+[Flags]
 public enum DeviceStatusFlag : byte
 {
     ACKNOWLEDGE = 1 ,
@@ -81,4 +89,12 @@ public enum SCSIHostDeviceFeatureFlag : uint
     INOUT = 1,
     HOTPLUG = 1 << 1,
     CHANGE = 1 << 2,
+}
+
+[Flags]
+public enum DescFlags : ushort
+{
+    Next = 1,
+    WriteOnly = 1 << 1,
+    Indirect  = 1 << 2
 }

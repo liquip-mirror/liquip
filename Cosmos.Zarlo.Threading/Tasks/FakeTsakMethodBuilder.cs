@@ -2,8 +2,26 @@ using System.Runtime.CompilerServices;
 
 namespace Cosmos.Zarlo.Threading.Tasks;
 
+public struct FakeStateMachine : IAsyncStateMachine
+{
+    public AsyncTaskMethodBuilder _methodBuilder; 
+
+    public void MoveNext()
+    {
+        // Implementation
+    }
+
+    public void SetStateMachine(IAsyncStateMachine stateMachine)
+    {
+        _methodBuilder.SetStateMachine(stateMachine);
+    }
+}
+
 public class FakeTsakMethodBuilder
 {
+    private IAsyncStateMachine _stateMachine;
+    private Action _moveNextRunner;
+
     public FakeTsakMethodBuilder()
         => Console.WriteLine(".ctor");
 
@@ -37,11 +55,13 @@ public class FakeTsakMethodBuilder
 
     public void SetException(Exception e) { }
 
-    public void SetStateMachine(IAsyncStateMachine stateMachine) { }
+    public void SetStateMachine(IAsyncStateMachine stateMachine) => _stateMachine = stateMachine;
 }
 
 public class FakeTsakMethodBuilder_T<T>
 {
+    private IAsyncStateMachine _stateMachine;
+    private Action _moveNextRunner;
     public FakeTsakMethodBuilder_T()
         => Console.WriteLine(".ctor");
 
@@ -65,7 +85,9 @@ public class FakeTsakMethodBuilder_T<T>
         ref TAwaiter awaiter, ref TStateMachine stateMachine)
         where TAwaiter : INotifyCompletion
         where TStateMachine : IAsyncStateMachine
-    { }
+    { 
+        awaiter.OnCompleted(_moveNextRunner);
+    }
 
     public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(
         ref TAwaiter awaiter, ref TStateMachine stateMachine)
