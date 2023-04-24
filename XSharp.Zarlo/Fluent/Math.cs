@@ -3,8 +3,8 @@ namespace XSharp.Zarlo.Fluent;
 public static class MathDivideEx
 {
     
-        public static FluentXSharp Add(
-        this FluentXSharp me, 
+        public static FluentXSharpX86 Add(
+        this FluentXSharpX86 me, 
         XSRegisters.Register register, 
         uint valueToAdd)
     {
@@ -12,8 +12,8 @@ public static class MathDivideEx
         return me;
     }
 
-    public static FluentXSharp Add(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Add(
+        this FluentXSharpX86 me,
         XSRegisters.Register register,
         uint valueToAdd,
         bool destinationIsIndirect = false)
@@ -22,8 +22,8 @@ public static class MathDivideEx
         return me;
     }
     
-    public static FluentXSharp Add(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Add(
+        this FluentXSharpX86 me,
         XSRegisters.Register register,
         XSRegisters.Register valueToAdd,
         bool destinationIsIndirect = false)
@@ -32,8 +32,8 @@ public static class MathDivideEx
         return me;
     }
     
-    public static FluentXSharp AddWithCarry(
-        this FluentXSharp me,
+    public static FluentXSharpX86 AddWithCarry(
+        this FluentXSharpX86 me,
         string destination,
         XSRegisters.Register source,
         bool destinationIsIndirect = false,
@@ -47,8 +47,8 @@ public static class MathDivideEx
         return me;
     }
 
-    public static FluentXSharp AddWithCarry(
-        this FluentXSharp me,
+    public static FluentXSharpX86 AddWithCarry(
+        this FluentXSharpX86 me,
         string destination,
         uint value,
         bool destinationIsIndirect = false,
@@ -62,8 +62,8 @@ public static class MathDivideEx
         return me;
     }
 
-    public static FluentXSharp AddWithCarry(
-        this FluentXSharp me,
+    public static FluentXSharpX86 AddWithCarry(
+        this FluentXSharpX86 me,
         string destination,
         string source,
         bool destinationIsIndirect = false,
@@ -77,8 +77,8 @@ public static class MathDivideEx
         return me;
     }
 
-    public static FluentXSharp AddWithCarry(
-        this FluentXSharp me,
+    public static FluentXSharpX86 AddWithCarry(
+        this FluentXSharpX86 me,
         XSRegisters.Register destination,
         string sourceLabel,
         bool destinationIsIndirect = false,
@@ -92,8 +92,8 @@ public static class MathDivideEx
         return me;
     }
 
-    public static FluentXSharp AddWithCarry(
-        this FluentXSharp me,
+    public static FluentXSharpX86 AddWithCarry(
+        this FluentXSharpX86 me,
         XSRegisters.Register destination,
         uint value,
         bool destinationIsIndirect = false,
@@ -107,8 +107,8 @@ public static class MathDivideEx
         return me;
     }
 
-    public static FluentXSharp AddWithCarry(
-        this FluentXSharp me,
+    public static FluentXSharpX86 AddWithCarry(
+        this FluentXSharpX86 me,
         XSRegisters.Register destination,
         XSRegisters.Register source,
         bool destinationIsIndirect = false,
@@ -122,8 +122,8 @@ public static class MathDivideEx
     }
     
     
-    public static FluentXSharp Divide(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Divide(
+        this FluentXSharpX86 me,
         uint destinationValue,
         bool isIndirect = false,
         int? displacement = null,
@@ -134,7 +134,7 @@ public static class MathDivideEx
     }
 
     public static void Divide(
-        this FluentXSharp me,
+        this FluentXSharpX86 me,
         XSRegisters.Register register,
         bool isIndirect = false,
         int? displacement = null,
@@ -143,16 +143,16 @@ public static class MathDivideEx
         XS.Divide(register, isIndirect, displacement, size);
     }
 
-    public static FluentXSharp Divide(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Divide(
+        this FluentXSharpX86 me,
         Label label,
         bool isIndirect = false,
         int? displacement = null,
         XSRegisters.RegisterSize size = XSRegisters.RegisterSize.Int32) =>
         me.Divide(label.ToString(), isIndirect, displacement, size);
     
-    public static FluentXSharp Divide(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Divide(
+        this FluentXSharpX86 me,
         string label,
         bool isIndirect = false,
         int? displacement = null,
@@ -162,8 +162,8 @@ public static class MathDivideEx
         return me;
     }
 
-    public static FluentXSharp IntegerDivide(
-        this FluentXSharp me,
+    public static FluentXSharpX86 IntegerDivide(
+        this FluentXSharpX86 me,
         uint destinationValue,
         bool isIndirect = false,
         int? displacement = null,
@@ -173,8 +173,8 @@ public static class MathDivideEx
         return me;
     }
 
-    public static FluentXSharp IntegerDivide(
-        this FluentXSharp me,
+    public static FluentXSharpX86 IntegerDivide(
+        this FluentXSharpX86 me,
         XSRegisters.Register register,
         bool isIndirect = false,
         int? displacement = null,
@@ -184,8 +184,8 @@ public static class MathDivideEx
         return me;
     }
 
-    public static FluentXSharp IntegerDivide(
-        this FluentXSharp me,
+    public static FluentXSharpX86 IntegerDivide(
+        this FluentXSharpX86 me,
         string label,
         bool isIndirect = false,
         int? displacement = null,
@@ -195,8 +195,8 @@ public static class MathDivideEx
         return me;
     }
     
-    public static FluentXSharp IntegerDivide(
-        this FluentXSharp me,
+    public static FluentXSharpX86 IntegerDivide(
+        this FluentXSharpX86 me,
         Label label,
         bool isIndirect = false,
         int? displacement = null,

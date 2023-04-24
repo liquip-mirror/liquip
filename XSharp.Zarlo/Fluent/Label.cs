@@ -10,9 +10,16 @@ public class Label
 
     public static Label Get(string label) => new Label(label);
 
+    public static Label New() => new Label($@"FluentXSharp{Guid.NewGuid()}FluentXSharp");
+
     public override string ToString()
     {
         return _label;
+    }
+
+    public override int GetHashCode()
+    {
+        return _label.GetHashCode();
     }
 
     internal Label(string label)
@@ -36,13 +43,19 @@ public class Label
     {
         XS.Jump(_label);
     }
+
 }
 
 public static class LabelEx
 {
-    public static FluentXSharp Label(this FluentXSharp me, Action<Label> o) => me.Label(Guid.NewGuid().ToString(), o);
+    public static FluentXSharpX86 Label(this FluentXSharpX86 me, Action<Label> o) 
+    {
+        me.Label(out var label);
+        o(label);
+        return me;
+    }
 
-    public static FluentXSharp Label(this FluentXSharp me, string label, Action<Label> o)
+    public static FluentXSharpX86 Label(this FluentXSharpX86 me, string label, Action<Label> o)
     {
         me.Label(label, out var l);
         o(l);
@@ -50,29 +63,43 @@ public static class LabelEx
     }
 
 
-    public static FluentXSharp Label(this FluentXSharp me, out Label o) =>
+    public static FluentXSharpX86 Label(this FluentXSharpX86 me, out Label o) =>
         me.Label($@"FluentXSharp{Guid.NewGuid()}FluentXSharp", out o);
 
-    public static FluentXSharp Label(this FluentXSharp me, string label, out Label o)
+    public static FluentXSharpX86 Label(this FluentXSharpX86 me, string label, out Label o)
     {
-        XS.Label(label);
         o = new Label(label);
-        return me;
-    }
+        if(me.UsedLabels.Contains(o)) throw new Exception(string.Format("label in use {0}", o.ToString()));
+        me.UsedLabels.Add(o);
 
-    public static FluentXSharp Label(this FluentXSharp me, string label)
-    {
         XS.Label(label);
         return me;
     }
 
-    public static FluentXSharp Jump(this FluentXSharp me, Label label, ConditionalTestEnum conditionalTestEnum)
+    public static FluentXSharpX86 Label(this FluentXSharpX86 me, string label)
+    {
+        var o = new Label(label);
+        if(me.UsedLabels.Contains(o)) throw new Exception(string.Format("label in use {0}", o.ToString()));
+        me.UsedLabels.Add(o);
+        XS.Label(label);
+        return me;
+    }
+
+    public static FluentXSharpX86 Label(this FluentXSharpX86 me, Label label)
+    {
+        if(me.UsedLabels.Contains(label)) throw new Exception(string.Format("label in use {0}", label.ToString()));
+        me.UsedLabels.Add(label);
+        XS.Label(label.ToString());
+        return me;
+    }
+
+    public static FluentXSharpX86 Jump(this FluentXSharpX86 me, Label label, ConditionalTestEnum conditionalTestEnum)
     {
         label.Goto(conditionalTestEnum);
         return me;
     }
 
-    public static FluentXSharp Jump(this FluentXSharp me, Label label)
+    public static FluentXSharpX86 Jump(this FluentXSharpX86 me, Label label)
     {
         label.Goto();
         return me;

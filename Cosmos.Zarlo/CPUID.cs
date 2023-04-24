@@ -20,7 +20,7 @@ public class CPUID
     public static void Raw(uint type, uint subType, ref int eax, ref int ebx, ref int ecx, ref int edx)
     {
         var args = ArgumentBuilder.Inline();
-        FluentXSharp.New()
+        FluentXSharp.NewX86()
             .SetPointer(EAX, args.GetArg(nameof(type)))
             .SetPointer(ECX, args.GetArg(nameof(subType)))
             .Cpuid()

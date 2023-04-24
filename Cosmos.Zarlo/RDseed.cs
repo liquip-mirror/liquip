@@ -50,19 +50,20 @@ public class GetRDSeed32Asm : AssemblerMethod
 {
     public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
     {
-        FluentXSharp.New()
+        var done = Label.Get(".done");
+        FluentXSharp.NewX86()
             .Comment("GetRDSeed32")
             .Set(ECX, 100)
             .Label(".retry", out var retry)
             .Group(i =>
             {
                 i.LiteralCode("rdseed eax")
-                    .Jump(Label.Get(".done"), ConditionalTestEnum.Carry)
+                    .Jump(done, ConditionalTestEnum.Carry)
                     .Decrement(ECX)
                     .Jump(retry, ConditionalTestEnum.NotZero)
                     .Jump(retry);
             })
-            .Label(".done")
+            .Label(done)
             .Push(EAX);
     }
 }

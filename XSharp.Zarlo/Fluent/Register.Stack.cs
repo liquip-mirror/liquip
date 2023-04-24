@@ -11,8 +11,8 @@ public static partial class RegisterEx
     /// <param name="displacement"></param>
     /// <param name="size"></param>
     /// <returns></returns>
-    public static FluentXSharp Push(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Push(
+        this FluentXSharpX86 me,
         uint destinationValue,
         bool isIndirect = false,
         int? displacement = null,
@@ -31,8 +31,8 @@ public static partial class RegisterEx
     /// <param name="displacement"></param>
     /// <param name="size"></param>
     /// <returns></returns>
-    public static FluentXSharp Push(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Push(
+        this FluentXSharpX86 me,
         XSRegisters.Register register,
         bool isIndirect = false,
         int? displacement = null,
@@ -51,8 +51,8 @@ public static partial class RegisterEx
     /// <param name="displacement"></param>
     /// <param name="size"></param>
     /// <returns></returns>
-    public static FluentXSharp Push(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Push(
+        this FluentXSharpX86 me,
         string label,
         bool isIndirect = false,
         int? displacement = null,
@@ -68,8 +68,8 @@ public static partial class RegisterEx
     /// <param name="me"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static FluentXSharp Pop(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Pop(
+        this FluentXSharpX86 me,
         XSRegisters.Register value
     )
     {
@@ -82,7 +82,7 @@ public static partial class RegisterEx
     /// </summary>
     /// <param name="me"></param>
     /// <returns></returns>
-    public static FluentXSharp Pushfd(this FluentXSharp me)
+    public static FluentXSharpX86 Pushfd(this FluentXSharpX86 me)
     {
         me.Pushfd();
         return me;
@@ -93,19 +93,19 @@ public static partial class RegisterEx
     /// </summary>
     /// <param name="me"></param>
     /// <returns></returns>
-    public static FluentXSharp Popfd(this FluentXSharp me)
+    public static FluentXSharpX86 Popfd(this FluentXSharpX86 me)
     {
         me.Popfd();
         return me;
     }
     
-    public static FluentXSharp PopAllRegisters(this FluentXSharp me)
+    public static FluentXSharpX86 PopAllRegisters(this FluentXSharpX86 me)
     {
         XS.PopAllRegisters();
         return me;
     }
 
-    public static FluentXSharp PushAllRegisters(this FluentXSharp me)
+    public static FluentXSharpX86 PushAllRegisters(this FluentXSharpX86 me)
     {
         XS.PushAllRegisters();
         return me;

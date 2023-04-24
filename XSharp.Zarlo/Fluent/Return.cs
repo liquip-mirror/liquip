@@ -7,7 +7,7 @@ public static class ReturnEx
     /// </summary>
     /// <param name="me"></param>
     /// <returns></returns>
-    public static FluentXSharp Return(this FluentXSharp me)
+    public static FluentXSharpX86 Return(this FluentXSharpX86 me)
     {
         XS.Return();
         return me;
@@ -19,7 +19,7 @@ public static class ReturnEx
     /// <param name="me"></param>
     /// <param name="aReturnSize"></param>
     /// <returns></returns>
-    public static FluentXSharp Return(this FluentXSharp me, uint aReturnSize)
+    public static FluentXSharpX86 Return(this FluentXSharpX86 me, uint aReturnSize)
     {
         XS.Return(aReturnSize);
         return me;
@@ -30,7 +30,7 @@ public static class ReturnEx
     /// </summary>
     /// <param name="me"></param>
     /// <returns></returns>
-    public static FluentXSharp InterruptReturn(this FluentXSharp me)
+    public static FluentXSharpX86 InterruptReturn(this FluentXSharpX86 me)
     {
         XS.InterruptReturn();
         return me;

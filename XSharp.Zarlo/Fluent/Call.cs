@@ -9,16 +9,16 @@ namespace XSharp.Zarlo.Fluent;
 
 public static class CallEx
 {
-    public static FluentXSharp Call(this FluentXSharp me, Label label) =>
+    public static FluentXSharpX86 Call(this FluentXSharpX86 me, Label label) =>
         me.Call(label.ToString());
 
-    public static FluentXSharp Call(this FluentXSharp me, string target)
+    public static FluentXSharpX86 Call(this FluentXSharpX86 me, string target)
     {
         XS.Call(target);
         return me;
     }
 
-    public static FluentXSharp Call(this FluentXSharp me, XSRegisters.Register32 register)
+    public static FluentXSharpX86 Call(this FluentXSharpX86 me, XSRegisters.Register32 register)
     {
         XS.Call(register);
         return me;

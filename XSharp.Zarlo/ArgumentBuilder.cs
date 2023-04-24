@@ -53,9 +53,9 @@ public class ArgumentBuilder
 
     private readonly Dictionary<string, Type> _typeIndex = new Dictionary<string, Type>();
 
-    public Type? GetType(string name) => 
+    public Type? GetType(string name) =>
         _typeIndex[name];
-    
+
     public void Add<T>(string name, uint? index = null)
     {
         Add(typeof(T), name, index);
@@ -75,7 +75,7 @@ public class ArgumentBuilder
         }
 
         Add(size, name, index);
-        
+
         _typeIndex.Add(name, type);
     }
 

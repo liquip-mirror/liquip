@@ -9,8 +9,8 @@ public static partial class RegisterEx
     /// <param name="destination"></param>
     /// <param name="sourcePlugArgument"></param>
     /// <returns></returns>
-    public static FluentXSharp SetPointer(
-        this FluentXSharp me,
+    public static FluentXSharpX86 SetPointer(
+        this FluentXSharpX86 me,
         XSRegisters.Register destination,
         PlugArgument sourcePlugArgument,
         XSRegisters.RegisterSize? size = null
@@ -20,8 +20,8 @@ public static partial class RegisterEx
         return me;
     }
 
-    public static FluentXSharp SetPointer(
-        this FluentXSharp me,
+    public static FluentXSharpX86 SetPointer(
+        this FluentXSharpX86 me,
         PlugArgument destinationPlugArgument,
         XSRegisters.Register source,
         XSRegisters.RegisterSize? size = null
@@ -44,8 +44,8 @@ public static partial class RegisterEx
     /// <param name="destination"></param>
     /// <param name="plugArgument"></param>
     /// <returns></returns>
-    public static FluentXSharp Set(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Set(
+        this FluentXSharpX86 me,
         XSRegisters.Register destination,
         PlugArgument plugArgument
     )
@@ -66,8 +66,8 @@ public static partial class RegisterEx
     /// <param name="sourceDisplacement"></param>
     /// <param name="size"></param>
     /// <returns></returns>
-    public static FluentXSharp Set(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Set(
+        this FluentXSharpX86 me,
         XSRegisters.Register destination,
         uint value,
         bool destinationIsIndirect = false,
@@ -100,8 +100,8 @@ public static partial class RegisterEx
     /// <param name="sourceDisplacement"></param>
     /// <param name="size"></param>
     /// <returns></returns>
-    public static FluentXSharp Set(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Set(
+        this FluentXSharpX86 me,
         string destination,
         XSRegisters.Register source,
         bool destinationIsIndirect = false,
@@ -127,8 +127,8 @@ public static partial class RegisterEx
     /// <param name="sourceDisplacement"></param>
     /// <param name="size"></param>
     /// <returns></returns>
-    public static FluentXSharp Set(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Set(
+        this FluentXSharpX86 me,
         string destination,
         uint value,
         bool destinationIsIndirect = false,
@@ -154,8 +154,8 @@ public static partial class RegisterEx
     /// <param name="sourceDisplacement"></param>
     /// <param name="size"></param>
     /// <returns></returns>
-    public static FluentXSharp Set(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Set(
+        this FluentXSharpX86 me,
         string destination,
         string source,
         bool destinationIsIndirect = false,
@@ -181,8 +181,8 @@ public static partial class RegisterEx
     /// <param name="sourceDisplacement"></param>
     /// <param name="size"></param>
     /// <returns></returns>
-    public static FluentXSharp Set(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Set(
+        this FluentXSharpX86 me,
         XSRegisters.Register destination,
         string sourceLabel,
         bool destinationIsIndirect = false,
@@ -208,8 +208,8 @@ public static partial class RegisterEx
     /// <param name="sourceDisplacement"></param>
     /// <param name="size"></param>
     /// <returns></returns>
-    public static FluentXSharp Set(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Set(
+        this FluentXSharpX86 me,
         XSRegisters.Register destination,
         XSRegisters.Register source,
         bool destinationIsIndirect = false,
@@ -229,8 +229,8 @@ public static partial class RegisterEx
     /// <param name="me"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static FluentXSharp Increment(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Increment(
+        this FluentXSharpX86 me,
         XSRegisters.Register value)
     {
         XS.Increment(value);
@@ -243,8 +243,8 @@ public static partial class RegisterEx
     /// <param name="me"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static FluentXSharp Decrement(
-        this FluentXSharp me,
+    public static FluentXSharpX86 Decrement(
+        this FluentXSharpX86 me,
         XSRegisters.Register value)
     {
         XS.Decrement(value);

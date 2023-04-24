@@ -2,7 +2,7 @@ namespace XSharp.Zarlo.Fluent.SSE;
 
 public static class MoveEx
 {
-    public static FluentXSharpSSE MoveSS(
+    public static FluentXSharpX86SSE MoveSS(
         this FluentXSharpSSE me,
         XSRegisters.RegisterXMM destination,
         XSRegisters.RegisterXMM source)
@@ -11,7 +11,7 @@ public static class MoveEx
         return me;
     }
 
-    public static FluentXSharpSSE MoveSS(
+    public static FluentXSharpX86SSE MoveSS(
         this FluentXSharpSSE me, 
         XSRegisters.RegisterXMM destination,
         XSRegisters.Register32 source,
@@ -21,7 +21,7 @@ public static class MoveEx
         return me;
     }
 
-    public static FluentXSharpSSE MoveSS(
+    public static FluentXSharpX86SSE MoveSS(
         this FluentXSharpSSE me, 
         XSRegisters.Register32 destination,
         XSRegisters.RegisterXMM source,
@@ -31,7 +31,7 @@ public static class MoveEx
         return me;
     }
 
-    public static FluentXSharpSSE MoveSS(
+    public static FluentXSharpX86SSE MoveSS(
         this FluentXSharpSSE me, 
         XSRegisters.RegisterXMM destination,
         string sourceLabel,
