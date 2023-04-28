@@ -3,9 +3,9 @@ using XSharp.Assembler.x86.SSE;
 
 namespace XSharp.Zarlo.Fluent.SSE;
 
-public class FluentXSharpSSE : FluentXSharp
+public class FluentXSharpX86SSE : FluentXSharpX86
 {
-    public FluentXSharpSSE AddSS(
+    public FluentXSharpX86SSE AddSS(
         XSRegisters.RegisterXMM destination,
         XSRegisters.RegisterXMM source)
     {
@@ -13,7 +13,7 @@ public class FluentXSharpSSE : FluentXSharp
         return this;
     }
 
-    public FluentXSharpSSE MulSS(
+    public FluentXSharpX86SSE MulSS(
         XSRegisters.RegisterXMM destination,
         XSRegisters.RegisterXMM source)
     {
@@ -22,7 +22,7 @@ public class FluentXSharpSSE : FluentXSharp
     }
 
 
-    public FluentXSharpSSE SubSS(
+    public FluentXSharpX86SSE SubSS(
         XSRegisters.RegisterXMM destination,
         XSRegisters.RegisterXMM source)
     {
@@ -30,7 +30,7 @@ public class FluentXSharpSSE : FluentXSharp
         return this;
     }
 
-    public FluentXSharpSSE XorPS(
+    public FluentXSharpX86SSE XorPS(
         XSRegisters.RegisterXMM destination,
         XSRegisters.RegisterXMM source)
     {
@@ -38,7 +38,7 @@ public class FluentXSharpSSE : FluentXSharp
         return this;
     }
 
-    public FluentXSharpSSE CompareSS(
+    public FluentXSharpX86SSE CompareSS(
         XSRegisters.RegisterXMM destination,
         XSRegisters.RegisterXMM source,
         ComparePseudoOpcodes comparision)
@@ -47,7 +47,7 @@ public class FluentXSharpSSE : FluentXSharp
         return this;
       }
 
-      public FluentXSharpSSE ConvertSI2SS(
+      public FluentXSharpX86SSE ConvertSI2SS(
         XSRegisters.RegisterXMM destination,
         XSRegisters.Register32 source,
         bool sourceIsIndirect = false)

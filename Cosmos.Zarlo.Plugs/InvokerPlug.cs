@@ -29,7 +29,7 @@ public class InvokerPlug
     {
         var args = ArgumentBuilder.Inline();
 
-        FluentXSharp.New()
+        FluentXSharp.NewX86()
 
             .Comment("Save State")
             .SetPointer(args.GetArg(nameof(eax)), EAX)

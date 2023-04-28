@@ -1,3 +1,4 @@
+using IL2CPU.API;
 using XSharp.Assembler.x86;
 
 namespace XSharp.Zarlo.Fluent;
@@ -10,7 +11,13 @@ public class Label
 
     public static Label Get(string label) => new Label(label);
 
+
+    public static Label GetFullName(Type type) => new Label(LabelName.GetFullName(type));
+    public static Label GetFullName<T>() => GetFullName(typeof(T));
+
+
     public static Label New() => new Label($@"FluentXSharp{Guid.NewGuid()}FluentXSharp");
+
 
     public override string ToString()
     {

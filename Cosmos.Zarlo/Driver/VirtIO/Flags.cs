@@ -10,12 +10,12 @@ public enum GPUDeviceFeatureFlag : byte
     VIRGL = 1,
     EDID = 1 << 1
 }
-    
-    
+
+
 [Flags]
 public enum DeviceStatusFlag : byte
 {
-    ACKNOWLEDGE = 1 ,
+    ACKNOWLEDGE = 1,
     DRIVER = 2,
     DRIVER_OK = 4,
     FEATURES_OK = 8,
@@ -96,5 +96,27 @@ public enum DescFlags : ushort
 {
     Next = 1,
     WriteOnly = 1 << 1,
-    Indirect  = 1 << 2
+    Indirect = 1 << 2
 }
+
+
+public enum VIRTIO_PCI_CAP_ISR_CFG
+{
+    /* Common configuration */
+    COMMON_CFG = 1,
+    /* Notifications */
+    NOTIFY_CFG = 2,
+    /* ISR Status */
+    ISR_CFG = 3,
+    /* Device specific configuration */
+    DEVICE_CFG = 4,
+    /* PCI configuration access */
+    PCI_CFG = 5,
+    /* Shared memory region */
+    SHARED_MEMORY_CFG = 8,
+    /* Vendor-specific data */
+    VENDOR_CFG = 9
+
+}
+
+

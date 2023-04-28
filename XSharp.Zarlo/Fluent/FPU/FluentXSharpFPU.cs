@@ -1,6 +1,6 @@
 namespace XSharp.Zarlo.Fluent.FPU;
 
-public class FluentXSharpFPU : FluentXSharp
+public class FluentXSharpFPU : FluentXSharpX86
 {
     public FluentXSharpFPU FloatCompareAndSet(XSRegisters.RegisterFPU register)
     {

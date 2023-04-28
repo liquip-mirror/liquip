@@ -12,13 +12,13 @@ public static class MiscEx
         return me;
     }
 
-    public static FluentXSharpX86 Group(this FluentXSharpX86 me, Action<FluentXSharp> content)
+    public static FluentXSharpX86 Group(this FluentXSharpX86 me, Action<FluentXSharpX86> content)
     {
         content(me);
         return me;
     }
 
-    public static FluentXSharpX86 IfDef(this FluentXSharpX86 me, string label, Action<FluentXSharp> content)
+    public static FluentXSharpX86 IfDef(this FluentXSharpX86 me, string label, Action<FluentXSharpX86> content)
     {
         _ = new LiteralAssemblerCode($"%ifdef {label}");
         content(me);
@@ -32,9 +32,9 @@ public static class MiscEx
         return me;
     }
     
-    public static FluentXSharpX86 SSE(this FluentXSharpX86 me, Action<FluentXSharpSSE> content)
+    public static FluentXSharpX86 SSE(this FluentXSharpX86 me, Action<FluentXSharpX86SSE> content)
     {
-        content(new FluentXSharpSSE());
+        content(new FluentXSharpX86SSE());
         return me;
     }
 

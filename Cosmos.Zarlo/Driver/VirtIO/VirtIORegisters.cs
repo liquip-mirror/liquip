@@ -6,14 +6,14 @@ namespace Cosmos.Zarlo.Driver.VirtIO;
 
 public static class VirtIORegisters
 {
-    public const byte DeviceFeatures = 0x00;
-    public const byte GuestFeatures  = 0x04;
-    public const byte QueueAddress   = 0x08;
-    public const byte QueueSize      = 0x0C;
-    public const byte QueueSelect    = 0x0E;
-    public const byte QueueNotify    = 0x10;
-    public const byte DeviceStatus   = 0x12;
-    public const byte ISRStatus      = 0x13;
+    public const int DeviceFeatures = 0x00;
+    public const int GuestFeatures  = 0x04;
+    public const int QueueAddress   = 0x08;
+    public const int QueueSize      = 0x0C;
+    public const int QueueSelect    = 0x0E;
+    public const int QueueNotify    = 0x10;
+    public const int DeviceStatus   = 0x12;
+    public const int ISRStatus      = 0x13;
     
     public static class Network
     {
