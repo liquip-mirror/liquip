@@ -3,7 +3,7 @@ using XSharp.Assembler.x86.SSE;
 
 namespace XSharp.Zarlo.Fluent.SSE;
 
-public class FluentXSharpX86SSE : FluentXSharpX86
+public class FluentXSharpX86SSE
 {
     public FluentXSharpX86SSE AddSS(
         XSRegisters.RegisterXMM destination,
@@ -27,6 +27,7 @@ public class FluentXSharpX86SSE : FluentXSharpX86
         XSRegisters.RegisterXMM source)
     {
         XS.SSE.SubSS(destination, source);
+        
         return this;
     }
 

@@ -51,8 +51,8 @@ public class CacheObject
 
         CacheType = (byte)CPUID.GetBitRange(eax, 0, 4);
         CacheLevel = (byte)CPUID.GetBitRange(eax, 5, 7);
-        SelfInitializing = CPUID.HasFlag(eax, 8);
-        FullyAssociative = CPUID.HasFlag(eax, 9);
+        SelfInitializing = CPUID.HasFlag(ref eax, 8);
+        FullyAssociative = CPUID.HasFlag(ref eax, 9);
 
         ThreadsPerCache = (short)CPUID.GetBitRange(eax, 14, 25);
 
@@ -64,9 +64,9 @@ public class CacheObject
 
         Sets = ecx;
 
-        Write_BackInvalidate = CPUID.HasFlag(edx, 0);
-        InclusiveOfLowerLevels = CPUID.HasFlag(edx, 1);
-        ComplexIndexing = CPUID.HasFlag(edx, 2);
+        Write_BackInvalidate = CPUID.HasFlag(ref edx, 0);
+        InclusiveOfLowerLevels = CPUID.HasFlag(ref edx, 1);
+        ComplexIndexing = CPUID.HasFlag(ref edx, 2);
     }
 
     //eax

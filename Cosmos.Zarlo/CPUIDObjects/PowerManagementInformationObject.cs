@@ -24,18 +24,18 @@ public class PowerManagementInformationObject
         this.ecx = ecx;
         this.edx = edx;
 
-        DTS = CPUID.HasFlag(eax, 0);
-        DA = CPUID.HasFlag(eax, 1);
-        ARAT = CPUID.HasFlag(eax, 2);
-        PLN = CPUID.HasFlag(eax, 4);
-        ECMD = CPUID.HasFlag(eax, 5);
-        PTM = CPUID.HasFlag(eax, 6);
-        HWP = CPUID.HasFlag(eax, 7);
-        HWP_NOT = CPUID.HasFlag(eax, 8);
-        HWP_ACT = CPUID.HasFlag(eax, 9);
-        HWP_EPP = CPUID.HasFlag(eax, 10);
-        HWP_PLR = CPUID.HasFlag(eax, 11);
-        HDC = CPUID.HasFlag(eax, 13);
+        DTS = CPUID.HasFlag(ref eax, 0);
+        DA = CPUID.HasFlag(ref eax, 1);
+        ARAT = CPUID.HasFlag(ref eax, 2);
+        PLN = CPUID.HasFlag(ref eax, 4);
+        ECMD = CPUID.HasFlag(ref eax, 5);
+        PTM = CPUID.HasFlag(ref eax, 6);
+        HWP = CPUID.HasFlag(ref eax, 7);
+        HWP_NOT = CPUID.HasFlag(ref eax, 8);
+        HWP_ACT = CPUID.HasFlag(ref eax, 9);
+        HWP_EPP = CPUID.HasFlag(ref eax, 10);
+        HWP_PLR = CPUID.HasFlag(ref eax, 11);
+        HDC = CPUID.HasFlag(ref eax, 13);
 
         ProgrammableDigitalThermalSensorInterruptThresholds = (byte)CPUID.GetBitRange(ebx, 0, 3);
     }

@@ -56,12 +56,50 @@ public enum NetDeviceFeatureFlag : uint
 [Flags]
 public enum BlockDeviceFeatureFlag : uint
 {
+    
+    // Maximum size of any single segment is in size_max.
     SIZE_MAX = 1,
-    SEG_MAX = 1 << 1,
+    
+    // Maximum number of segments in a request is in seg_max.
+    SEG_MAX = 1 << 2,
+    
+    // Disk-style geometry specified in geometry
     GEOMETRY = 1 << 4,
+    
+    // Device is read-only.
     RO = 1 << 5,
+    
+    // Block size of disk is in blk_size.
     BLK_SIZE = 1 << 6,
+    
+    // Cache flush command support.
+    FLUSH = 1 << 9,
+    
+    // Device exports information on optimal I/O alignment.
     TOPOLOGY = 1 << 10,
+    
+    // Device can toggle its cache between writeback and writethrough modes.
+    CONFIG_WCE = 1 << 11,
+    
+    // Device supports multiqueue.
+    MQ = 1 << 12,
+    
+    //Device can support discard command, maximum discard sectors size in
+    //max_discard_sectors and maximum discard segment number in max_discard_seg.
+    DISCARD = 1 << 13,  
+    
+    // Device can support write zeroes command, maximum write zeroes
+    // sectors size in max_write_zeroes_sectors and maximum write zeroes segment number in max_write_-
+    // zeroes_seg.
+    WRITE_ZEROES = 1 << 14, 
+    
+    // Device supports providing storage lifetime information.
+    LIFETIME = 1 << 15,
+    
+    // Device supports secure erase command, maximum erase sectors
+    // count in max_secure_erase_sectors and maximum erase segment number in max_secure_erase_seg.
+    SECURE_ERASE = 1 << 16,
+
 }
 
 [Flags]

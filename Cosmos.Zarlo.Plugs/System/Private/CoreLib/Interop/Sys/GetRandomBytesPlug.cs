@@ -1,6 +1,6 @@
 using IL2CPU.API.Attribs;
 
-namespace Cosmos.Zarlo.Plugs.Interop.Sys;
+namespace Cosmos.Zarlo.Plugs.System.Private.CoreLib.Interop.Sys;
 
 [Plug("Interop, System.Private.CoreLib")]
 public class GetRandomBytesPlug

@@ -16,6 +16,7 @@ namespace Cosmos.Zarlo;
 
 public class CPUID
 {
+
     [Inline]
     public static void Raw(uint type, uint subType, ref int eax, ref int ebx, ref int ecx, ref int edx)
     {
@@ -40,11 +41,15 @@ public class CPUID
         CPU.ReadCPUID(type, ref eax, ref ebx, ref ecx, ref edx);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool HasFlag(Int32 data, int flagOffset) => HasFlag((UInt32)data, flagOffset);
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public static bool HasFlag(Int32 data, int flagOffset)
+    // {
+    //     var i = (UInt32)data;
+    //     return HasFlag(ref i, flagOffset);
+    // }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool HasFlag(UInt32 data, int flagOffset)
+    public static bool HasFlag(ref Int32 data, int flagOffset)
     {
         if (flagOffset is < 0 or > 31) throw new ArgumentOutOfRangeException("flagOffset");
         var flag = data >> flagOffset;

@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 
 namespace Cosmos.Zarlo.Threading.Tasks;
 
-[System.Runtime.CompilerServices.AsyncMethodBuilder(typeof(FakeTsakMethodBuilder_T<>))]
+[AsyncMethodBuilder(typeof(FakeTsakMethodBuilder_T<>))]
 public class FakeTask<T> : Task<T>
 {
     private T _result;
@@ -45,7 +45,7 @@ public class FakeAwaiter<T> : Awaiter<T>, INotifyCompletion
     public override T GetResult() => _result;
 }
 
-[System.Runtime.CompilerServices.AsyncMethodBuilder(typeof(FakeTsakMethodBuilder))]
+[AsyncMethodBuilder(typeof(FakeTsakMethodBuilder))]
 public class FakeTask : Task
 {
     public FakeTask()

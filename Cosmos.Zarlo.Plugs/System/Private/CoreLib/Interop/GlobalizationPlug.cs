@@ -1,6 +1,6 @@
 using IL2CPU.API.Attribs;
 
-namespace Cosmos.Zarlo.Plugs.Interop;
+namespace Cosmos.Zarlo.Plugs.System.Private.CoreLib.Interop;
 
 [Plug("Interop+Globalization, System.Private.CoreLib")]
 public class GlobalizationPlug

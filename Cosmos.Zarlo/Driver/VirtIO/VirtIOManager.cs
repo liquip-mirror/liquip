@@ -22,28 +22,35 @@ public unsafe static class VirtIOManager
         {
             if (device.VendorID == 0x1AF4)
             {
+                BaseVirtIODevice d = new BaseVirtIODevice(device); // = new BaseVirtIODevice(device);
+                output.Add(d);
                 try
                 {
-                    // device.Claimed = true;
-                    BaseVirtIODevice d; // = new BaseVirtIODevice(device);
+                    
                     switch ((DeviceTypeVirtIO)device.DeviceID)
                     {
-                        // case(DeviceTypeVirtIO.EntropySource):
-                        //     d = new Entropy.EntropyVirtIO(device);
-                        //     break;
-                        // case(DeviceTypeVirtIO.GPU_device):
-                        //     d = new GPU.GPUVirtIODevice(device);
-                        //     break;
+                        case(DeviceTypeVirtIO.EntropySource):
+                            d = new Entropy.EntropyVirtIO(device);
+                            break;
+                        case(DeviceTypeVirtIO.GPU_device):
+                            
+                            d = new GPU.GPUVirtIODevice(device);
+                            break;
                         default:
                             d = new BaseVirtIODevice(device);
                             break;
                     }
-                    output.Add(d);
+                    
+                    device.Claimed = true;
+
                     d.Initialization();
+                    
                 }
                 catch (Exception ex)
                 {
-                    // device.Claimed = false;
+                    Console.WriteLine(ex.Message);
+
+                    device.Claimed = false;
                 }
 
             }

@@ -11,6 +11,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Cosmos.Zarlo\Cosmos.Zarlo.csproj" />
+        <ProjectReference Include="..\Cosmos.Zarlo.Threading\Cosmos.Zarlo.Threading.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="build\**" Pack="True" PackagePath="build\" />

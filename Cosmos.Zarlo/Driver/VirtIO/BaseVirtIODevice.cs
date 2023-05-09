@@ -1,3 +1,4 @@
+using System.Text;
 using Cosmos.Core;
 using Cosmos.HAL;
 using Cosmos.Zarlo.Logger.Interfaces;
@@ -134,11 +135,11 @@ public static class DeviceTypeVirtIOEx {
             return "BluetoothDevice";
            case DeviceTypeVirtIO.GPIO_device:
             return "GPIO_device";
-           case DeviceTypeVirtIO.RDMA_device            :
+           case DeviceTypeVirtIO.RDMA_device:
             return "RDMA_device";
 
             default:
-                return "unknown";
+                return "unknown" + (int)me;
         }
     }
 
@@ -150,12 +151,24 @@ public class BaseVirtIODevice : PCIDevice
 
     public const int DeviceIDOffset = 4160;
 
+
     public DeviceTypeVirtIO DeviceType => (DeviceTypeVirtIO)DeviceID;
 
     private void Check()
     {
         if (VendorID != 0x1AF4) throw new NotSupportedException(string.Format("wrong VendorID {0}", VendorID));
     }
+
+    public int BAR()
+    {
+        for (int i = 0; i < BaseAddressBar.Length; i++)
+        {
+            if (BaseAddressBar[i].BaseAddress != 0)
+                return (int)BaseAddressBar[i].BaseAddress;
+        }
+        return 0;
+    }
+
     public BaseVirtIODevice(uint bus, uint slot, uint function) : base(bus, slot, function)
     {
 
@@ -170,31 +183,29 @@ public class BaseVirtIODevice : PCIDevice
 
     public virtual void Initialization() 
     {
-
-        // _logger.Info("tryed to Initialization BaseVirtIODevice");
-
+        Console.WriteLine(DebugInfo());
     }
 
 
     public void SetDeviceStatusFlag(DeviceStatusFlag flag)
     {
-        this.WriteRegister8(VirtIORegisters.DeviceStatus, (byte)flag);
+        IOPort.Write8(BAR() + VirtIORegisters.DeviceStatus, (byte)flag);
     }
 
     public DeviceStatusFlag GetDeviceStatusFlag()
     {
-        return (DeviceStatusFlag)ReadRegister8(VirtIORegisters.DeviceStatus);
+        return (DeviceStatusFlag)IOPort.Read8(BAR() + VirtIORegisters.DeviceStatus);
     }
 
 
     public void SetDeviceFeaturesFlag(byte flag)
     {
-        IOPort.Write8((int)BAR0 + VirtIORegisters.DeviceFeatures, flag);
+        IOPort.Write8(BAR() + VirtIORegisters.DeviceFeatures, flag);
     }
 
     public byte GetDeviceFeaturesFlag()
     {
-        return IOPort.Read8((int)BAR0 + VirtIORegisters.DeviceFeatures);
+        return IOPort.Read8(BAR() + VirtIORegisters.DeviceFeatures);
     }
 
 
@@ -204,7 +215,8 @@ public class BaseVirtIODevice : PCIDevice
     /// </summary>
     public void ACKNOWLEDGE()
     {
-        var flags = GetDeviceStatusFlag() | DeviceStatusFlag.ACKNOWLEDGE;
+        Console.WriteLine($@"ACKNOWLEDGE");
+        var flags = DeviceStatusFlag.ACKNOWLEDGE;
         SetDeviceStatusFlag(flags);
     }
 
@@ -213,7 +225,7 @@ public class BaseVirtIODevice : PCIDevice
     /// </summary>
     public void FEATURES_OK()
     {
-        var flags = GetDeviceStatusFlag() | DeviceStatusFlag.FEATURES_OK;
+        var flags = DeviceStatusFlag.FEATURES_OK;
         SetDeviceStatusFlag(flags);
     }
 
@@ -227,8 +239,7 @@ public class BaseVirtIODevice : PCIDevice
 
     bool IsBitSet(byte b, int pos)
     {
-        return true;
-        // return (b & (1 << pos)) != 0;
+        return (b & (1 << pos)) != 0;
     }
 
     /// <summary>
@@ -266,10 +277,35 @@ public class BaseVirtIODevice : PCIDevice
         virtqueues[index] = buffer;
         unsafe
         {
-            IOPort.Write32((int)BAR0 + 0x0E, index);
-            IOPort.Write32((int)BAR0 + 0x08, GCImplementation.GetSafePointer(buffer)); 
+            IOPort.Write32(BAR() + 0x0E, index);
+            IOPort.Write32(BAR() + 0x08, GCImplementation.GetSafePointer(buffer)); 
         }
+        
     }
+
+    protected uint BARAddress(int i) {
+        if (BaseAddressBar.Length <= i)
+        {
+            return 0;
+        }
+        return BaseAddressBar[i].BaseAddress;
+    }
+
+    public string DebugInfo()
+    {
+
+        var sb = new StringBuilder();
+
+        sb.AppendLine($@"BAR: {BAR()}, BAR0: {BAR0}, bus: {bus}, slot: {slot} ");
+        sb.AppendLine($@"DeviceID: {DeviceID}, DeviceType: {DeviceType.AsString()}");
+        sb.AppendLine($@"BAR1: {BARAddress(1)}, BAR2: {BARAddress(2)}, BAR3: {BARAddress(3)}, BAR4: {BARAddress(4)}, BAR5: {BARAddress(5)},");
+        sb.AppendLine($@"BAR6: {BARAddress(6)}, BAR7: {BARAddress(7)}, BAR8: {BARAddress(8)}, BAR9: {BARAddress(9)}, BAR10: {BARAddress(10)},");
+        sb.AppendLine($@"BAR11: {BARAddress(11)}, BAR12: {BARAddress(12)}, BAR13: {BARAddress(13)}, BAR14: {BARAddress(14)}, BAR15: {BARAddress(15)}");
+
+        return sb.ToString();
+
+    }
+    
 
 }
 
