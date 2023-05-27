@@ -8,6 +8,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>Cosmos.Zarlo</Title>
         <Authors>Zarlo</Authors>
+        
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
