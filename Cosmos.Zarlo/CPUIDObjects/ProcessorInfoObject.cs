@@ -12,6 +12,7 @@ public class ProcessorInfoObject
 
     public ProcessorInfoObject()
     {
+        Console.WriteLine("LOADING ProcessorInfoObject");
         int eax = 0;
         int ebx = 0;
         int ecx = 0;
@@ -23,6 +24,7 @@ public class ProcessorInfoObject
         this.ebx = ebx;
         this.ecx = ecx;
         this.edx = edx;
+        Console.WriteLine("eax");
         SteppingID = (byte)CPUID.GetBitRange(eax, 0, 3);
         Model      = (byte)CPUID.GetBitRange(eax, 4, 7);
         FamilyID   = (byte)CPUID.GetBitRange(eax, 8, 11);
@@ -30,12 +32,13 @@ public class ProcessorInfoObject
         ExtendedModelID  = (byte)CPUID.GetBitRange(eax, 16, 19);
         ExtendedFamilyID = (byte)CPUID.GetBitRange(eax, 20, 27);
         
+        Console.WriteLine("ebx");
         BrandID  = (byte)CPUID.GetBitRange(ebx, 0, 7);
         CLFLUSH  = (byte)CPUID.GetBitRange(ebx, 8, 15);
         CPUcount = (byte)CPUID.GetBitRange(ebx, 16, 23);
         APICID   = (byte)CPUID.GetBitRange(ebx, 24, 31);
         
-        
+        Console.WriteLine("ecx");
         SSE3    = CPUID.HasFlag(ref ecx, 0);
         PCLMUL  = CPUID.HasFlag(ref ecx, 1);
         DTES64  = CPUID.HasFlag(ref ecx, 2);
@@ -68,6 +71,7 @@ public class ProcessorInfoObject
         RDRAND  = CPUID.HasFlag(ref ecx, 30);
         HV      = CPUID.HasFlag(ref ecx, 31);
         
+        Console.WriteLine("edx");
         FPU   = CPUID.HasFlag(ref edx, 0);
         VME   = CPUID.HasFlag(ref edx, 1);
         DE    = CPUID.HasFlag(ref edx, 2);
@@ -98,6 +102,9 @@ public class ProcessorInfoObject
         TM1   = CPUID.HasFlag(ref edx, 29);
         IA_64 = CPUID.HasFlag(ref edx, 30);
         PBE   = CPUID.HasFlag(ref edx, 31);
+
+        Console.WriteLine("DONE ProcessorInfoObject");
+
     }
 
     // eax
@@ -182,14 +189,19 @@ public class ProcessorInfoObject
     public string DebugString()
     {
         StringBuilder sb = new StringBuilder();
+
         sb.Append("eax0: ");
-        sb.Append(eax);
-        sb.Append(" ebx0: ");
-        sb.Append(ebx);
-        sb.Append(" ecx0: ");
-        sb.Append(ecx);
-        sb.Append(" edx0: ");
-        sb.Append(edx);
+        sb.Append($@"{eax}");
+        sb.AppendLine();
+        sb.Append("ebx0: ");
+        sb.Append($@"{ebx}");
+        sb.AppendLine();
+        // Console.WriteLine("2");
+        // sb.Append("ecx0: ");
+        // sb.Append($@"{ecx}");
+        // sb.AppendLine();
+        sb.Append("edx0: ");
+        sb.Append($@"{edx}");
         return sb.ToString();
     }
 }

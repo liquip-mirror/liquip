@@ -32,6 +32,8 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+[Oo]utput/
+
 
 !.devcontainer/bin
 # Visual Studio 2015/2017 cache/options directory
@@ -398,3 +400,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+
+cosmos/

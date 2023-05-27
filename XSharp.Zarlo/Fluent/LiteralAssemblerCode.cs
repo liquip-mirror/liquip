@@ -4,19 +4,16 @@ namespace XSharp.Zarlo.Fluent;
 
 public static class LiteralAssemblerCodeEx
 {
-    public static FluentXSharpX86 LiteralCode(this FluentXSharpX86 me, string line)
+
+    public static FluentXSharpX86 LiteralCode(this FluentXSharpX86 me, string line, params object?[] args)
     {
-        _ = new LiteralAssemblerCode(line);
+        _ = new LiteralAssemblerCode(string.Format(line, args.ToArray()));
         return me;
     }
 
-    public static FluentXSharpX86 LiteralCode(this FluentXSharpX86 me, params string[] lines)
+    public static FluentXSharpX86 LiteralCode(this FluentXSharpX86 me, string line)
     {
-        foreach (var line in lines)
-        {
-            _ = new LiteralAssemblerCode(line);
-        }
-
+        _ = new LiteralAssemblerCode(line);
         return me;
     }
 

@@ -66,20 +66,20 @@ public class ProcessorFrequencyInformationObject
         StringBuilder sb = new StringBuilder();
         sb.Append("eax0: ");
         sb.Append(eax0);
-        sb.Append(" ebx0: ");
+        sb.Append("ebx0: ");
         sb.Append(ebx0);
-        sb.Append(" ecx0: ");
+        sb.Append("ecx0: ");
         sb.Append(ecx0);
-        sb.Append(" edx0: ");
+        sb.Append("edx0: ");
         sb.Append(edx0);
 
-        sb.Append(" eax1: ");
+        sb.Append("eax1: ");
         sb.Append(eax1);
-        sb.Append(" ebx1: ");
+        sb.Append("ebx1: ");
         sb.Append(ebx1);
-        sb.Append(" ecx1: ");
+        sb.Append("ecx1: ");
         sb.Append(ecx1);
-        sb.Append(" edx1: ");
+        sb.Append("edx1: ");
         sb.Append(edx1);
 
         return sb.ToString();

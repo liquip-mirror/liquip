@@ -4,6 +4,7 @@ using System;
 using System.Runtime.CompilerServices;
 using Cosmos.Core;
 using Cosmos.Zarlo.CPUIDObjects;
+using Cosmos.Zarlo.Utils;
 using IL2CPU.API;
 using XSharp;
 using XSharp.Zarlo;
@@ -52,8 +53,9 @@ public class CPUID
     public static bool HasFlag(ref Int32 data, int flagOffset)
     {
         if (flagOffset is < 0 or > 31) throw new ArgumentOutOfRangeException("flagOffset");
-        var flag = data >> flagOffset;
-        return (flag & 1) == 1;
+        return Has.Flag((uint)data, (byte)flagOffset);
+        // var flag = data >> flagOffset;
+        // return (flag & 1) == 1;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -31,13 +31,13 @@ public class InvokerPlug
 
         FluentXSharp.NewX86()
 
-            .Comment("Save State")
-            .SetPointer(args.GetArg(nameof(eax)), EAX)
-            .SetPointer(args.GetArg(nameof(ebx)), EBX)
-            .SetPointer(args.GetArg(nameof(ecx)), ECX)
-            .SetPointer(args.GetArg(nameof(edx)), EDX)
-            .SetPointer(args.GetArg(nameof(edi)), EDI)
-            .Comment("DONE Save State")
+            .Comment("Load State")
+            .SetPointer(EAX, args.GetArg(nameof(eax)))
+            .SetPointer(EBX, args.GetArg(nameof(ebx)))
+            .SetPointer(ECX, args.GetArg(nameof(ecx)))
+            .SetPointer(EDX, args.GetArg(nameof(edx)))
+            .SetPointer(EDI, args.GetArg(nameof(edi)))
+            
             .SetPointer(args.GetArg(nameof(esp)), ESP)
             .SetPointer(args.GetArg(nameof(ebp)), EBP)
             .SetPointer(EAX, args.GetArg(nameof(stack)))
@@ -50,12 +50,6 @@ public class InvokerPlug
             .SetPointer(args.GetArg(nameof(ecx)), EAX, XSRegisters.RegisterSize.Int32)
             .SetPointer(ESP, args.GetArg(nameof(esp)))
             .SetPointer(EBP, args.GetArg(nameof(ebp)))
-            .Comment("Load State")
-            .SetPointer(EAX, args.GetArg(nameof(eax)))
-            .SetPointer(EBX, args.GetArg(nameof(ebx)))
-            .SetPointer(ECX, args.GetArg(nameof(ecx)))
-            .SetPointer(EDX, args.GetArg(nameof(edx)))
-            .SetPointer(EDI, args.GetArg(nameof(edi)))
             .Comment("DONE Load State")
             ;
 

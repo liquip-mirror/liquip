@@ -39,13 +39,54 @@ public struct Pointer : IDisposable
     /// <param name="autoCleanUp"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe Pointer MakeFrom(uint* ptr, uint size, bool autoCleanUp)
+    public static unsafe Pointer MakeFrom<T>(T data, bool autoCleanUp) where T : struct
     {
-        var p = new Pointer(NativeMemory.Alloc(size), size);
-        Buffer.MemoryCopy(ptr, p.Ptr, p.Size, p.Size);
+        var p = new Pointer(GCImplementation.GetPointer(data), (uint)sizeof(T), autoCleanUp);
         return p;
     }
     
+    /// <summary>
+    /// get a pointer to of an object with the given size
+    /// </summary>
+    /// <param name="ptr"></param>
+    /// <param name="size">size in bytes</param>
+    /// <param name="autoCleanUp"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe Pointer MakeFrom(uint* ptr, uint size, bool autoCleanUp = true) 
+    {
+        var p = new Pointer(ptr, size, autoCleanUp);
+        return p;
+    }
+
+    /// <summary>
+    /// get a pointer to of an object with the given size
+    /// </summary>
+    /// <param name="ptr"></param>
+    /// <param name="size">size in bytes</param>
+    /// <param name="autoCleanUp"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe Pointer MakeFrom(uint ptr, uint size, bool autoCleanUp = true) 
+    {
+        var p = new Pointer((uint*)ptr, size, autoCleanUp);
+        return p;
+    }
+
+    /// <summary>
+    /// get a pointer to of an object with the given size
+    /// </summary>
+    /// <param name="ptr"></param>
+    /// <param name="size">size in bytes</param>
+    /// <param name="autoCleanUp"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe Pointer MakeFrom(byte[] data, bool autoCleanUp = true) 
+    {
+        var p = new Pointer(data, autoCleanUp);
+        return p;
+    }
+
     /// <summary>
     /// get a pointer to of an object with the given size
     /// auto cleans up
@@ -55,7 +96,7 @@ public struct Pointer : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe Pointer New(uint size) => New(size, true);
 
-    public unsafe Pointer(byte[] buffer, bool autoCleanUp = true)
+    private unsafe Pointer(byte[] buffer, bool autoCleanUp = true)
     {
         fixed (byte* ptr = buffer)
             Ptr = (uint*)ptr;
@@ -65,11 +106,11 @@ public struct Pointer : IDisposable
         
     }
     
-    public unsafe Pointer(void* ptr, uint size, bool autoCleanUp = true) : this((uint*)ptr, size, autoCleanUp)
+    private unsafe Pointer(void* ptr, uint size, bool autoCleanUp = true) : this((uint*)ptr, size, autoCleanUp)
     {
     }
 
-    public unsafe Pointer(uint* ptr, uint size, bool autoCleanUp = true)
+    private unsafe Pointer(uint* ptr, uint size, bool autoCleanUp = true)
     {
         _autoCleanUp = autoCleanUp;
         Ptr = ptr;
@@ -133,7 +174,19 @@ public struct Pointer : IDisposable
         }
     }
 
+    public uint GetAddress()
+    { 
+        unsafe
+        {
+            return (uint)Ptr;
+        }
+
+    }
+
+    public static unsafe explicit operator byte*(Pointer ptr) => (byte*)ptr.Ptr;
     public static unsafe explicit operator uint*(Pointer ptr) => ptr.Ptr;
+    public static unsafe explicit operator ushort*(Pointer ptr) => (ushort*)ptr.Ptr;
+    public static unsafe explicit operator ulong*(Pointer ptr) => (ulong*)ptr.Ptr;
 
     public void Free()
     {

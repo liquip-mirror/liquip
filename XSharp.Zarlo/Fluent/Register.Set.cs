@@ -16,7 +16,7 @@ public static partial class RegisterEx
         XSRegisters.RegisterSize? size = null
     )
     {
-        XS.Set(destination, XSRegisters.EBP, sourceDisplacement: sourcePlugArgument.Offset, sourceIsIndirect: true, size: size);
+        XS.Set(destination, PlugArgument.Register, sourceDisplacement: sourcePlugArgument.Offset, sourceIsIndirect: true, size: size);
         return me;
     }
 
@@ -28,7 +28,7 @@ public static partial class RegisterEx
     )
     {
         XS.Set(
-            XSRegisters.EBP, 
+            PlugArgument.Register, 
             source,
             destinationDisplacement: destinationPlugArgument.Offset, 
             destinationIsIndirect: true,
@@ -50,7 +50,7 @@ public static partial class RegisterEx
         PlugArgument plugArgument
     )
     {
-        XS.Set(destination, XSRegisters.EBP, sourceDisplacement: plugArgument.Offset);
+        XS.Set(destination, PlugArgument.Register, sourceDisplacement: plugArgument.Offset);
         return me;
     }
 

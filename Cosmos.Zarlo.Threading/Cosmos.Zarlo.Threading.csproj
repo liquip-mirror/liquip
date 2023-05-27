@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -12,5 +14,6 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Cosmos.Zarlo.Core\Cosmos.Zarlo.Core.csproj" />
+        <ProjectReference Include="..\Cosmos.Zarlo.Threading.Mutex\Cosmos.Zarlo.Threading.Mutex.csproj" />
     </ItemGroup>
 </Project>

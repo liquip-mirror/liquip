@@ -48,15 +48,10 @@ public static unsafe class ProcessContext
     public static Context m_CurrentContext;
     public static Context m_ContextList;
 
+    public static Cosmos.Zarlo.Threading.Mutex ContextListMutex = new Mutex();
+
     public static Context GetContext(uint tid)
     {
-        /*for(int i = 0; i < m_ContextList.Count; i++)
-        {
-            if(m_ContextList[i].tid == tid)
-            {
-                return m_ContextList[i];
-            }
-        }*/
         Context ctx = m_ContextList;
         while (ctx.next != null)
         {
@@ -101,6 +96,45 @@ public static unsafe class ProcessContext
         return stack;
     }
 
+    public static LinkedList<Context> GetProcess()
+    {
+
+        var current = m_ContextList;
+
+        var output = new LinkedList<Context>();
+
+        while (current != null)
+        {
+            if (current.type != Context_Type.THREAD && current.state != Thread_State.DEAD)
+            {
+                output.AddLast(current);
+            }
+            current = current.next;
+        }
+
+        return output;
+    }
+
+
+    public static uint Count()
+    {
+
+        var current = m_ContextList;
+
+        uint output = 0;
+
+        while (current != null)
+        {
+            if (current.state != Thread_State.DEAD)
+            {
+                output++;
+            }
+            current = current.next;
+        }
+
+        return output;
+    }
+
     public static uint StartContext(string name, ThreadStart entry, Context_Type type)
     {
         Context context = new Context();
@@ -119,12 +153,14 @@ public static unsafe class ProcessContext
         {
             context.parent = m_CurrentContext.tid;
         }
+        ContextListMutex.Lock();
         Context ctx = m_ContextList;
         while (ctx.next != null)
         {
             ctx = ctx.next;
         }
         ctx.next = context;
+        ContextListMutex.Unlock();
         return context.tid;
     }
 
@@ -147,12 +183,14 @@ public static unsafe class ProcessContext
         {
             context.parent = m_CurrentContext.tid;
         }
+        ContextListMutex.Lock();
         Context ctx = m_ContextList;
         while (ctx.next != null)
         {
             ctx = ctx.next;
         }
         ctx.next = context;
+        ContextListMutex.Unlock();
         return context.tid;
     }
 }

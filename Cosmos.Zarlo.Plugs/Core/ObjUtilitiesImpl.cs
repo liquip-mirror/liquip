@@ -32,7 +32,7 @@ public class ObjUtilitiesGetEntry : AssemblerMethod
 {
     public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
     {
-        //XS.Set(XSRegisters.EAX, LabelName.Get(CPUUpdateIDTAsm.GetMethodDef(typeof(Cosmos.Zarlo.Threading.Core.Processing.ProcessorScheduler).Assembly, typeof(Cosmos.Zarlo.Threading.Core.Processing.ProcessorScheduler).FullName, "EntryPoint", true)));
+        XS.Set(XSRegisters.EAX, LabelName.Get(CPUUpdateIDTAsm.GetMethodDef(typeof(Cosmos.Zarlo.Threading.Core.Processing.ProcessorScheduler).Assembly, typeof(Cosmos.Zarlo.Threading.Core.Processing.ProcessorScheduler).FullName, "EntryPoint", true)));
         XS.Push(XSRegisters.EAX);
     }
 }

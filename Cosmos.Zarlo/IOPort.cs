@@ -71,5 +71,5 @@ public class OIOPort
     public void Read32(uint[] aData) => PORT.Read32(_port, aData);
 
     /// <summary>Wait for the previous IO read/write to complete.</summary>
-    public void Wait() => PORT.Write8(128, (byte)34);
+    public void Wait() => PORT.Wait();
 }

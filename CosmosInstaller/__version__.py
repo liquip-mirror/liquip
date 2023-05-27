@@ -1,0 +1,7 @@
+__title__ = 'cosmos-installer'
+__description__ = 'installs cosmos based on a config file'
+__version__ = '0.2.0'
+__author__ = 'zarlo'
+__author_email__ = 'cosmos@zarlo.dev'
+__license__ = 'MIT'
+__url__ = 'https://gitlab.com/zarlo/cosmos.zarlo'

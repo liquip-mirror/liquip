@@ -1,0 +1,28 @@
+{
+    "repos": [
+        {
+            "name": "Cosmos",
+            "uri": "https://github.com/zarlo/Cosmos.git",
+            "branch": "packages",
+            "commit": null
+        },
+        {
+            "name": "IL2CPU",
+            "uri": "https://github.com/CosmosOS/IL2CPU.git",
+            "branch": "master",
+            "commit": null
+        },
+        {
+            "name": "XSharp",
+            "uri": "https://github.com/CosmosOS/XSharp.git",
+            "branch": "master",
+            "commit": null
+        },
+        {
+            "name": "Common",
+            "uri": "https://github.com/CosmosOS/Common.git",
+            "branch": "master",
+            "commit": null
+        }
+    ]
+}

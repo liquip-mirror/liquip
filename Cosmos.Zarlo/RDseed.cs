@@ -57,11 +57,15 @@ public class GetRDSeed32Asm : AssemblerMethod
             .Label(".retry", out var retry)
             .Group(i =>
             {
-                i.LiteralCode("rdseed eax")
-                    .Jump(done, ConditionalTestEnum.Carry)
-                    .Decrement(ECX)
-                    .Jump(retry, ConditionalTestEnum.NotZero)
-                    .Jump(retry);
+                i
+                .LiteralCode($@"rdseed {EAX.Name}")
+                .Jump(done, ConditionalTestEnum.Carry)
+                .Decrement(ECX)
+                .Jump(retry, ConditionalTestEnum.NotZero)
+                
+                // return 0
+                .Set(EAX, 0)
+                .Push(EAX);
             })
             .Label(done)
             .Push(EAX);

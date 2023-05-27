@@ -25,11 +25,6 @@ public class EntropyVirtIO : BaseVirtIODevice
         Check();
     }
 
-    public void GetEntropy(ref Pointer pointer)
-    {
-        var buffer = new VirtQDesc(pointer, DescFlags.WriteOnly);
-        SetVirtqueueBuffer(0, ref buffer);
-    }
 
     public override void Initialization()
     {

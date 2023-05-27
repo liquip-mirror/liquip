@@ -1,7 +1,7 @@
-namespace Cosmos.Zarlo.Driver.VirtIO.GPU;
+namespace Cosmos.Zarlo.Driver.VirtIO.GPU.Struct;
 
 
-public enum GpuCmd
+public enum GpuCmd: int
 {
     GET_DISPLAY_INFO = 0x0100,
     RESOURCE_CREATE_2D,
@@ -32,7 +32,8 @@ public enum GpuCmd
     RESP_ERR_INVALID_PARAMETER
 }
 
-enum GpuFormats {
+public enum GpuFormats: int
+{
     B8G8R8A8_UNORM = 1,
     B8G8R8X8_UNORM = 2,
     A8R8G8B8_UNORM = 3,

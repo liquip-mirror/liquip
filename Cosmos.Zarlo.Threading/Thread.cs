@@ -1,3 +1,5 @@
+using Cosmos.Zarlo.Threading.Core.Processing;
+
 namespace Cosmos.Zarlo.Threading;
 
 
@@ -24,7 +26,10 @@ public class Thread
     }
 
 
-    public uint ThreadID;
+    public static Thread Current => new Thread(ProcessContext.m_CurrentContext.tid);
+
+
+    public readonly uint ThreadID;
     private Core.Processing.ProcessContext.Context Data;
 
     public Thread(uint threadID)
@@ -68,6 +73,7 @@ public class Thread
 
     public static void Sleep(int ms)
     {
+        if(Core.Processing.ProcessContext.m_CurrentContext == null) return;
         Core.Processing.ProcessContext.m_CurrentContext.arg = ms;
         Core.Processing.ProcessContext.m_CurrentContext.state = Core.Processing.ProcessContext.Thread_State.WAITING_SLEEP;
         while (Core.Processing.ProcessContext.m_CurrentContext.state == Core.Processing.ProcessContext.Thread_State.WAITING_SLEEP) 

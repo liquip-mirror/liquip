@@ -203,5 +203,126 @@ public static class MathDivideEx
         XSRegisters.RegisterSize size = XSRegisters.RegisterSize.Int32)
         => me.IntegerDivide(label.ToString(), isIndirect, displacement, size);
         
+
+    public static FluentXSharpX86 ShiftLeft(this FluentXSharpX86 me, XSRegisters.Register destination, byte bitCount)
+    {
+        XS.ShiftLeft(destination, bitCount);
+        return me;
+    }
+
+    public static FluentXSharpX86 ShiftLeft(this FluentXSharpX86 me, XSRegisters.Register destination, XSRegisters.Register8 bitCount, bool destinationIsIndirect = false, XSRegisters.RegisterSize size = XSRegisters.RegisterSize.Int32)
+    {
+        XS.ShiftLeft(destination, bitCount, destinationIsIndirect, size);
+        return me;
+    }
     
+
+    public static FluentXSharpX86 Or(
+        this FluentXSharpX86 me, 
+        string destination, 
+        XSRegisters.Register source, 
+        bool destinationIsIndirect = false, 
+        int? destinationDisplacement = null, 
+        bool sourceIsIndirect = false, 
+        int? sourceDisplacement = null, 
+        XSRegisters.RegisterSize? size = null)
+    {
+        XS.Or(destination, source, destinationIsIndirect, destinationDisplacement, sourceIsIndirect, sourceDisplacement, size);
+        return me;
+    }
+
+    public static FluentXSharpX86 Or(
+        this FluentXSharpX86 me, 
+        PlugArgument destination, 
+        UInt32 value, 
+        bool sourceIsIndirect = false, 
+        int? sourceDisplacement = null, 
+        XSRegisters.RegisterSize size = XSRegisters.RegisterSize.Int32)
+    {
+        XS.Or(PlugArgument.Register, value, true, destination.Offset, sourceIsIndirect, sourceDisplacement, size);
+        return me;
+    }
+
+    public static FluentXSharpX86 Or(
+        this FluentXSharpX86 me, 
+        string destination, 
+        UInt32 value, 
+        bool destinationIsIndirect = false, 
+        int? destinationDisplacement = null, 
+        bool sourceIsIndirect = false, 
+        int? sourceDisplacement = null, 
+        XSRegisters.RegisterSize size = XSRegisters.RegisterSize.Int32)
+    {
+        XS.Or(destination, value, destinationIsIndirect, destinationDisplacement, sourceIsIndirect, sourceDisplacement, size);
+        return me;
+    }
+
+    public static FluentXSharpX86 Or(
+        this FluentXSharpX86 me, 
+        string destination, 
+        string source, 
+        bool destinationIsIndirect = false, 
+        int? destinationDisplacement = null, 
+        bool sourceIsIndirect = false, 
+        int? sourceDisplacement = null, 
+        XSRegisters.RegisterSize size = XSRegisters.RegisterSize.Int32)
+    {
+        XS.Or(destination, source, destinationIsIndirect, destinationDisplacement, sourceIsIndirect, sourceDisplacement, size);
+        return me;
+    }
+
+    public static FluentXSharpX86 Or(
+        this FluentXSharpX86 me, 
+        XSRegisters.Register destination, 
+        Label sourceLabel, 
+        bool destinationIsIndirect = false, 
+        int? destinationDisplacement = null, 
+        bool sourceIsIndirect = false, 
+        int? sourceDisplacement = null, 
+        XSRegisters.RegisterSize? size = null) => 
+        
+        me.Or(destination, sourceLabel.ToString(), destinationIsIndirect, destinationDisplacement, sourceIsIndirect, sourceDisplacement, size);
+
+
+    public static FluentXSharpX86 Or(
+        this FluentXSharpX86 me, 
+        XSRegisters.Register destination, 
+        string sourceLabel, 
+        bool destinationIsIndirect = false, 
+        int? destinationDisplacement = null, 
+        bool sourceIsIndirect = false, 
+        int? sourceDisplacement = null, 
+        XSRegisters.RegisterSize? size = null)
+    {
+        XS.Or(destination, sourceLabel, destinationIsIndirect, destinationDisplacement, sourceIsIndirect, sourceDisplacement, size);
+        return me;
+    }
+
+    public static FluentXSharpX86 Or(
+        this FluentXSharpX86 me, 
+        XSRegisters.Register destination, 
+        uint value, 
+        bool destinationIsIndirect = false, 
+        int? destinationDisplacement = null, 
+        bool sourceIsIndirect = false, 
+        int? sourceDisplacement = null, 
+        XSRegisters.RegisterSize? size = null)
+    {
+        XS.Or(destination, value, destinationIsIndirect, destinationDisplacement, sourceIsIndirect, sourceDisplacement, size);
+        return me;
+    }
+
+    public static FluentXSharpX86 Or(
+        this FluentXSharpX86 me, 
+        XSRegisters.Register destination, 
+        XSRegisters.Register source, 
+        bool destinationIsIndirect = false, 
+        int? destinationDisplacement = null, 
+        bool sourceIsIndirect = false, 
+        int? sourceDisplacement = null)
+    {
+        XS.Or(destination, source, destinationIsIndirect, destinationDisplacement, sourceIsIndirect, sourceDisplacement);
+        return me;
+    }
+
 }

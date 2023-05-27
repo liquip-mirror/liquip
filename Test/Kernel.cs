@@ -1,21 +1,14 @@
 ﻿// ReSharper disable InconsistentNaming
 
 using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading;
-using Cosmos.Core_Plugs.System;
-using Cosmos.HAL;
-using Cosmos.System.Network;
-using Cosmos.System.Network.Config;
-using Cosmos.System.Network.IPv4;
-using Cosmos.System.Network.IPv4.UDP.DHCP;
+using Cosmos.Core;
+using Cosmos.Core.Memory;
 using Cosmos.Zarlo;
 using Cosmos.Zarlo.Driver.VirtIO;
-using Cosmos.Zarlo.ELF;
-using Cosmos.Zarlo.Threading.Tasks;
-using Org.BouncyCastle.Security;
+using Cosmos.Zarlo.Threading;
+using Cosmos.Zarlo.Threading.Core.Processing;
+
 using Sys = Cosmos.System;
 
 namespace Test;
@@ -23,15 +16,20 @@ namespace Test;
 public class Kernel : Sys.Kernel
 {
 
-    protected virtual void OnBoot()
+    protected override void OnBoot()
     {
         base.OnBoot();
-        Cosmos.Zarlo.Threading.Core.Processing.ProcessorScheduler.Initialize();
-        var i = false;
-        if (i)
+        
+        ProcessorScheduler.Initialize();
+
+    }
+
+    public void runGC()
+    { 
+        while (true)
         {
-            Cosmos.Zarlo.Threading.Core.Processing.ProcessorScheduler.SwitchTask();
-            Cosmos.Zarlo.Threading.Core.Processing.ProcessorScheduler.EntryPoint();
+            Cosmos.Zarlo.Threading.Thread.Sleep(1000);
+            // Heap.Collect();
         }
     }
 
@@ -39,42 +37,25 @@ public class Kernel : Sys.Kernel
     {
         Console.Clear();
         Console.WriteLine("Cosmos.Zarlo Test");
+
     }
 
     protected override void Run()
     {
 
+        var devices = VirtIOManager.GetDevices();
 
-        // Console.WriteLine(CPUID.FeatureFlags.DebugString());
-
-        Console.WriteLine(CPUID.PowerManagementInformation.DebugString());
-
-        Console.WriteLine(CPUID.CacheConfiguration.DebugString());
-
-
-        Console.WriteLine("DONE");
-
-        while (true) { }
-
-    }
-
-
-    public static string IntToString(int value)
-    {
-        char[] baseChars = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                         'A', 'B', 'C', 'D', 'E', 'F'};
-        string result = string.Empty;
-        int targetBase = baseChars.Length;
-
-        do
+        foreach (var item in devices)
         {
-            result = baseChars[value % targetBase] + result;
-            value = value / targetBase;
+            Console.WriteLine(item.DebugInfo());
         }
-        while (value > 0);
 
-        return result;
+        while (true)
+        {
+        }
+
     }
+
 
 }
 

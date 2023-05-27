@@ -32,6 +32,11 @@ public class CPUUpdateIDTAsm : AssemblerMethod
         return null;
     }
 
+    public static MethodBase GetMethodDef(Type aType, string aMethodName)
+    {
+        return GetMethodDef(aType.Assembly, aType.FullName, aMethodName, true);
+    }
+
     private static MethodBase GetInterruptHandler(byte aInterrupt)
     {
         return GetMethodDef(typeof(Cosmos.Core.INTs).Assembly, typeof(Cosmos.Core.INTs).FullName
@@ -115,7 +120,13 @@ public class CPUUpdateIDTAsm : AssemblerMethod
             }
             else
             {
-                var StackContext = "static_field__Cosmos_Zarlo_Core_ZINTs_mStackContext";
+                
+                var StackContext = LabelName.GetStaticFieldName(typeof(Cosmos.Zarlo.Core.ZINTs), nameof(Cosmos.Zarlo.Core.ZINTs.mStackContext));
+                var SwitchTaskMethod = GetMethodDef(
+                    typeof(Cosmos.Zarlo.Threading.Core.Processing.ProcessorScheduler),
+                    nameof(Cosmos.Zarlo.Threading.Core.Processing.ProcessorScheduler.SwitchTask)
+                );
+                var SwitchTask = LabelName.Get(SwitchTaskMethod);
                 new LiteralAssemblerCode("pushad");
                 new LiteralAssemblerCode("mov eax, ds");
                 new LiteralAssemblerCode("push eax");
@@ -131,9 +142,9 @@ public class CPUUpdateIDTAsm : AssemblerMethod
                 new LiteralAssemblerCode("mov fs, ax");
                 new LiteralAssemblerCode("mov gs, ax");
                 new LiteralAssemblerCode("mov eax, esp");
-                XS.Set("static_field__Cosmos_Zarlo_Core_ZINTs_mStackContext", EAX, destinationIsIndirect: true);
-                XS.Call(LabelName.Get(GetMethodDef(typeof(Cosmos.Zarlo.Threading.Core.Processing.ProcessorScheduler).Assembly, typeof(Cosmos.Zarlo.Threading.Core.Processing.ProcessorScheduler).FullName, "SwitchTask", true)));
-                XS.Set(EAX, "static_field__Cosmos_Zarlo_Core_ZINTs_mStackContext", sourceIsIndirect: true);
+                XS.Set(StackContext, EAX, destinationIsIndirect: true);
+                XS.Call(SwitchTask);
+                XS.Set(EAX, StackContext, sourceIsIndirect: true);
                 new LiteralAssemblerCode("mov esp, eax");
                 new LiteralAssemblerCode("pop eax");
                 new LiteralAssemblerCode("mov gs, eax");

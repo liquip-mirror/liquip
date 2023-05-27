@@ -56,7 +56,7 @@ public class PointerStream: Stream
     
     public override void Write(byte[] buffer, int offset, int count)
     {
-        BufferUtils.MemoryCopy(new Pointer(buffer), Pointer, (uint)Position, (uint)(count - offset));
+        BufferUtils.MemoryCopy(Pointer.MakeFrom(buffer), Pointer, (uint)Position, (uint)(count - offset));
     }
     
 }

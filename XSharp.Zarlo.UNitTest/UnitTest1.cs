@@ -1,6 +1,7 @@
 using IL2CPU.API;
+using NUnit.Framework;
 
-namespace XSharp.Zarlo.Test;
+namespace XSharp.Zarlo.UNitTest;
 
 public class Tests
 {

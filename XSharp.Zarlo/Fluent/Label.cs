@@ -1,4 +1,5 @@
 using IL2CPU.API;
+using IL2CPU.API.Attribs;
 using XSharp.Assembler.x86;
 
 namespace XSharp.Zarlo.Fluent;
@@ -10,6 +11,7 @@ public class Label
     public bool IsScoped => _label.StartsWith('.');
 
     public static Label Get(string label) => new Label(label);
+    public static Label Get(AsmMarker.Type label) => new Label(AsmMarker.Labels[label]);
 
 
     public static Label GetFullName(Type type) => new Label(LabelName.GetFullName(type));

@@ -1,5 +1,6 @@
 using Cosmos.Core;
 using Cosmos.Zarlo.Core;
+using IL2CPU.API.Attribs;
 using static Cosmos.Zarlo.Threading.Core.Processing.ProcessContext;
 
 namespace Cosmos.Zarlo.Threading.Core.Processing;
@@ -9,6 +10,15 @@ public static unsafe class ProcessorScheduler
 {
     public static void Initialize()
     {
+
+
+        var i = false;
+        if (i)
+        {
+            ProcessorScheduler.SwitchTask();
+            ProcessorScheduler.EntryPoint();
+        }
+
         var context = new ProcessContext.Context();
         context.type = ProcessContext.Context_Type.PROCESS;
         context.tid = ProcessContext.m_NextCID++;
@@ -33,19 +43,26 @@ public static unsafe class ProcessorScheduler
         IOPort.Write8(0xA1, 0x00);
     }
 
+    [ForceInclude]
     public static void EntryPoint()
     {
         ProcessContext.m_CurrentContext.entry?.Invoke();
         ProcessContext.m_CurrentContext.paramentry?.Invoke(ProcessContext.m_CurrentContext.param);
         ProcessContext.m_CurrentContext.state = ProcessContext.Thread_State.DEAD;
-        while (true) { } // remove from thread pool later
+        while (true) {
+        } // remove from thread pool later
     }
 
     public static int interruptCount;
 
+    [ForceInclude]
     public static void SwitchTask()
     {
+
+        if(!Cosmos.HAL.Global.InterruptsEnabled) return;
+
         interruptCount++;
+        // Console.WriteLine("SwitchTask {0}", interruptCount);
         if (ProcessContext.m_CurrentContext != null)
         {
             ProcessContext.Context ctx = ProcessContext.m_ContextList;
@@ -132,6 +149,7 @@ public static unsafe class ProcessorScheduler
 
     public static void CleanUp()
     {
+        ContextListMutex.Lock();
         Context current = ProcessContext.m_ContextList;
         Context last = null;
         while (current != null)
@@ -158,6 +176,7 @@ public static unsafe class ProcessorScheduler
             
             
         }
+        ContextListMutex.Unlock();
     }
 
 }

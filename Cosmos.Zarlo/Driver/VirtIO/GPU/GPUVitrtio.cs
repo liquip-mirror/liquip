@@ -1,5 +1,6 @@
 using Cosmos.Core;
 using Cosmos.HAL;
+using Cosmos.Zarlo.Driver.VirtIO.GPU.Struct;
 using Cosmos.Zarlo.Memory;
 
 namespace Cosmos.Zarlo.Driver.VirtIO.GPU;
@@ -52,15 +53,54 @@ public class GPUVirtIODevice: BaseVirtIODevice
         Check();
     }
 
-    public void SendCommand(uint index, ref Pointer command)
-    { 
+
+
+    public void SendCursorMove(uint scanoutId, uint x, uint y)
+    {
+        var command = new GpuUpdateCursor() {
+            Header = new() { 
+                Type = GpuCmd.MOVE_CURSOR
+            },
+            Pos = new GpuCursorPos() { 
+                ScanoutId = scanoutId,
+                X = x,
+                Y = y
+            }
+        };
+        SendCommand(CursorQueue, ref command, DescFlags.WriteOnly);
 
     }
 
-    public void SendCursorUpdate(uint x, uint y)
-    { 
+    private int _resourceId = 0;
 
-        
+    public Resource2d Create2dResource(
+        GpuFormats format,
+        int width,
+        int height
+    )
+    {
+        var id = _resourceId;
+        var command = new GpuResourceCreate2d()
+        {
+            Header = new()
+            {
+                Type = GpuCmd.RESOURCE_CREATE_2D
+            },
+            ResourceId = id,
+            Format = format,
+            Width = width,
+            Height = height
+        };
+        SendCommand(ControlQueue, ref command, DescFlags.WriteOnly);
+
+        return new Resource2d()
+        {
+            Id = id,
+            Format = format,
+            Width = width,
+            Height = height
+
+        };
 
     }
 

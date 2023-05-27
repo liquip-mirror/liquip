@@ -142,4 +142,12 @@ public class ArgumentBuilder
     {
         return $@"[esp + {Get(name)}]";
     }
+
+    public void PrintComment()
+    { 
+        foreach (var item in _index)
+        {
+            XS.LiteralCode($@"; {GetOffset(item.Name)}");
+        }
+    }
 }
