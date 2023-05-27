@@ -1,14 +1,15 @@
 #!/bin/env python3
 
 import ctypes, os
+
 try:
     is_admin = os.getuid() == 0
 except AttributeError:
     is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
 
-if is_admin:
-    print("DO NOT RUN AS ADMIN/ROOT")
-    exit(1)
+# if is_admin:
+#     print("DO NOT RUN AS ADMIN/ROOT")
+#     exit(1)
 
 
 import json, io, os
@@ -98,7 +99,7 @@ print(os_name)
 if os_name == "linux":
     os.system("make build")
     os.system("make publish")
-    os.system("sudo make install")
+    os.system("{0} make install".format("" if is_admin else "sudo"))
     os.system("make nuget-install")
 elif os_name == "darwin":
     print("not supported")
