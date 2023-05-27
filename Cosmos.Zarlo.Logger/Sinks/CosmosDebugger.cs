@@ -20,9 +20,9 @@ public class CosmosDebugger : ISink
     [Conditional("COSMOSDEBUG")]
     void DoRaw(string context, LogLevel logLevel, string message, params object[] data)
     {
-        var logger = new Cosmos.Debug.Kernel.Debugger("logger", context);
+        // var logger = new Cosmos.Debug.Kernel.Debugger("logger", context);
 
-        logger.SendInternal(string.Format(message, data.ToArray()));
+        // logger.SendInternal(string.Format(message, data.ToArray()));
         // should we clean up the logger here or cache it?
     }
 
