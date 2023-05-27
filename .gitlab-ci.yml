@@ -17,40 +17,54 @@ XSharp-deploy:
   script:
     - apt-get update && apt-get -y install build-essential python3
     - make install-cosmos
-    - ./CICD/build_and_push.sh ./XSharp.Zarlo
+    - ./CICD/build_and_push_nuget.sh ./XSharp.Zarlo
 
 Plugs:
   stage: deploy
   script:
     - apt-get update && apt-get -y install build-essential python3
     - make install-cosmos
-    - ./CICD/build_and_push.sh ./Cosmos.Zarlo.Plugs
+    - ./CICD/build_and_push_nuget.sh ./Cosmos.Zarlo.Plugs
 
 Zarlo:
   stage: deploy
   script:
     - apt-get update && apt-get -y install build-essential python3
     - make install-cosmos
-    - ./CICD/build_and_push.sh ./Cosmos.Zarlo
+    - ./CICD/build_and_push_nuget.sh ./Cosmos.Zarlo
 
 Logger:
   stage: deploy
   script:
     - apt-get update && apt-get -y install build-essential python3
     - make install-cosmos
-    - ./CICD/build_and_push.sh ./Cosmos.Zarlo.Logger
+    - ./CICD/build_and_push_nuget.sh ./Cosmos.Zarlo.Logger
 
 Memory:
   stage: deploy
   script:
     - apt-get update && apt-get -y install build-essential python3
     - make install-cosmos
-    - ./CICD/build_and_push.sh ./Cosmos.Zarlo.Memory
+    - ./CICD/build_and_push_nuget.sh ./Cosmos.Zarlo.Memory
+
+Threading:
+  stage: deploy
+  script:
+    - apt-get update && apt-get -y install build-essential python3
+    - make install-cosmos
+    - ./CICD/build_and_push_nuget.sh ./Cosmos.Zarlo.Threading
+
+Threading.Mutex:
+  stage: deploy
+  script:
+    - apt-get update && apt-get -y install build-essential python3
+    - make install-cosmos
+    - ./CICD/build_and_push_nuget.sh ./Cosmos.Zarlo.Threading.Mutex
 
 FileSystems:
   stage: deploy
   script:
     - apt-get update && apt-get -y install build-essential python3
     - make install-cosmos
-    - ./CICD/build_and_push.sh ./Cosmos.Zarlo.FileSystems
+    - ./CICD/build_and_push_nuget.sh ./Cosmos.Zarlo.FileSystems
 
