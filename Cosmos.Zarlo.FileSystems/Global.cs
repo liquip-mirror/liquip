@@ -6,5 +6,5 @@ namespace Cosmos.Zarlo.FileSystems;
 
 public class Global
 {
-    public static readonly Debugger mFileSystemDebugger = DebuggerFactory.CreateDebugger("System", "FileSystemCustom");
+    public static readonly Debugger mFileSystemDebugger = DebuggerFactory.CreateDebugger("System");
 }
