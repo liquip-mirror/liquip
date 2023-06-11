@@ -4,10 +4,10 @@ using System;
 using System.Threading;
 using Cosmos.Core;
 using Cosmos.Core.Memory;
-using Cosmos.Zarlo;
-using Cosmos.Zarlo.Driver.VirtIO;
-using Cosmos.Zarlo.Threading;
-using Cosmos.Zarlo.Threading.Core.Processing;
+using Zarlo.Cosmos;
+using Zarlo.Cosmos.Driver.VirtIO;
+using Zarlo.Cosmos.Threading;
+using Zarlo.Cosmos.Threading.Core.Processing;
 
 using Sys = Cosmos.System;
 
@@ -21,6 +21,20 @@ public class Kernel : Sys.Kernel
         base.OnBoot();
         
         ProcessorScheduler.Initialize();
+        var a = false;
+        if (a)
+        { 
+            int eax = 0;
+            int ebx = 0; 
+            int ecx = 0; 
+            int edx = 0;
+            CPUID.Raw(1, 1,
+                ref eax,
+                ref ebx,
+                ref ecx,
+                ref edx
+            );
+        }
 
     }
 
@@ -28,7 +42,7 @@ public class Kernel : Sys.Kernel
     { 
         while (true)
         {
-            Cosmos.Zarlo.Threading.Thread.Sleep(1000);
+            Zarlo.Cosmos.Threading.Thread.Sleep(1000);
             // Heap.Collect();
         }
     }
@@ -36,7 +50,7 @@ public class Kernel : Sys.Kernel
     protected override void BeforeRun()
     {
         Console.Clear();
-        Console.WriteLine("Cosmos.Zarlo Test");
+        Console.WriteLine("Zarlo.Cosmos Test");
 
     }
 

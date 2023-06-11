@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\Cosmos.Zarlo.Memory\Cosmos.Zarlo.Memory.csproj" />
-    <ProjectReference Include="..\Cosmos.Zarlo\Cosmos.Zarlo.csproj" />
+    <ProjectReference Include="..\Zarlo.Cosmos.Memory\Zarlo.Cosmos.Memory.csproj" />
+    <ProjectReference Include="..\Zarlo.Cosmos\Zarlo.Cosmos.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>

@@ -1,4 +1,4 @@
-# Cosmos.Zarlo
+# Zarlo.Cosmos
 
 ## run this to install cosmos
 

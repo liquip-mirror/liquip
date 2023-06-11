@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmos.Zarlo.Limine", "Cosmos.Zarlo.Limine\Cosmos.Zarlo.Limine.csproj", "{AB2929DD-C8EB-4693-A022-666988D68CE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zarlo.Cosmos.Limine", "Zarlo.Cosmos.Limine\Zarlo.Cosmos.Limine.csproj", "{AB2929DD-C8EB-4693-A022-666988D68CE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmos.Zarlo.FileSystems", "Cosmos.Zarlo.FileSystems\Cosmos.Zarlo.FileSystems.csproj", "{DCEADC0D-743C-44A4-893A-8C99DF17B192}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zarlo.Cosmos.FileSystems", "Zarlo.Cosmos.FileSystems\Zarlo.Cosmos.FileSystems.csproj", "{DCEADC0D-743C-44A4-893A-8C99DF17B192}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmos.Zarlo", "Cosmos.Zarlo\Cosmos.Zarlo.csproj", "{9E7C63F5-0159-460B-8643-101287ACC07B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zarlo.Cosmos", "Zarlo.Cosmos\Zarlo.Cosmos.csproj", "{9E7C63F5-0159-460B-8643-101287ACC07B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{89B3756A-6F5B-4021-A371-C1ACBA38D51C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmos.Zarlo.Plugs", "Cosmos.Zarlo.Plugs\Cosmos.Zarlo.Plugs.csproj", "{3A7368D9-CA9B-4AF4-A316-5B10ECAA61B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zarlo.Cosmos.Plugs", "Zarlo.Cosmos.Plugs\Zarlo.Cosmos.Plugs.csproj", "{3A7368D9-CA9B-4AF4-A316-5B10ECAA61B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmos.Zarlo.Logger", "Cosmos.Zarlo.Logger\Cosmos.Zarlo.Logger.csproj", "{3DF4A038-9836-4512-8E31-41679C2012FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zarlo.Cosmos.Logger", "Zarlo.Cosmos.Logger\Zarlo.Cosmos.Logger.csproj", "{3DF4A038-9836-4512-8E31-41679C2012FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmos.Zarlo.Threading", "Cosmos.Zarlo.Threading\Cosmos.Zarlo.Threading.csproj", "{7EF3CDDF-AB97-47DD-81F8-04B3A3417EAA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zarlo.Cosmos.Threading", "Zarlo.Cosmos.Threading\Zarlo.Cosmos.Threading.csproj", "{7EF3CDDF-AB97-47DD-81F8-04B3A3417EAA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Threading", "Threading", "{39F38B3E-0858-49E3-A230-129D7685C47C}"
 EndProject
@@ -23,23 +23,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cosmos", "Cosmos", "{B6F3D3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XSharp", "XSharp", "{11E93476-37F9-4899-9674-3FA87EC6321D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XSharp.Zarlo", "XSharp.Zarlo\XSharp.Zarlo.csproj", "{1EC5E9CA-4805-4E62-9B67-CFDA6307048D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zarlo.XSharp", "Zarlo.XSharp\Zarlo.XSharp.csproj", "{1EC5E9CA-4805-4E62-9B67-CFDA6307048D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmos.Zarlo.Memory", "Cosmos.Zarlo.Memory\Cosmos.Zarlo.Memory.csproj", "{C19E5B39-8B1C-48E0-9A37-4D6C45DFE723}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zarlo.Cosmos.Memory", "Zarlo.Cosmos.Memory\Zarlo.Cosmos.Memory.csproj", "{C19E5B39-8B1C-48E0-9A37-4D6C45DFE723}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmos.Zarlo.Core", "Cosmos.Zarlo.Core\Cosmos.Zarlo.Core.csproj", "{CBB3C8B0-6162-4EE9-8B6D-8002EA4E3502}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zarlo.Cosmos.Core", "Zarlo.Cosmos.Core\Zarlo.Cosmos.Core.csproj", "{CBB3C8B0-6162-4EE9-8B6D-8002EA4E3502}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{E099E089-C7FC-47C3-A4C6-AE91DF3EF032}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlugMaker", "PlugMaker\PlugMaker.csproj", "{143CBC2D-E3F3-4268-A16E-FD5D07DF5CE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmos.Zarlo.Threading.Mutex", "Cosmos.Zarlo.Threading.Mutex\Cosmos.Zarlo.Threading.Mutex.csproj", "{52E2120B-E135-4438-BDC3-5AE5312326DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zarlo.Cosmos.Threading.Mutex", "Zarlo.Cosmos.Threading.Mutex\Zarlo.Cosmos.Threading.Mutex.csproj", "{52E2120B-E135-4438-BDC3-5AE5312326DD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{14CA906F-0E37-4380-BC23-37D6EF4DF2F8}"
 	ProjectSection(SolutionItems) = preProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XSharp.Zarlo.Test", "XSharp.Zarlo.UNitTest\XSharp.Zarlo.UNitTest.csproj", "{1CAAF454-5FCD-44E7-AD74-7D842FE5DD6A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zarlo.XSharp.Test", "Zarlo.XSharp.UNitTest\Zarlo.XSharp.UNitTest.csproj", "{1CAAF454-5FCD-44E7-AD74-7D842FE5DD6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zarlo.Cosmos.Threading.Plugs", "Zarlo.Cosmos.Threading.Plugs\Zarlo.Cosmos.Threading.Plugs.csproj", "{9C9B5FD9-C1ED-4672-B3DD-65706D0DA39B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -102,8 +104,13 @@ Global
 		{1CAAF454-5FCD-44E7-AD74-7D842FE5DD6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CAAF454-5FCD-44E7-AD74-7D842FE5DD6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CAAF454-5FCD-44E7-AD74-7D842FE5DD6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C9B5FD9-C1ED-4672-B3DD-65706D0DA39B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C9B5FD9-C1ED-4672-B3DD-65706D0DA39B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C9B5FD9-C1ED-4672-B3DD-65706D0DA39B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C9B5FD9-C1ED-4672-B3DD-65706D0DA39B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{9C9B5FD9-C1ED-4672-B3DD-65706D0DA39B} = {39F38B3E-0858-49E3-A230-129D7685C47C}
 		{1CAAF454-5FCD-44E7-AD74-7D842FE5DD6A} = {14CA906F-0E37-4380-BC23-37D6EF4DF2F8}
 		{89B3756A-6F5B-4021-A371-C1ACBA38D51C} = {14CA906F-0E37-4380-BC23-37D6EF4DF2F8}
 		{52E2120B-E135-4438-BDC3-5AE5312326DD} = {39F38B3E-0858-49E3-A230-129D7685C47C}

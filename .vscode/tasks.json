@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/XSharp.Zarlo.Test/XSharp.Zarlo.Test.csproj",
+                "${workspaceFolder}/Zarlo.XSharp.Test/Zarlo.XSharp.Test.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/XSharp.Zarlo.Test/XSharp.Zarlo.Test.csproj",
+                "${workspaceFolder}/Zarlo.XSharp.Test/Zarlo.XSharp.Test.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/XSharp.Zarlo.Test/XSharp.Zarlo.Test.csproj"
+                "${workspaceFolder}/Zarlo.XSharp.Test/Zarlo.XSharp.Test.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\Cosmos.Zarlo\Cosmos.Zarlo.csproj" />
+    <ProjectReference Include="..\Zarlo.Cosmos\Zarlo.Cosmos.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>

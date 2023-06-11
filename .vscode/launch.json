@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/XSharp.Zarlo.Test/bin/Debug/net6.0/XSharp.Zarlo.Test.dll",
+            "program": "${workspaceFolder}/Zarlo.XSharp.Test/bin/Debug/net6.0/Zarlo.XSharp.Test.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/XSharp.Zarlo.Test",
+            "cwd": "${workspaceFolder}/Zarlo.XSharp.Test",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false

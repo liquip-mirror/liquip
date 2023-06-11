@@ -1,4 +1,4 @@
-using Cosmos.Zarlo.Memory;
+using Zarlo.Cosmos.Memory;
 using EMU6502.Interface;
 
 namespace EMU6502;

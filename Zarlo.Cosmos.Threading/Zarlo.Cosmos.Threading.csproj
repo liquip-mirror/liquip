@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
+        <PackageReference Include="XSharp" Version="0-*" NoWarn="NU1604" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Zarlo.Cosmos.Core\Zarlo.Cosmos.Core.csproj" />
+        <ProjectReference Include="..\Zarlo.Cosmos.Threading.Mutex\Zarlo.Cosmos.Threading.Mutex.csproj" />
+    </ItemGroup>
+</Project>

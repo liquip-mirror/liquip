@@ -40,13 +40,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Cosmos.Zarlo.Plugs\Cosmos.Zarlo.Plugs.csproj" />
-        <ProjectReference Include="..\Cosmos.Zarlo.Threading\Cosmos.Zarlo.Threading.csproj" />
-        <ProjectReference Include="..\Cosmos.Zarlo\Cosmos.Zarlo.csproj" />
+        <ProjectReference Include="..\Zarlo.Cosmos.Plugs\Zarlo.Cosmos.Plugs.csproj" />
+        <ProjectReference Include="..\Zarlo.Cosmos.Threading\Zarlo.Cosmos.Threading.csproj" />
+        <ProjectReference Include="..\Zarlo.Cosmos\Zarlo.Cosmos.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PlugsReference Include="$(MSBuildProjectDirectory)\..\Cosmos.Zarlo.Plugs\bin\Debug\net6.0\Cosmos.Zarlo.Plugs.dll" />
+        <PlugsReference Include="$(MSBuildProjectDirectory)\..\Zarlo.Cosmos.Plugs\bin\Debug\net6.0\Zarlo.Cosmos.Plugs.dll" />
     </ItemGroup>
 
 </Project>
