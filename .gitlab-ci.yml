@@ -1,71 +1,69 @@
-image: mcr.microsoft.com/dotnet/sdk:6.0
 
+default:
+  image: mcr.microsoft.com/dotnet/sdk:6.0
+  before_script:
+    - apt-get update && apt-get -y install build-essential python3
+    - make install-cosmos
+  cache:
+    key: cosmos-cache-$CI_COMMIT_REF_SLUG
+    paths:
+      - cosmos/
+
+ 
 stages:
   - test
   - deploy
 
+
 XSharp-test:
   stage: test
   script:
-    - apt-get update && apt-get -y install build-essential python3
-    - make install-cosmos
     - cd ./Zarlo.XSharp.UNitTest
     - dotnet test
 
 XSharp-deploy:
   stage: deploy
   script:
-    - apt-get update && apt-get -y install build-essential python3
-    - make install-cosmos
     - ./CICD/build_and_push_nuget.sh ./Zarlo.XSharp
 
 Plugs:
   stage: deploy
   script:
-    - apt-get update && apt-get -y install build-essential python3
-    - make install-cosmos
     - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Plugs
 
 Zarlo:
   stage: deploy
   script:
-    - apt-get update && apt-get -y install build-essential python3
-    - make install-cosmos
     - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos
 
 Logger:
   stage: deploy
   script:
-    - apt-get update && apt-get -y install build-essential python3
-    - make install-cosmos
     - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Logger
 
 Memory:
   stage: deploy
   script:
-    - apt-get update && apt-get -y install build-essential python3
-    - make install-cosmos
     - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Memory
 
 Threading:
   stage: deploy
   script:
-    - apt-get update && apt-get -y install build-essential python3
-    - make install-cosmos
     - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Threading
 
 Threading.Mutex:
   stage: deploy
   script:
-    - apt-get update && apt-get -y install build-essential python3
-    - make install-cosmos
     - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Threading.Mutex
+
+Threading.Plug:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Threading.Plugs
 
 FileSystems:
   stage: deploy
   script:
-    - apt-get update && apt-get -y install build-essential python3
-    - make install-cosmos
     - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.FileSystems
 
 

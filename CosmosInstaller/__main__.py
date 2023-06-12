@@ -18,9 +18,6 @@ from os import path
 from typing import Optional
 
 
-
-
-
 config_file = open('cosmos.json', 'r')
 
 config = json.load(config_file)
