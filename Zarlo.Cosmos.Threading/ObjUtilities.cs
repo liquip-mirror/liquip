@@ -1,8 +1,7 @@
-using IL2CPU.API;
+using System;
 using IL2CPU.API.Attribs;
 
-namespace Zarlo.Cosmos.Core;
-
+namespace Zarlo.Cosmos.Threading;
 
 public static unsafe class ObjUtilities
 {

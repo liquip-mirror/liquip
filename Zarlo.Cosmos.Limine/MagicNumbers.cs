@@ -2,13 +2,13 @@ namespace Zarlo.Cosmos.Limine;
 
 public static class MagicNumbers
 {
-    public readonly static ulong[] Common = new ulong[2]
+    public static readonly ulong[] Common = new ulong[2]
     {
         0xc7b1dd30df4c8b88,
         0x0a82e883a194f07b
     };
 
-    public readonly static ulong[] BootloaderInfoRequest = new ulong[4]
+    public static readonly ulong[] BootloaderInfoRequest = new ulong[4]
     {
         Common[0],
         Common[1],
@@ -16,7 +16,7 @@ public static class MagicNumbers
         0x279426fcf5f59740
     };
 
-    public readonly static ulong[] StackSizeRequest = new ulong[4]
+    public static readonly ulong[] StackSizeRequest = new ulong[4]
     {
         Common[0],
         Common[1],
@@ -24,7 +24,7 @@ public static class MagicNumbers
         0xe1cb0fc25f46ea3d
     };
 
-    public readonly static ulong[] TerminalRequest = new ulong[4]
+    public static readonly ulong[] TerminalRequest = new ulong[4]
     {
         Common[0],
         Common[1],
@@ -32,7 +32,7 @@ public static class MagicNumbers
         0xa68d0c7265d38878
     };
 
-    public readonly static ulong[] FramebufferRequest = new ulong[4]
+    public static readonly ulong[] FramebufferRequest = new ulong[4]
     {
         Common[0],
         Common[1],

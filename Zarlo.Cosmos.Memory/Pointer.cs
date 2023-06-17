@@ -183,6 +183,22 @@ public struct Pointer : IDisposable
 
     }
 
+    public uint this[uint index]
+    {
+        get {
+            unsafe
+            {
+                return Ptr[index];
+            }
+        }
+        set {
+            unsafe
+            {
+                Ptr[index] = value;
+            }
+        }
+    }
+
     public static unsafe explicit operator byte*(Pointer ptr) => (byte*)ptr.Ptr;
     public static unsafe explicit operator uint*(Pointer ptr) => ptr.Ptr;
     public static unsafe explicit operator ushort*(Pointer ptr) => (ushort*)ptr.Ptr;
@@ -227,6 +243,14 @@ public struct Pointer : IDisposable
         unsafe
         {
             return (int)Ptr;
+        }
+    }
+
+    public Span<byte> ToSpan()
+    { 
+        unsafe
+        {
+            return new Span<byte>(Ptr, (int)Size);
         }
     }
 }

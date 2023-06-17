@@ -9,6 +9,7 @@ using IL2CPU.API.Attribs;
 using XSharp;
 using XSharp.Assembler;
 using XSharp.Assembler.x86;
+using Zarlo.XSharp;
 using static XSharp.XSRegisters;
 
 
@@ -16,34 +17,6 @@ namespace Zarlo.Cosmos.Threading.Plugs;
 
 public class CPUUpdateIDTAsm : AssemblerMethod
 {
-    public static MethodBase GetMethodDef(Assembly aAssembly, string aType, string aMethodName, bool aErrorWhenNotFound)
-    {
-        Type xType = aAssembly.GetType(aType, false);
-        if (xType != null)
-        {
-            MethodBase xMethod = xType.GetMethod(aMethodName);
-            if (xMethod != null)
-            {
-                return xMethod;
-            }
-        }
-        if (aErrorWhenNotFound)
-        {
-            throw new Exception("Method '" + aType + "::" + aMethodName + "' not found!");
-        }
-        return null;
-    }
-
-    public static MethodBase GetMethodDef(Type aType, string aMethodName)
-    {
-        return GetMethodDef(aType.Assembly, aType.FullName, aMethodName, true);
-    }
-
-    private static MethodBase GetInterruptHandler(byte aInterrupt)
-    {
-        return GetMethodDef(typeof(INTs).Assembly, typeof(INTs).FullName
-            , "HandleInterrupt_" + aInterrupt.ToString("X2"), false);
-    }
 
     public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
     {
@@ -80,7 +53,7 @@ public class CPUUpdateIDTAsm : AssemblerMethod
         for (int j = 0; j < 256; j++)
         {
             XS.Label("__ISR_Handler_" + j.ToString("X2"));
-            XS.Call("__INTERRUPT_OCCURRED__");
+            // XS.Call("__INTERRUPT_OCCURRED__");
 
             if (Array.IndexOf(xInterruptsWithParam, j) == -1)
             {
@@ -106,10 +79,10 @@ public class CPUUpdateIDTAsm : AssemblerMethod
 
                 XS.JumpToSegment(8, "__ISR_Handler_" + j.ToString("X2") + "_SetCS");
                 XS.Label("__ISR_Handler_" + j.ToString("X2") + "_SetCS");
-                MethodBase xHandler = GetInterruptHandler((byte)j);
+                MethodBase xHandler = Utils.GetInterruptHandler((byte)j);
                 if (xHandler == null)
                 {
-                    xHandler = GetMethodDef(typeof(INTs).Assembly, typeof(INTs).FullName, "HandleInterrupt_Default", true);
+                    xHandler = Utils.GetMethodDef(typeof(INTs), nameof(INTs.HandleInterrupt_Default), true);
                 }
                 XS.Call(LabelName.Get(xHandler));
                 XS.Pop(EAX);
@@ -124,7 +97,7 @@ public class CPUUpdateIDTAsm : AssemblerMethod
             {
                 
                 var StackContext = LabelName.GetStaticFieldName(typeof(Zarlo.Cosmos.Core.ZINTs), nameof(Zarlo.Cosmos.Core.ZINTs.mStackContext));
-                var SwitchTaskMethod = GetMethodDef(
+                var SwitchTaskMethod = Utils.GetMethodDef(
                     typeof(Zarlo.Cosmos.Threading.Core.Processing.ProcessorScheduler),
                     nameof(Zarlo.Cosmos.Threading.Core.Processing.ProcessorScheduler.SwitchTask)
                 );
@@ -163,8 +136,9 @@ public class CPUUpdateIDTAsm : AssemblerMethod
             XS.Label("__ISR_Handler_" + j.ToString("X2") + "_END");
             XS.InterruptReturn();
         }
-        XS.Label("__INTERRUPT_OCCURRED__");
-        XS.Return();
+        // this looks useless
+        // XS.Label("__INTERRUPT_OCCURRED__");
+        // XS.Return();
         XS.Label("__AFTER__ALL__ISR__HANDLER__STUBS__");
         XS.Noop();
         XS.Set(EAX, EBP, sourceDisplacement: 8);

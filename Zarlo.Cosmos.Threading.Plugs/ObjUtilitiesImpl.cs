@@ -1,8 +1,9 @@
-using Zarlo.Cosmos.Core;
 using IL2CPU.API;
 using IL2CPU.API.Attribs;
 using XSharp;
 using XSharp.Assembler;
+using Zarlo.Cosmos.Core;
+using Zarlo.XSharp;
 
 namespace Zarlo.Cosmos.Threading.Plugs;
 
@@ -32,7 +33,13 @@ public class ObjUtilitiesGetEntry : AssemblerMethod
 {
     public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
     {
-        XS.Set(XSRegisters.EAX, LabelName.Get(CPUUpdateIDTAsm.GetMethodDef(typeof(Zarlo.Cosmos.Threading.Core.Processing.ProcessorScheduler).Assembly, typeof(Zarlo.Cosmos.Threading.Core.Processing.ProcessorScheduler).FullName, "EntryPoint", true)));
+        XS.Set(XSRegisters.EAX, LabelName.Get(Utils.GetMethodDef(
+                typeof(Core.Processing.ProcessorScheduler),
+                nameof(Core.Processing.ProcessorScheduler.EntryPoint),
+                true
+                )
+            )
+        );
         XS.Push(XSRegisters.EAX);
     }
 }

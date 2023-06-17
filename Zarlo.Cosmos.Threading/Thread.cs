@@ -1,3 +1,7 @@
+
+using System;
+using Cosmos.Core;
+using Zarlo.Cosmos.Threading.Core.Context;
 using Zarlo.Cosmos.Threading.Core.Processing;
 
 namespace Zarlo.Cosmos.Threading;
@@ -8,34 +12,34 @@ public class Thread
 
     public static uint SpawnThread(ThreadStart aStart)
     {
-        return Core.Processing.ProcessContext.StartContext(
+        return ProcessContextManager.StartContext(
             "", 
             aStart, 
-            Core.Processing.ProcessContext.Context_Type.THREAD
+            ProcessContextType.THREAD
         );
     }
 
     public static uint SpawnThread(ParameterizedThreadStart aStart, object param)
     {
-        return Core.Processing.ProcessContext.StartContext(
+        return ProcessContextManager.StartContext(
             "", 
             aStart, 
-            Core.Processing.ProcessContext.Context_Type.THREAD, 
+            ProcessContextType.THREAD, 
             param
             );
     }
 
 
-    public static Thread Current => new Thread(ProcessContext.m_CurrentContext.tid);
+    public static Thread Current => new Thread(ProcessContextManager.m_CurrentContext.tid);
 
 
     public readonly uint ThreadID;
-    private Core.Processing.ProcessContext.Context Data;
+    private ProcessContext Data;
 
     public Thread(uint threadID)
     {
         ThreadID = threadID;
-        Data = Core.Processing.ProcessContext.GetContext(ThreadID);
+        Data = ProcessContextManager.GetContext(ThreadID);
     }
 
     public Thread(ThreadStart start)
@@ -52,32 +56,39 @@ public class Thread
 
     private void ThreadFinalSetup()
     {
-        Data = Core.Processing.ProcessContext.GetContext(ThreadID);
-        Data.state = Core.Processing.ProcessContext.Thread_State.PAUSED;
+        Data = ProcessContextManager.GetContext(ThreadID);
+        Data.state = ThreadState.PAUSED;
     }
 
     public void Start()
     {
-        Data.state = Core.Processing.ProcessContext.Thread_State.ALIVE;
+        Data.state = ThreadState.ALIVE;
     }
 
     public void Stop()
     {
-        Data.state = Core.Processing.ProcessContext.Thread_State.PAUSED;
+        Data.state = ThreadState.PAUSED;
     }
 
     public void Kill()
     {
-        Data.state = Core.Processing.ProcessContext.Thread_State.DEAD;
+        Data.state = ThreadState.DEAD;
+    }
+
+    public static void Yield()
+    {
+        Console.WriteLine("yielding");
+        ProcessorScheduler.SwitchTask();
     }
 
     public static void Sleep(int ms)
     {
-        if(Core.Processing.ProcessContext.m_CurrentContext == null) return;
-        Core.Processing.ProcessContext.m_CurrentContext.arg = ms;
-        Core.Processing.ProcessContext.m_CurrentContext.state = Core.Processing.ProcessContext.Thread_State.WAITING_SLEEP;
-        while (Core.Processing.ProcessContext.m_CurrentContext.state == Core.Processing.ProcessContext.Thread_State.WAITING_SLEEP) 
-        { 
+        if(ProcessContextManager.m_CurrentContext == null) return;
+        ProcessContextManager.m_CurrentContext.arg = ms;
+        ProcessContextManager.m_CurrentContext.state = ThreadState.WAITING_SLEEP;
+        while (ProcessContextManager.m_CurrentContext.state == ThreadState.WAITING_SLEEP) 
+        {
+            // Yield();
             // swap task there
         }
     }

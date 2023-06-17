@@ -1,6 +1,7 @@
 using System.Text;
 using Cosmos.Core;
 using Cosmos.HAL;
+using Zarlo.Cosmos.Common.Driver;
 using Zarlo.Cosmos.Logger.Interfaces;
 using Zarlo.Cosmos.Memory;
 

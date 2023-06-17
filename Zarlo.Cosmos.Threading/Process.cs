@@ -1,3 +1,4 @@
+using Zarlo.Cosmos.Threading.Core.Context;
 using Zarlo.Cosmos.Threading.Core.Processing;
 
 namespace Zarlo.Cosmos.Threading;
@@ -8,19 +9,19 @@ public class Process
 
     public static uint SpawnProcess(ThreadStart aStart, string name = "nameless")
     {
-        return Core.Processing.ProcessContext.StartContext(
+        return ProcessContextManager.StartContext(
             name, 
             aStart, 
-            Core.Processing.ProcessContext.Context_Type.PROCESS
+            ProcessContextType.PROCESS
         );
     }
 
     public static uint SpawnProcess(ParameterizedThreadStart aStart, object param, string name = "nameless")
     {
-        return Core.Processing.ProcessContext.StartContext(
+        return ProcessContextManager.StartContext(
             name, 
             aStart, 
-            Core.Processing.ProcessContext.Context_Type.PROCESS, 
+            ProcessContextType.PROCESS, 
             param
             );
     }
@@ -42,6 +43,11 @@ public class Process
     private void ProcessFinalSetup()
     {
         MainTread.Stop();
+    }
+
+    public void Start()
+    {
+        MainTread.Start();
     }
 
     public void Kill(uint sig)

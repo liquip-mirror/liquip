@@ -1,9 +1,11 @@
+using System;
+using Cosmos.Core;
+using Cosmos.Core.Memory;
+using IL2CPU.API.Attribs;
+using Zarlo.Cosmos.Core;
+using Zarlo.Cosmos.Threading.Core.Context;
 using CCore = Cosmos.Core;
 using HAL = Cosmos.HAL;
-using Zarlo.Cosmos.Core;
-using IL2CPU.API.Attribs;
-using static Zarlo.Cosmos.Threading.Core.Processing.ProcessContext;
-using Cosmos.Core;
 
 namespace Zarlo.Cosmos.Threading.Core.Processing;
 
@@ -21,19 +23,20 @@ public static unsafe class ProcessorScheduler
             ProcessorScheduler.EntryPoint();
         }
 
-        var context = new ProcessContext.Context();
-        context.type = ProcessContext.Context_Type.PROCESS;
-        context.tid = ProcessContext.m_NextCID++;
+        var context = new ProcessContext();
+        context.type = ProcessContextType.PROCESS;
+        context.tid = ProcessContextManager.m_NextCID++;
         context.name = "Boot";
         context.esp = 0;
         context.stacktop = 0;
-        context.state = ProcessContext.Thread_State.ALIVE;
+        context.state = ThreadState.ALIVE;
         context.arg = 0;
         context.priority = 0;
         context.age = 0;
         context.parent = 0;
-        ProcessContext.m_ContextList = context;
-        ProcessContext.m_CurrentContext = context;
+        GCImplementation.IncRootCount((ushort*)GCImplementation.GetPointer(context));
+        ProcessContextManager.m_ContextList = context;
+        ProcessContextManager.m_CurrentContext = context;
 
 
         int divisor = 1193182 / 25;
@@ -48,9 +51,9 @@ public static unsafe class ProcessorScheduler
     [ForceInclude]
     public static void EntryPoint()
     {
-        ProcessContext.m_CurrentContext.entry?.Invoke();
-        ProcessContext.m_CurrentContext.paramentry?.Invoke(ProcessContext.m_CurrentContext.param);
-        ProcessContext.m_CurrentContext.state = ProcessContext.Thread_State.DEAD;
+        ProcessContextManager.m_CurrentContext.entry?.Invoke();
+        ProcessContextManager.m_CurrentContext.paramentry?.Invoke(ProcessContextManager.m_CurrentContext.param);
+        ProcessContextManager.m_CurrentContext.state = ThreadState.DEAD;
         while (true) {
         } // remove from thread pool later
     }
@@ -61,17 +64,27 @@ public static unsafe class ProcessorScheduler
     public static void SwitchTask()
     {
 
-        if(!HAL.Global.InterruptsEnabled) return;
-
+        // if(!HAL.Global.InterruptsEnabled) return;
+        
+        CPU.DisableInterrupts();
+        
+        var ramused = GCImplementation.GetUsedRAM() / 1024 / 1024;
         interruptCount++;
+        var str = "interruptCount: " + interruptCount + 
+        Environment.NewLine + RAT.TotalPageCount + 
+        Environment.NewLine + ramused;
+        
+        Console.SetCursorPosition(0, 0);
+        Console.WriteLine(str);
+        GCImplementation.Free(str);
         // Console.WriteLine("SwitchTask {0}", interruptCount);
-        if (ProcessContext.m_CurrentContext != null)
+        if (ProcessContextManager.m_CurrentContext != null)
         {
-            ProcessContext.Context ctx = ProcessContext.m_ContextList;
-            ProcessContext.Context last = ctx;
+            ProcessContext ctx = ProcessContextManager.m_ContextList;
+            ProcessContext last = ctx;
             while (ctx != null)
             {
-                if (ctx.state == ProcessContext.Thread_State.DEAD)
+                if (ctx.state == ThreadState.DEAD)
                 {
                     last.next = ctx.next;
                     break;
@@ -79,54 +92,56 @@ public static unsafe class ProcessorScheduler
                 last = ctx;
                 ctx = ctx.next;
             }
-            ctx = ProcessContext.m_ContextList;
+            ctx = ProcessContextManager.m_ContextList;
             while (ctx != null)
             {
-                if (ctx.state == ProcessContext.Thread_State.WAITING_SLEEP)
+                if (ctx.state == ThreadState.WAITING_SLEEP)
                 {
                     ctx.arg -= 1000 / 25;
                     if (ctx.arg <= 0)
                     {
-                        ctx.state = ProcessContext.Thread_State.ALIVE;
+                        ctx.state = ThreadState.ALIVE;
                     }
                 }
                 ctx.age++;
                 ctx = ctx.next;
             }
-            ProcessContext.m_CurrentContext.esp = ZINTs.mStackContext;
+            ProcessContextManager.m_CurrentContext.esp = ZINTs.mStackContext;
         tryagain:;
-            if (ProcessContext.m_CurrentContext.next != null)
+            if (ProcessContextManager.m_CurrentContext.next != null)
             {
-                ProcessContext.m_CurrentContext = ProcessContext.m_CurrentContext.next;
+                ProcessContextManager.m_CurrentContext = ProcessContextManager.m_CurrentContext.next;
             }
             else
             {
-                ProcessContext.m_CurrentContext = ProcessContext.m_ContextList;
+                ProcessContextManager.m_CurrentContext = ProcessContextManager.m_ContextList;
             }
-            if (ProcessContext.m_CurrentContext.state != ProcessContext.Thread_State.ALIVE)
+            if (ProcessContextManager.m_CurrentContext.state != ThreadState.ALIVE)
             {
                 goto tryagain;
             }
-            ProcessContext.m_CurrentContext.age = ProcessContext.m_CurrentContext.priority;
-            ZINTs.mStackContext = ProcessContext.m_CurrentContext.esp;
+            ProcessContextManager.m_CurrentContext.age = ProcessContextManager.m_CurrentContext.priority;
+            ZINTs.mStackContext = ProcessContextManager.m_CurrentContext.esp;
         }
         CCore.Global.PIC.EoiMaster();
         CCore.Global.PIC.EoiSlave();
+        CPU.EnableInterrupts();
     }
 
     public static void KillProcess(uint pid, uint sig)
     {
-        var processContext = GetContext(pid);
-        if (processContext.type == Context_Type.PROCESS || processContext.type == Context_Type.PROCESS_FORK)
+        var processContext = ProcessContextManager.GetContext(pid);
+        
+        if (processContext.type == ProcessContextType.PROCESS || processContext.type == ProcessContextType.PROCESS_FORK)
         { 
-            Context ctx = m_ContextList;
+            ProcessContext ctx = ProcessContextManager.m_ContextList;
             while (ctx.next != null)
             {
                 if (ctx.parent == pid)
                 {
-                    if (ctx.type == Context_Type.THREAD)
+                    if (ctx.type == ProcessContextType.THREAD)
                     { 
-                        ctx.state = Thread_State.DEAD;
+                        ctx.state = ThreadState.DEAD;
                     }
                     else
                     {
@@ -137,9 +152,9 @@ public static unsafe class ProcessorScheduler
             }
             if (ctx.tid == pid)
             {
-                if (ctx.type == Context_Type.THREAD)
+                if (ctx.type == ProcessContextType.THREAD)
                 { 
-                    ctx.state = Thread_State.DEAD;
+                    ctx.state = ThreadState.DEAD;
                 }
                 else
                 {
@@ -151,12 +166,12 @@ public static unsafe class ProcessorScheduler
 
     public static void CleanUp()
     {
-        ContextListMutex.Lock();
-        Context current = ProcessContext.m_ContextList;
-        Context last = null;
+        ProcessContextManager.ContextListMutex.Lock();
+        ProcessContext current = ProcessContextManager.m_ContextList;
+        ProcessContext last = null;
         while (current != null)
         {
-            if (current.state != Thread_State.DEAD)
+            if (current.state != ThreadState.DEAD)
             {
                 last = current;
                 current = current.next;
@@ -166,7 +181,7 @@ public static unsafe class ProcessorScheduler
                 var next = current.next;
                 if (last == null)
                 {
-                    ProcessContext.m_ContextList = next;
+                    ProcessContextManager.m_ContextList = next;
                 }
                 else 
                 { 
@@ -178,7 +193,7 @@ public static unsafe class ProcessorScheduler
             
             
         }
-        ContextListMutex.Unlock();
+        ProcessContextManager.ContextListMutex.Unlock();
     }
 
 }

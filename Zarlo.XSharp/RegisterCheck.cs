@@ -2,7 +2,7 @@ using static XSharp.XSRegisters;
 
 namespace Zarlo.XSharp;
 
-public class Registers
+public static partial class Registers
 {
 
     public static class RegisterCheckX86

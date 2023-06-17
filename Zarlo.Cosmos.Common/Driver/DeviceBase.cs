@@ -1,8 +1,8 @@
 using Cosmos.HAL;
 
-namespace Zarlo.Cosmos.Driver;
+namespace Zarlo.Cosmos.Common.Driver;
 
-public struct DeviceCapability
+public readonly struct DeviceCapability
 {
 	public readonly byte Capability;
 	public readonly byte Offset;
