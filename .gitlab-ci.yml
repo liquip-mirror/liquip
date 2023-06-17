@@ -9,6 +9,8 @@ default:
     paths:
       - cosmos/
   artifacts:
+    exclude:
+      - cosmos/**
     paths:
       - "**/*.nupkg"
     expire_in: 1 day
