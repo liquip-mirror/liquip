@@ -8,7 +8,10 @@ default:
     key: cosmos-cache-$CI_COMMIT_REF_SLUG
     paths:
       - cosmos/
-
+  artifacts:
+    paths:
+      - "**/*.nupkg"
+    expire_in: 1 day
  
 stages:
   - test

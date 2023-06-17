@@ -98,8 +98,8 @@ public class CPUUpdateIDTAsm : AssemblerMethod
                 
                 var StackContext = LabelName.GetStaticFieldName(typeof(Zarlo.Cosmos.Core.ZINTs), nameof(Zarlo.Cosmos.Core.ZINTs.mStackContext));
                 var SwitchTaskMethod = Utils.GetMethodDef(
-                    typeof(Zarlo.Cosmos.Threading.Core.Processing.ProcessorScheduler),
-                    nameof(Zarlo.Cosmos.Threading.Core.Processing.ProcessorScheduler.SwitchTask)
+                    typeof(Core.Processing.ProcessorScheduler),
+                    nameof(Core.Processing.ProcessorScheduler.SwitchTask)
                 );
                 var SwitchTask = LabelName.Get(SwitchTaskMethod);
                 _ = new LiteralAssemblerCode("pushad");
