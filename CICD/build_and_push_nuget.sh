@@ -7,6 +7,8 @@ dotnet nuget add source "${CI_API_V4_URL}/projects/42768959/packages/nuget/index
 
 dotnet build /p:Version="0.1.0-alpha.${CI_JOB_ID:-local}"
 dotnet pack /p:Version="0.1.0-alpha.${CI_JOB_ID:-local}"
+dotnet pack /p:Version="0.1.0-alpha.${CI_JOB_ID:-local}" /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg
 dotnet nuget push "bin/Debug/*.nupkg" --source gitlab
+dotnet nuget push "bin/Debug/*.snupkg" --source gitlab
 
 cd ../
