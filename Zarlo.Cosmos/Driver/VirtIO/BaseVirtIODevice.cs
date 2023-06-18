@@ -175,9 +175,10 @@ public class BaseVirtIODevice : DeviceBase
     {
         unsafe
         {
-            var pointer = Pointer.MakeFrom<T>(command, false);
+            // var pointer = Pointer.MakeFrom<T>(command, false);
 
-            return SendCommand(index, ref pointer, descFlags);
+            // return SendCommand(index, ref pointer, descFlags);
+            return 0;
         }
     }
 

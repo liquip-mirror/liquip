@@ -11,9 +11,10 @@ public struct VirtQDescriptor
     public const byte Flags = 12;
     public const byte NextDescIdx = 14;
 
-    public static VirtQDescriptor FromStruct<T>(T data, DescFlags flag) where T: struct
+    public static VirtQDescriptor? FromStruct<T>(T data, DescFlags flag) where T: struct
     {
-        return new VirtQDescriptor(Pointer.MakeFrom(data, false), flag);
+        // return new VirtQDescriptor(Pointer.MakeFrom(data, false), flag);
+        return null;
     }
 
     public unsafe VirtQDescriptor(Pointer ptr, DescFlags flag) {
