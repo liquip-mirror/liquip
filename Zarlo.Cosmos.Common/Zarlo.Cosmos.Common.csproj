@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
-    <PackageReference Include="XSharp" Version="0-*" NoWarn="NU1604" />
+    <PackageReference Include="XSharp" Version="0.1.0-localbuild" />
   </ItemGroup>
 
 
