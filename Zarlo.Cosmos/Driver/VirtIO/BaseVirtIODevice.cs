@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using Cosmos.Core;
 using Cosmos.HAL;

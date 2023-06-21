@@ -2,7 +2,7 @@
   <PropertyGroup>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -20,5 +20,6 @@
     <!-- <ProjectReference Include="..\Zarlo.Cosmos.Threading\Zarlo.Cosmos.Threading.csproj" /> -->
     <ProjectReference Include="..\Zarlo.XSharp\Zarlo.XSharp.csproj" />
     <ProjectReference Include="..\Zarlo.Cosmos.Common\Zarlo.Cosmos.Common.csproj" />
+    <ProjectReference Include="..\Zarlo.Cosmos.Threading.Mutex\Zarlo.Cosmos.Threading.Mutex.csproj" />
   </ItemGroup>
 </Project>

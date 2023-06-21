@@ -14,5 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Zarlo.Cosmos.Core\Zarlo.Cosmos.Core.csproj" />
     <ProjectReference Include="..\Zarlo.Cosmos.Threading.Mutex\Zarlo.Cosmos.Threading.Mutex.csproj" />
+    <ProjectReference Include="..\Zarlo.Cosmos.Memory\Zarlo.Cosmos.Memory.csproj" />
+    <ProjectReference Include="..\Zarlo.Cosmos\Zarlo.Cosmos.csproj" />
   </ItemGroup>
 </Project>
