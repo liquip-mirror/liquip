@@ -1,3 +1,4 @@
+using System;
 using Cosmos.Core;
 using Cosmos.HAL;
 using Zarlo.Cosmos.Driver.VirtIO.GPU.Struct;

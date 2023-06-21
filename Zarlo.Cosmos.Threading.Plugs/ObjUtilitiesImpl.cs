@@ -33,7 +33,7 @@ public class ObjUtilitiesGetEntry : AssemblerMethod
 {
     public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
     {
-        XS.Set(XSRegisters.EAX, LabelName.Get(Utils.GetMethodDef(
+        XS.Set(XSRegisters.EAX, LabelName.Get(Zarlo.XSharp.Utils.GetMethodDef(
                 typeof(Core.Processing.ProcessorScheduler),
                 nameof(Core.Processing.ProcessorScheduler.EntryPoint),
                 true

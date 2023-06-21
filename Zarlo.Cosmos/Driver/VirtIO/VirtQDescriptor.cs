@@ -1,3 +1,4 @@
+using System;
 using Zarlo.Cosmos.Memory;
 
 namespace Zarlo.Cosmos.Driver.VirtIO;

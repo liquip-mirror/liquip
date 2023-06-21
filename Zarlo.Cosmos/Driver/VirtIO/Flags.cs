@@ -2,6 +2,8 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedType.Global
 
+using System;
+
 namespace Zarlo.Cosmos.Driver.VirtIO;
 
 [Flags]

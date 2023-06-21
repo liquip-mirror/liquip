@@ -4,6 +4,8 @@ using Cosmos.HAL;
 using Cosmos.System.Graphics;
 using Zarlo.Cosmos.Memory;
 using XSharp.Tokens;
+using System;
+using System.Collections.Generic;
 
 namespace Zarlo.Cosmos.GConsole;
 

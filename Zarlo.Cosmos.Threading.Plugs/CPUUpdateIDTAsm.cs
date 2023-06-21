@@ -79,10 +79,10 @@ public class CPUUpdateIDTAsm : AssemblerMethod
 
                 XS.JumpToSegment(8, "__ISR_Handler_" + j.ToString("X2") + "_SetCS");
                 XS.Label("__ISR_Handler_" + j.ToString("X2") + "_SetCS");
-                MethodBase xHandler = Utils.GetInterruptHandler((byte)j);
+                MethodBase xHandler = Zarlo.XSharp.Utils.GetInterruptHandler((byte)j);
                 if (xHandler == null)
                 {
-                    xHandler = Utils.GetMethodDef(typeof(INTs), nameof(INTs.HandleInterrupt_Default), true);
+                    xHandler = Zarlo.XSharp.Utils.GetMethodDef(typeof(INTs), nameof(INTs.HandleInterrupt_Default), true);
                 }
                 XS.Call(LabelName.Get(xHandler));
                 XS.Pop(EAX);
@@ -97,7 +97,7 @@ public class CPUUpdateIDTAsm : AssemblerMethod
             {
                 
                 var StackContext = LabelName.GetStaticFieldName(typeof(Zarlo.Cosmos.Core.ZINTs), nameof(Zarlo.Cosmos.Core.ZINTs.mStackContext));
-                var SwitchTaskMethod = Utils.GetMethodDef(
+                var SwitchTaskMethod = Zarlo.XSharp.Utils.GetMethodDef(
                     typeof(Core.Processing.ProcessorScheduler),
                     nameof(Core.Processing.ProcessorScheduler.SwitchTask)
                 );

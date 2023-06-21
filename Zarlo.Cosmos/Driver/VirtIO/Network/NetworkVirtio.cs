@@ -4,6 +4,8 @@ using Cosmos.HAL.Network;
 using Zarlo.Cosmos.Logger.Interfaces;
 using Zarlo.Cosmos.Memory;
 using XSharp.Assembler.x86.x87;
+using System;
+using System.Collections.Generic;
 
 namespace Zarlo.Cosmos.Driver.VirtIO.Network;
 

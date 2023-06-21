@@ -2,6 +2,7 @@ using Cosmos.HAL;
 using Zarlo.Cosmos.Logger.Interfaces;
 using Zarlo.Cosmos.Memory;
 using XSharp.Tokens;
+using System;
 
 namespace Zarlo.Cosmos.Driver.VirtIO.Entropy;
 

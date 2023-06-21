@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Cosmos.Core.Memory;
 using Zarlo.Cosmos.Memory;
 

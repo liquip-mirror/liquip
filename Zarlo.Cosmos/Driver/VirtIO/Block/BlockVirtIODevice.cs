@@ -1,4 +1,5 @@
 
+using System;
 using Cosmos.HAL;
 
 namespace Zarlo.Cosmos.Driver.VirtIO.Block;

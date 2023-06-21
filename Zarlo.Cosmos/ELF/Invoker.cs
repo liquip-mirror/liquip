@@ -4,7 +4,7 @@ using IL2CPU.API.Attribs;
 using XSharp;
 using Zarlo.XSharp;
 using Zarlo.XSharp.Fluent;
-
+using System;
 
 namespace Zarlo.Cosmos.ELF;
 

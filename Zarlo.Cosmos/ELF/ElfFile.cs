@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.IO;
 using Zarlo.Cosmos.Memory;
 
 namespace Zarlo.Cosmos.ELF;

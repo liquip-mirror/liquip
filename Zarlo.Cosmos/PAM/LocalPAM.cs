@@ -1,3 +1,5 @@
+using System;
+
 namespace Zarlo.Cosmos.PAM;
 
 public class LocalPAM : IPluggableAuthenticationModule
