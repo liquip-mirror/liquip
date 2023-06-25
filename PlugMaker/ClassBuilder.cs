@@ -71,7 +71,7 @@ public static class ClassBuilder
 
             var classNames = item.Key.FullName.Split('.').Last().Split('+');
 
-            savePath = $@"{savePath}/{classNames.Last()}.{ii++}.cs";
+            savePath = $@"{savePath}/{item.Key.FullName.Split('.').Last()}.{ii++}.cs";
 
             for (int i = 0; i < classNames.Length; i++)
             {

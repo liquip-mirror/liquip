@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Cosmos.Core;
 using Cosmos.Core.Memory;
-using Zarlo.Cosmos.Threading;
+
 
 namespace Zarlo.Cosmos.Collections;
 
@@ -21,7 +21,7 @@ public class ContextList<T>
         public CLinkedListItem<T>? Previous { get; set; }
     }
 
-    private Mutex Lock = new Mutex();
+    // private Mutex Lock = new Mutex();
 
     private CLinkedListItem<T>? Head { get; set; }
 
@@ -40,27 +40,27 @@ public class ContextList<T>
 
     public void Next()
     {
-        Lock.Lock();
+        // Lock.Lock();
         if (current != null)
         {
             current = current.Next;
         }
-        Lock.Unlock();
+        // Lock.Unlock();
     }
 
     public void Previous()
     {
-        Lock.Lock();
+        // Lock.Lock();
         if (current != null)
         {
             current = current.Previous;
         }
-        Lock.Unlock();
+        // Lock.Unlock();
     }
 
     public void Add(T item)
     {
-        Lock.Lock();
+        // Lock.Lock();
         var newItem = new CLinkedListItem<T>()
         {
             Item = item,
@@ -96,14 +96,14 @@ public class ContextList<T>
             Head.Previous = newItem;
         }
         _Count++;
-        Lock.Unlock();
+        // Lock.Unlock();
     }
 
     public void Remove(T? item)
     {
         if (Head == null) return;
 
-        Lock.Lock();
+        // Lock.Lock();
 
         var node = Find(item);
         if (node != null)
@@ -113,7 +113,7 @@ public class ContextList<T>
         }
         GCImplementation.Free(node);
         _Count--;
-        Lock.Unlock();
+        // Lock.Unlock();
     }
 
 

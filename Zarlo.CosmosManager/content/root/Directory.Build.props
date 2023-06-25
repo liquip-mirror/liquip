@@ -1,0 +1,6 @@
+<project>
+
+<!-- this like is needed for the cosmos manager tool -->
+<Import Project="CosmosManager/Targets/Import.props" />
+
+</project>

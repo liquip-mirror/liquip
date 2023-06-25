@@ -65,15 +65,15 @@ public static unsafe class ProcessorScheduler
     {
 
         // if(!HAL.Global.InterruptsEnabled) return;
-        
+
         CPU.DisableInterrupts();
-        
+
         var ramused = GCImplementation.GetUsedRAM() / 1024 / 1024;
         interruptCount++;
-        var str = "interruptCount: " + interruptCount + 
-        Environment.NewLine + RAT.TotalPageCount + 
+        var str = "interruptCount: " + interruptCount +
+        Environment.NewLine + RAT.TotalPageCount +
         Environment.NewLine + ramused;
-        
+
         Console.SetCursorPosition(0, 0);
         Console.WriteLine(str);
         GCImplementation.Free(str);
@@ -123,24 +123,24 @@ public static unsafe class ProcessorScheduler
             ProcessContextManager.m_CurrentContext.age = ProcessContextManager.m_CurrentContext.priority;
             ZINTs.mStackContext = ProcessContextManager.m_CurrentContext.esp;
         }
+        CPU.EnableInterrupts();
         CCore.Global.PIC.EoiMaster();
         CCore.Global.PIC.EoiSlave();
-        CPU.EnableInterrupts();
     }
 
     public static void KillProcess(uint pid, uint sig)
     {
         var processContext = ProcessContextManager.GetContext(pid);
-        
+
         if (processContext.type == ProcessContextType.PROCESS || processContext.type == ProcessContextType.PROCESS_FORK)
-        { 
+        {
             ProcessContext ctx = ProcessContextManager.m_ContextList;
             while (ctx.next != null)
             {
                 if (ctx.parent == pid)
                 {
                     if (ctx.type == ProcessContextType.THREAD)
-                    { 
+                    {
                         ctx.state = ThreadState.DEAD;
                     }
                     else
@@ -153,7 +153,7 @@ public static unsafe class ProcessorScheduler
             if (ctx.tid == pid)
             {
                 if (ctx.type == ProcessContextType.THREAD)
-                { 
+                {
                     ctx.state = ThreadState.DEAD;
                 }
                 else
@@ -176,22 +176,22 @@ public static unsafe class ProcessorScheduler
                 last = current;
                 current = current.next;
             }
-            else 
+            else
             {
                 var next = current.next;
                 if (last == null)
                 {
                     ProcessContextManager.m_ContextList = next;
                 }
-                else 
-                { 
+                else
+                {
                     last.next = next;
                 }
                 GCImplementation.Free(current);
                 current = next;
             }
-            
-            
+
+
         }
         ProcessContextManager.ContextListMutex.Unlock();
     }

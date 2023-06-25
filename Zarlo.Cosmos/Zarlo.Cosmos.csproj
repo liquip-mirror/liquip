@@ -20,6 +20,5 @@
     <!-- <ProjectReference Include="..\Zarlo.Cosmos.Threading\Zarlo.Cosmos.Threading.csproj" /> -->
     <ProjectReference Include="..\Zarlo.XSharp\Zarlo.XSharp.csproj" />
     <ProjectReference Include="..\Zarlo.Cosmos.Common\Zarlo.Cosmos.Common.csproj" />
-    <ProjectReference Include="..\Zarlo.Cosmos.Threading.Mutex\Zarlo.Cosmos.Threading.Mutex.csproj" />
   </ItemGroup>
 </Project>

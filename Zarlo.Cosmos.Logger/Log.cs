@@ -8,6 +8,9 @@ namespace Zarlo.Cosmos.Logger;
 
 public static class Log
 {
+
+    private static Dictionary<string, ILogger> loggers = new Dictionary<string, ILogger>();
+
     public static ISink[] DefaultSinks = new ISink[]
     {
         new ConsoleSink(),
@@ -23,7 +26,11 @@ public static class Log
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ILogger GetLogger(string context)
     {
-        return new BaseLogger(DefaultSinks, context);
+        if (!loggers.ContainsKey(context))
+        {
+            loggers.Add(context, new BaseLogger(DefaultSinks, context));
+        }
+        return loggers[context];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

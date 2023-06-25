@@ -31,19 +31,6 @@ public struct Pointer : IDisposable
         return new Pointer(NativeMemory.Alloc(size), size);
     }
 
-    // /// <summary>
-    // /// get a pointer to of an object with the given size
-    // /// </summary>
-    // /// <param name="ptr"></param>
-    // /// <param name="size">size in bytes</param>
-    // /// <param name="autoCleanUp"></param>
-    // /// <returns></returns>
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    // public static unsafe Pointer MakeFrom<T>(T data, bool autoCleanUp) where T : struct
-    // {
-    //     var p = new Pointer(GCImplementation.GetPointer(data), (uint)sizeof(T), autoCleanUp);
-    //     return p;
-    // }
     
     /// <summary>
     /// get a pointer to of an object with the given size
@@ -67,9 +54,9 @@ public struct Pointer : IDisposable
     /// <param name="autoCleanUp"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe Pointer MakeFrom(uint ptr, uint size, bool autoCleanUp = true) 
+    public static unsafe Pointer MakeFrom(Address ptr, uint size, bool autoCleanUp = true) 
     {
-        var p = new Pointer((uint*)ptr, size, autoCleanUp);
+        var p = new Pointer((uint*)(uint)ptr, size, autoCleanUp);
         return p;
     }
 

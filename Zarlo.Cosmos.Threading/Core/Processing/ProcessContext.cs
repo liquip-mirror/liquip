@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Cosmos.Core;
@@ -9,8 +10,10 @@ namespace Zarlo.Cosmos.Threading.Core.Processing;
 public static unsafe class ProcessContextManager
 {
 
-    public const uint STACK_SIZE_THEAD = 4096;
-    public const uint STACK_SIZE_PROCESS = 4096;
+    public const uint STACK_SIZE_THEAD = 102400;
+    public const uint STACK_SIZE_PROCESS = 102400;
+
+    public const uint STACK_SIZE_SYSCALL = 1024;
     public static uint m_NextCID;
     public static ProcessContext m_CurrentContext;
     public static ProcessContext m_ContextList;
@@ -113,7 +116,22 @@ public static unsafe class ProcessContextManager
         context.type = type;
         context.tid = m_NextCID++;
         context.name = name;
-        context.stacktop = GCImplementation.AllocNewObject(STACK_SIZE_THEAD);
+        switch (type)
+        {
+            case ProcessContextType.THREAD:
+                context.stacktop = GCImplementation.AllocNewObject(STACK_SIZE_THEAD);
+                break;
+            case ProcessContextType.PROCESS:
+            case ProcessContextType.PROCESS_FORK:
+                context.stacktop = GCImplementation.AllocNewObject(STACK_SIZE_PROCESS);
+                break;
+            case ProcessContextType.SYSCALL:
+                context.stacktop = GCImplementation.AllocNewObject(STACK_SIZE_SYSCALL);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+
         context.esp = (uint)SetupStack((uint*)(context.stacktop + 4000));
         context.state = ThreadState.PAUSED;
         context.entry = entry;
@@ -125,7 +143,7 @@ public static unsafe class ProcessContextManager
         {
             context.parent = m_CurrentContext.tid;
         }
-        ContextListMutex.Lock();
+        // ContextListMutex.Lock();
         ProcessContext ctx = m_ContextList;
         while (ctx.next != null)
         {
@@ -133,7 +151,7 @@ public static unsafe class ProcessContextManager
         }
         ctx.next = context;
         GCImplementation.IncRootCount((ushort*)GCImplementation.GetPointer(context));
-        ContextListMutex.Unlock();
+        // ContextListMutex.Unlock();
         return context.tid;
     }
 
@@ -156,7 +174,7 @@ public static unsafe class ProcessContextManager
         {
             context.parent = m_CurrentContext.tid;
         }
-        ContextListMutex.Lock();
+        // ContextListMutex.Lock();
         ProcessContext ctx = m_ContextList;
         while (ctx.next != null)
         {
@@ -164,7 +182,7 @@ public static unsafe class ProcessContextManager
         }
         ctx.next = context;
         GCImplementation.IncRootCount((ushort*)GCImplementation.GetPointer(context));
-        ContextListMutex.Unlock();
+        // ContextListMutex.Unlock();
         return context.tid;
     }
 }
