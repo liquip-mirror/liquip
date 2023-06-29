@@ -1,6 +1,6 @@
 using XSharp;
-using XSharp.Assembler.x86;
 using XSharp.Assembler.x86.SSE;
+
 namespace Zarlo.XSharp.Fluent.SSE;
 
 public class FluentXSharpX86SSE
@@ -27,7 +27,7 @@ public class FluentXSharpX86SSE
         XSRegisters.RegisterXMM source)
     {
         XS.SSE.SubSS(destination, source);
-        
+
         return this;
     }
 
@@ -43,20 +43,17 @@ public class FluentXSharpX86SSE
         XSRegisters.RegisterXMM destination,
         XSRegisters.RegisterXMM source,
         ComparePseudoOpcodes comparision)
-      {
+    {
         XS.SSE.CompareSS(destination, source, comparision);
         return this;
-      }
+    }
 
-      public FluentXSharpX86SSE ConvertSI2SS(
+    public FluentXSharpX86SSE ConvertSI2SS(
         XSRegisters.RegisterXMM destination,
         XSRegisters.Register32 source,
         bool sourceIsIndirect = false)
-      {
-          XS.SSE.ConvertSI2SS(destination, source, sourceIsIndirect);
-          return this;
-      }
-
-
-    
+    {
+        XS.SSE.ConvertSI2SS(destination, source, sourceIsIndirect);
+        return this;
+    }
 }

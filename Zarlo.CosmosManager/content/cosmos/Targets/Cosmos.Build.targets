@@ -1,0 +1,8 @@
+<Project>
+
+    <PropertyGroup>
+        <CosmosDir Condition="$(CosmosDir) == ''">$(MSBuildThisFileDirectory)..\Bin</CosmosDir>
+        <KernelAssembliesDir>$(CosmosDir)/Kernel/</KernelAssembliesDir>
+    </PropertyGroup>
+
+</Project>

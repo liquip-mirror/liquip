@@ -4,17 +4,12 @@ namespace Zarlo.Cosmos.CPUIDObjects;
 
 public class FeatureFlagsObject
 {
-    public int eax { get; private set; }
-    public int ebx { get; private set; }
-    public int ecx { get; private set; }
-    public int edx { get; private set; }
-
     public FeatureFlagsObject()
     {
-        int eax = 0;
-        int ebx = 0;
-        int ecx = 0;
-        int edx = 0;
+        var eax = 0;
+        var ebx = 0;
+        var ecx = 0;
+        var edx = 0;
 
         CPUID.Raw(7, ref eax, ref ebx, ref ecx, ref edx);
 
@@ -57,6 +52,11 @@ public class FeatureFlagsObject
         FSGSBASE = CPUID.HasFlag(ref ebx, 0);
     }
 
+    public int eax { get; }
+    public int ebx { get; }
+    public int ecx { get; }
+    public int edx { get; }
+
     //ebx
     public bool AVX512VL { get; init; }
     public bool AVX512BW { get; init; }
@@ -94,7 +94,7 @@ public class FeatureFlagsObject
 
     public string DebugString()
     {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         sb.Append("eax0: ");
         sb.Append(eax);
         sb.Append(" ebx0: ");

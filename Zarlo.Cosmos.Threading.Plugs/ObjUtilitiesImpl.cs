@@ -2,22 +2,30 @@ using IL2CPU.API;
 using IL2CPU.API.Attribs;
 using XSharp;
 using XSharp.Assembler;
-using Zarlo.Cosmos.Core;
-using Zarlo.XSharp;
+using Zarlo.Cosmos.Threading.Core.Processing;
 
 namespace Zarlo.Cosmos.Threading.Plugs;
 
 [Plug(Target = typeof(ObjUtilities))]
-public static unsafe class ObjUtilitiesImpl
+public static class ObjUtilitiesImpl
 {
     [PlugMethod(Assembler = typeof(ObjUtilitiesGetPointer))]
-    public static uint GetPointer(Delegate aVal) { return 0; }
+    public static uint GetPointer(Delegate aVal)
+    {
+        return 0;
+    }
 
     [PlugMethod(Assembler = typeof(ObjUtilitiesGetPointer))]
-    public static uint GetPointer(Object aVal) { return 0; }
+    public static uint GetPointer(object aVal)
+    {
+        return 0;
+    }
 
     [PlugMethod(Assembler = typeof(ObjUtilitiesGetEntry))]
-    public static uint GetEntryPoint() { return 0; }
+    public static uint GetEntryPoint()
+    {
+        return 0;
+    }
 }
 
 public class ObjUtilitiesGetPointer : AssemblerMethod
@@ -33,10 +41,9 @@ public class ObjUtilitiesGetEntry : AssemblerMethod
 {
     public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
     {
-        XS.Set(XSRegisters.EAX, LabelName.Get(Zarlo.XSharp.Utils.GetMethodDef(
-                typeof(Core.Processing.ProcessorScheduler),
-                nameof(Core.Processing.ProcessorScheduler.EntryPoint),
-                true
+        XS.Set(XSRegisters.EAX, LabelName.Get(XSharp.Utils.GetMethodDef(
+                    typeof(ProcessorScheduler),
+                    nameof(ProcessorScheduler.EntryPoint)
                 )
             )
         );

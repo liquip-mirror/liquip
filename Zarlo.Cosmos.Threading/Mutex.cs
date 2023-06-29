@@ -1,33 +1,29 @@
-
 using System;
-using Microsoft.VisualBasic;
 
 namespace Zarlo.Cosmos.Threading;
 
 public class Mutex
 {
-    int gate;
+    private int gate;
 
     public void Lock(uint ms)
     {
-
-        while (gate != 0) { 
+        while (gate != 0)
+        {
             Thread.Sleep(10);
             ms -= 10;
-            if (ms < 0)
+            if (ms <= 0)
             {
-                throw new TimeoutException("faild to get log in time ");
+                throw new TimeoutException("failed to get log in time ");
             }
         }
+
         gate = 1;
     }
 
     public void Lock()
     {
-        while (gate != 0) {
-            Thread.Sleep(10);
-        }
-        gate = 1;
+        Lock(uint.MaxValue);
     }
 
     public void Unlock()

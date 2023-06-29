@@ -1,14 +1,10 @@
-using XSharp.Assembler;
-
-
 namespace Zarlo.XSharp.Fluent;
 
 public class FluentXSharp
 {
+    public List<Label> UsedLabels = new();
 
-    public List<Label> UsedLabels = new List<Label>();
-
-    [Obsolete()]
+    [Obsolete]
     public static FluentXSharp New()
     {
         return new FluentXSharp();
@@ -18,11 +14,8 @@ public class FluentXSharp
     {
         return new FluentXSharpX86();
     }
-
 }
-
 
 public class FluentXSharpX86 : FluentXSharp
 {
-
 }

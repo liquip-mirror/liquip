@@ -8,5 +8,9 @@ public class x86OpCodes : IOpCodes
     {
         _assembler = assembler;
     }
-    public IBaseAssembler GetAssembler() => _assembler;
+
+    public IBaseAssembler GetAssembler()
+    {
+        return _assembler;
+    }
 }

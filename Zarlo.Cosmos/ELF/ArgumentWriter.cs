@@ -7,7 +7,8 @@ namespace Zarlo.Cosmos.ELF;
 public class ArgumentWriter
 {
     private uint _offset = 50;
-    private Pointer _stack;
+    private readonly Pointer _stack;
+
     internal ArgumentWriter(Pointer stack)
     {
         _stack = stack;
@@ -18,16 +19,16 @@ public class ArgumentWriter
         unsafe
         {
             _stack.Ptr[_offset] = value;
-            _offset+= sizeof(byte);
+            _offset += sizeof(byte);
         }
     }
-    
+
     public void Push(uint value)
     {
         unsafe
         {
             _stack.Ptr[_offset] = value;
-            _offset+= sizeof(uint);
+            _offset += sizeof(uint);
         }
     }
 
@@ -40,9 +41,8 @@ public class ArgumentWriter
             output.Add(0x00);
             fixed (byte* ptr = output.ToArray())
             {
-                Push((uint) ptr);
+                Push((uint)ptr);
             }
-
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Cosmos.System.FileSystem;
+﻿using Cosmos.System.FileSystem;
 using Cosmos.System.FileSystem.Listing;
 using Zarlo.Cosmos.FileSystems.NTFS.IO;
 using Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes;

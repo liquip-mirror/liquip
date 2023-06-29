@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
 
-namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Enums
+[Flags]
+public enum MFTIndexRootFlags
 {
-    [Flags]
-    public enum MFTIndexRootFlags
-    {
-        SmallIndex = 0x00,
-        LargeIndex = 0x01
-    }
+    SmallIndex = 0x00,
+    LargeIndex = 0x01
 }

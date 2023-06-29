@@ -2,12 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using Cosmos.Core;
-using Cosmos.Core.Memory;
 using Zarlo.Cosmos;
-using Zarlo.Cosmos.Driver.VirtIO;
 using Zarlo.Cosmos.Threading;
-using Zarlo.Cosmos.Threading.Core;
 using Zarlo.Cosmos.Threading.Core.Processing;
 using Sys = Cosmos.System;
 
@@ -15,26 +11,21 @@ namespace Test;
 
 public class Kernel : Sys.Kernel
 {
+    private Thread clearThread;
+
+    private readonly ThreadStatic<int> Cycle = new();
+
+    private Thread mainThread;
+    private Process process1;
+    private Process process2;
+    private Process process3;
+    private Process process4;
 
     protected override void OnBoot()
     {
         base.OnBoot();
 
         ProcessorScheduler.Initialize();
-        var a = false;
-        if (a)
-        {
-            int eax = 0;
-            int ebx = 0;
-            int ecx = 0;
-            int edx = 0;
-            CPUID.Raw(1, 1,
-                ref eax,
-                ref ebx,
-                ref ecx,
-                ref edx
-            );
-        }
 
     }
 
@@ -45,21 +36,17 @@ public class Kernel : Sys.Kernel
             Thread.Sleep(1000);
             Console.SetCursorPosition(0, 5);
             Console.WriteLine("Main");
-            List<uint> tids = new List<uint>();
-            var c = ProcessContextManager.m_CurrentContext;
-            while (c != null)
-            {
-                tids.Add(c.tid);
-                c = c.next;
-            }
+            var tids = new List<uint>();
+            Cycle.Value = ProcessorScheduler.interruptCount;
+
 
             Console.WriteLine("");
             Console.SetCursorPosition(0, 6);
             Console.WriteLine("TIDs:" + string.Join(',', tids));
-            Console.WriteLine("Cycle {0}", ProcessorScheduler.interruptCount);
+            Console.WriteLine("Cycle {0}", Cycle.Value);
+            Console.WriteLine("Up time {0}", ProcessorScheduler.interruptCount / 50);
 
             Console.WriteLine("Done Main");
-
         }
     }
 
@@ -67,19 +54,23 @@ public class Kernel : Sys.Kernel
     {
         while (true)
         {
-            Console.SetCursorPosition(0, 10 + ((int)Thread.Current.ThreadID * 2));
+            Cycle.Value = ProcessorScheduler.interruptCount;
+            Console.SetCursorPosition(0, 10 + (int)Thread.Current.ThreadID * 2);
             Console.WriteLine("Test Process PID {0}", Thread.Current.ThreadID);
-            Console.WriteLine("Cycle {0}", ProcessorScheduler.interruptCount);
+            Console.WriteLine("Cycle {0}", Cycle.Value);
             Console.SetCursorPosition(0, 0);
             Thread.Sleep(1000);
         }
     }
 
-    Thread mainThread;
-    Process process1;
-    Process process2;
-    Process process3;
-    Process process4;
+    public void runClear()
+    {
+        while (true)
+        {
+            Console.Clear();
+            Thread.Sleep(10000);
+        }
+    }
 
     protected override void BeforeRun()
     {
@@ -88,6 +79,9 @@ public class Kernel : Sys.Kernel
 
         mainThread = new Thread(runMain);
         mainThread.Start();
+
+        clearThread = new Thread(runClear);
+        clearThread.Start();
 
         process1 = new Process(runProcess);
         process1.MainTread.Start();
@@ -100,13 +94,9 @@ public class Kernel : Sys.Kernel
 
         process4 = new Process(runProcess);
         process4.MainTread.Start();
-
     }
 
     protected override void Run()
     {
-
     }
-
-
 }

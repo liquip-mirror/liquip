@@ -1,5 +1,4 @@
 using XSharp;
-
 using XSharp.Assembler;
 using Zarlo.XSharp.Fluent.FPU;
 using Zarlo.XSharp.Fluent.SSE;
@@ -24,7 +23,7 @@ public static class MiscEx
     {
         _ = new LiteralAssemblerCode($"%ifdef {label}");
         content(me);
-        _ = new LiteralAssemblerCode($"%endif");
+        _ = new LiteralAssemblerCode("%endif");
         return me;
     }
 
@@ -33,7 +32,7 @@ public static class MiscEx
         XS.Cpuid();
         return me;
     }
-    
+
     public static FluentXSharpX86 SSE(this FluentXSharpX86 me, Action<FluentXSharpX86SSE> content)
     {
         content(new FluentXSharpX86SSE());
@@ -51,5 +50,4 @@ public static class MiscEx
         XS.LiteralCode(string.Format("INT {0:X}", interrupt));
         return me;
     }
-
 }

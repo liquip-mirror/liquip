@@ -1,7 +1,6 @@
 namespace Zarlo.Cosmos.Driver.VirtIO.GPU.Struct;
 
-
-public enum GpuCmd: int
+public enum GpuCmd
 {
     GET_DISPLAY_INFO = 0x0100,
     RESOURCE_CREATE_2D,
@@ -14,15 +13,18 @@ public enum GpuCmd: int
     GET_CAPSET_INFO,
     GET_CAPSET,
     GET_EDID,
+
     /* cursor commands */
     UPDATE_CURSOR = 0x0300,
     MOVE_CURSOR,
+
     /* success responses */
     RESP_OK_NODATA = 0x1100,
     RESP_OK_DISPLAY_INFO,
     RESP_OK_CAPSET_INFO,
     RESP_OK_CAPSET,
     RESP_OK_EDID,
+
     /* error responses */
     RESP_ERR_UNSPEC = 0x1200,
     RESP_ERR_OUT_OF_MEMORY,
@@ -32,7 +34,7 @@ public enum GpuCmd: int
     RESP_ERR_INVALID_PARAMETER
 }
 
-public enum GpuFormats: int
+public enum GpuFormats
 {
     B8G8R8A8_UNORM = 1,
     B8G8R8X8_UNORM = 2,
@@ -41,5 +43,5 @@ public enum GpuFormats: int
     R8G8B8A8_UNORM = 67,
     X8B8G8R8_UNORM = 68,
     A8B8G8R8_UNORM = 121,
-    R8G8B8X8_UNORM = 134,
-};
+    R8G8B8X8_UNORM = 134
+}

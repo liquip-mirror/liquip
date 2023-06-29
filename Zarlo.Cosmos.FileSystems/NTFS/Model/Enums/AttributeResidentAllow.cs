@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
 
-namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Enums
+[Flags]
+public enum AttributeResidentAllow
 {
-    [Flags]
-    public enum AttributeResidentAllow
-    {
-        Resident = 1,
-        NonResident = 2
-    }
+    Resident = 1,
+    NonResident = 2
 }

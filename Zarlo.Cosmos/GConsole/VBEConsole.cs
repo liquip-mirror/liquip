@@ -1,11 +1,7 @@
-using System.Runtime.InteropServices;
-using Cosmos.Core;
-using Cosmos.HAL;
-using Cosmos.System.Graphics;
-using Zarlo.Cosmos.Memory;
-using XSharp.Tokens;
 using System;
 using System.Collections.Generic;
+using Cosmos.HAL;
+using Zarlo.Cosmos.Memory;
 
 namespace Zarlo.Cosmos.GConsole;
 
@@ -24,15 +20,41 @@ public struct Point
 
 public class VBEConsole : TextScreenBase, IDisposable
 {
-    public List<CharData[]> TextBuffer = new List<CharData[]>();
+    private Pointer _frameBuffer;
 
-    public Point CursorPos = new Point()
+    public Point CursorPos = new() { X = 0, Y = 0 };
+
+    protected int PixelDepth = 0;
+    public List<CharData[]> TextBuffer = new();
+
+    public override ushort Cols { get; set; }
+    public override ushort Rows { get; set; }
+
+    public override byte this[int x, int y]
     {
-        X = 0,
-        Y = 0
-    };
+        get => (byte)TextBuffer[^y][x].Char;
+        set
+        {
+            var item = TextBuffer[^y][x];
+            item.Char = (char)value;
+            item.Background = Background;
+            item.Foreground = Foreground;
+            DrawLine(TextBuffer.Count - (y + 1), y);
+        }
+    }
 
-    private unsafe Pointer _frameBuffer;
+    public int Size => (int)_frameBuffer.Size;
+
+    public void Dispose()
+    {
+        // If the buffer is allocated, free it.
+        if (_frameBuffer.Size != 0)
+        {
+            _frameBuffer.Dispose();
+        }
+
+        GC.SuppressFinalize(this);
+    }
 
     public override void Clear()
     {
@@ -61,17 +83,25 @@ public class VBEConsole : TextScreenBase, IDisposable
     public override void ScrollUp()
     {
         if (TextBuffer.Count == Rows)
+        {
             TextBuffer.Insert(0, new CharData[Cols]);
+        }
 
         TextBuffer.RemoveAt(TextBuffer.Count);
         var bufferIndex = TextBuffer.Count - Rows;
-        if (bufferIndex < 0) bufferIndex = 0;
+        if (bufferIndex < 0)
+        {
+            bufferIndex = 0;
+        }
+
         DrawLine(bufferIndex, 0);
 
 
         CursorPos.Y--;
         if (CursorPos.Y <= 0)
+        {
             CursorPos.Y = 0;
+        }
     }
 
     public override int GetCursorSize()
@@ -94,11 +124,6 @@ public class VBEConsole : TextScreenBase, IDisposable
         throw new NotImplementedException();
     }
 
-    public override ushort Cols { get; set; }
-    public override ushort Rows { get; set; }
-
-    protected int PixelDepth = 0;
-
     protected int BufferOffset(int x, int y)
     {
         if (x > Cols || x < 0)
@@ -111,7 +136,7 @@ public class VBEConsole : TextScreenBase, IDisposable
             throw new ArgumentOutOfRangeException(nameof(y));
         }
 
-        return (Cols * y) + x;
+        return Cols * y + x;
     }
 
     public void DrawLine(int bufferLine, int consoleLine)
@@ -123,35 +148,15 @@ public class VBEConsole : TextScreenBase, IDisposable
 
     public virtual Pointer Render(
         CharData[] c
-    ) => Pointer.Null;
+    )
+    {
+        return Pointer.Null;
+    }
 
     public virtual Pointer Render(
         CharData c
-    ) => Pointer.Null;
-
-    public override byte this[int x, int y]
+    )
     {
-        get => (byte)TextBuffer[^y][x].Char;
-        set
-        {
-            var item = TextBuffer[^y][x];
-            item.Char = (char)value;
-            item.Background = Background;
-            item.Foreground = Foreground;
-            DrawLine(TextBuffer.Count - (y + 1), y);
-        }
-    }
-
-    public int Size => (int)_frameBuffer.Size;
-
-    public void Dispose()
-    {
-        // If the buffer is allocated, free it.
-        if (_frameBuffer.Size != 0)
-        {
-            _frameBuffer.Dispose();
-        }
-
-        GC.SuppressFinalize(this);
+        return Pointer.Null;
     }
 }

@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Title>Zarlo.XSharp</Title>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="IL2CPU.API" Version="0.1.0-localbuild" />
-    <PackageReference Include="XSharp" Version="0.1.0-localbuild" />
-    <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>Zarlo.XSharp</Title>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="IL2CPU.API" Version="0.1.0-localbuild"/>
+        <PackageReference Include="XSharp" Version="0.1.0-localbuild"/>
+        <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604"/>
+    </ItemGroup>
 </Project>

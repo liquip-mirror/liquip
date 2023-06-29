@@ -1,30 +1,25 @@
-﻿using System;
-using Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
+﻿using Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
 
-namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes
+namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes;
+
+public class AttributeVolumeInformation : Attribute
 {
-    public class AttributeVolumeInformation : Attribute
+    public ulong Reserved { get; set; }
+    public byte MajorVersion { get; set; }
+    public byte MinorVersion { get; set; }
+    public VolumeInformationFlags VolumeInformationFlag { get; set; }
+
+    public override AttributeResidentAllow AllowedResidentStates => AttributeResidentAllow.Resident;
+
+    internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
     {
-        public ulong Reserved { get; set; }
-        public byte MajorVersion { get; set; }
-        public byte MinorVersion { get; set; }
-        public VolumeInformationFlags VolumeInformationFlag { get; set; }
+        base.ParseAttributeResidentBody(data, maxLength, offset);
 
-        public override AttributeResidentAllow AllowedResidentStates
-        {
-            get { return AttributeResidentAllow.Resident; }
-        }
+        // Debug.Assert(maxLength >= 16);
 
-        internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
-        {
-            base.ParseAttributeResidentBody(data, maxLength, offset);
-
-            // Debug.Assert(maxLength >= 16);
-
-            Reserved = BitConverter.ToUInt64(data, offset);
-            MajorVersion = data[offset + 8];
-            MinorVersion = data[offset + 9];
-            VolumeInformationFlag = (VolumeInformationFlags)BitConverter.ToUInt16(data, offset + 10);
-        }
+        Reserved = BitConverter.ToUInt64(data, offset);
+        MajorVersion = data[offset + 8];
+        MinorVersion = data[offset + 9];
+        VolumeInformationFlag = (VolumeInformationFlags)BitConverter.ToUInt16(data, offset + 10);
     }
 }

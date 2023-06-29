@@ -5,7 +5,6 @@ namespace Zarlo.XSharp.Fluent;
 public static partial class RegisterEx
 {
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="destination"></param>
@@ -18,7 +17,8 @@ public static partial class RegisterEx
         XSRegisters.RegisterSize? size = null
     )
     {
-        XS.Set(destination, PlugArgument.Register, sourceDisplacement: sourcePlugArgument.Offset, sourceIsIndirect: true, size: size);
+        XS.Set(destination, PlugArgument.Register, sourceDisplacement: sourcePlugArgument.Offset,
+            sourceIsIndirect: true, size: size);
         return me;
     }
 
@@ -30,17 +30,16 @@ public static partial class RegisterEx
     )
     {
         XS.Set(
-            PlugArgument.Register, 
+            PlugArgument.Register,
             source,
-            destinationDisplacement: destinationPlugArgument.Offset, 
+            destinationDisplacement: destinationPlugArgument.Offset,
             destinationIsIndirect: true,
             size: size
-            );
+        );
         return me;
     }
-    
+
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="destination"></param>
@@ -57,7 +56,6 @@ public static partial class RegisterEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="destination"></param>
@@ -91,7 +89,6 @@ public static partial class RegisterEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="destination"></param>
@@ -118,7 +115,6 @@ public static partial class RegisterEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="destination"></param>
@@ -145,7 +141,6 @@ public static partial class RegisterEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="destination"></param>
@@ -172,7 +167,6 @@ public static partial class RegisterEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="destination"></param>
@@ -199,7 +193,6 @@ public static partial class RegisterEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="destination"></param>
@@ -226,7 +219,6 @@ public static partial class RegisterEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="value"></param>
@@ -240,7 +232,6 @@ public static partial class RegisterEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="value"></param>

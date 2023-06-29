@@ -30,8 +30,10 @@ public class FluentXSharpFPU : FluentXSharpX86
         PlugArgument plugArgument,
         bool destinationIsIndirect = false,
         XSRegisters.RegisterSize? size = null)
-    => FloatLoad(XSRegisters.EBP, destinationIsIndirect, plugArgument.Offset, size);
-    
+    {
+        return FloatLoad(XSRegisters.EBP, destinationIsIndirect, plugArgument.Offset, size);
+    }
+
     public FluentXSharpFPU FloatLoad(
         XSRegisters.Register32 register,
         bool destinationIsIndirect = false,
@@ -102,9 +104,11 @@ public class FluentXSharpFPU : FluentXSharpX86
     public FluentXSharpFPU IntLoad(
         PlugArgument plugArgument,
         bool isIndirect = false,
-        XSRegisters.RegisterSize? size = null) 
-        => IntLoad(XSRegisters.EBP, isIndirect, displacement: plugArgument.Offset, size);
-    
+        XSRegisters.RegisterSize? size = null)
+    {
+        return IntLoad(XSRegisters.EBP, isIndirect, plugArgument.Offset, size);
+    }
+
     public FluentXSharpFPU IntLoad(
         XSRegisters.Register32 destination,
         bool isIndirect = false,
@@ -114,8 +118,8 @@ public class FluentXSharpFPU : FluentXSharpX86
         XS.FPU.IntLoad(destination, isIndirect, displacement, size);
         return this;
     }
-    
-    
+
+
     public FluentXSharpFPU IntStoreWithTruncate(
         XSRegisters.Register32 destination,
         bool isIndirect = false,

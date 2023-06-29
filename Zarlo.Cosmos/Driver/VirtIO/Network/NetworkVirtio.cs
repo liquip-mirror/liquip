@@ -1,26 +1,19 @@
+using System;
+using System.Collections.Generic;
 using Cosmos.Core;
 using Cosmos.HAL;
 using Cosmos.HAL.Network;
-using Zarlo.Cosmos.Logger.Interfaces;
 using Zarlo.Cosmos.Memory;
-using XSharp.Assembler.x86.x87;
-using System;
-using System.Collections.Generic;
 
 namespace Zarlo.Cosmos.Driver.VirtIO.Network;
 
-public class NetworkVirtio: BaseVirtIODevice
+public class NetworkVirtio : BaseVirtIODevice
 {
-    public const int RX_BUFFER_SIZE = 8192; 
+    public const int RX_BUFFER_SIZE = 8192;
     public const int FRAME_SIZE = 1526;
     private readonly PCIDevice _device;
 
-    unsafe Queue<Pointer> _receivedPackets = new Queue<Pointer>();
-
-    void Check()
-    { 
-        if(DeviceID != (ushort)(DeviceTypeVirtIO.NetworkCard)) throw new NotSupportedException(string.Format("wrong DeviceID {0}", DeviceID));
-    }
+    private readonly Queue<Pointer> _receivedPackets = new();
 
     public NetworkVirtio(uint bus, uint slot, uint function) : base(bus, slot, function)
     {
@@ -30,6 +23,17 @@ public class NetworkVirtio: BaseVirtIODevice
     public NetworkVirtio(PCIDevice device) : base(device)
     {
         Check();
+    }
+
+
+    public MACAddress MACAddress { get; }
+
+    private void Check()
+    {
+        if (DeviceID != (ushort)DeviceTypeVirtIO.NetworkCard)
+        {
+            throw new NotSupportedException(string.Format("wrong DeviceID {0}", DeviceID));
+        }
     }
 
     public bool QueueBytes(byte[] buffer, int offset, int length)
@@ -53,18 +57,15 @@ public class NetworkVirtio: BaseVirtIODevice
 
     public int BytesAvailable()
     {
-        if (_receivedPackets.Count == 0) return 0;
+        if (_receivedPackets.Count == 0)
+        {
+            return 0;
+        }
+
         return (int)_receivedPackets.Peek().Size;
     }
 
-    void IRQ_handler(ref INTs.IRQContext context)
+    private void IRQ_handler(ref INTs.IRQContext context)
     {
-
     }
-
-    
-    
-    public MACAddress MACAddress { get; }
-    
-    
 }

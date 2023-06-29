@@ -1,18 +1,22 @@
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using IL2CPU.API;
 using XSharp;
-
 using Zarlo.XSharp.Fluent;
 
 namespace Zarlo.XSharp;
 
 public class ArgumentBuilder
 {
-    public static ArgumentBuilder Inline() => Inline(2);
+    private readonly List<(string Name, int Size)> _index = new();
+
+    private readonly Dictionary<string, Type> _typeIndex = new();
+
+    public static ArgumentBuilder Inline()
+    {
+        return Inline(2);
+    }
 
     public static ArgumentBuilder Inline(int i)
     {
@@ -38,7 +42,10 @@ public class ArgumentBuilder
         return builder;
     }
 
-    public static ArgumentBuilder New() => new ArgumentBuilder();
+    public static ArgumentBuilder New()
+    {
+        return new ArgumentBuilder();
+    }
 
     public static ArgumentBuilder New(params (Type ArgType, string Name)[] args)
     {
@@ -51,12 +58,10 @@ public class ArgumentBuilder
         return output;
     }
 
-    private readonly List<(string Name, int Size)> _index = new List<(string Name, int Size)>();
-
-    private readonly Dictionary<string, Type> _typeIndex = new Dictionary<string, Type>();
-
-    public Type? GetType(string name) =>
-        _typeIndex[name];
+    public Type? GetType(string name)
+    {
+        return _typeIndex[name];
+    }
 
     public void Add<T>(string name, uint? index = null)
     {
@@ -128,7 +133,10 @@ public class ArgumentBuilder
             }
         }
 
-        if (!found) throw new ArgumentException($@"argument not found {name}");
+        if (!found)
+        {
+            throw new ArgumentException($@"argument not found {name}");
+        }
 
         return i;
     }
@@ -146,7 +154,7 @@ public class ArgumentBuilder
     }
 
     public void PrintComment()
-    { 
+    {
         foreach (var item in _index)
         {
             XS.LiteralCode($@"; {GetOffset(item.Name)}");

@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Zarlo.Cosmos.Logger.Interfaces;
 
 // ReSharper disable InvocationIsSkipped
@@ -17,8 +16,12 @@ public class ConsoleSink : ISink
         DoRaw(context, logLevel, message, data.ToArray());
     }
 
+    public void Dispose()
+    {
+    }
 
-    void DoRaw(string context, LogLevel logLevel, string message, params object[] data)
+
+    private void DoRaw(string context, LogLevel logLevel, string message, params object[] data)
     {
         var logLevelMessage = logLevel switch
         {
@@ -51,13 +54,12 @@ public class ConsoleSink : ISink
         Console.BackgroundColor = ConsoleColor.White;
         Console.Write("] ");
         Console.Write(message, data.ToArray());
-        if (!message.EndsWith(Environment.NewLine)) Console.Write(Environment.NewLine);
+        if (!message.EndsWith(Environment.NewLine))
+        {
+            Console.Write(Environment.NewLine);
+        }
 
         Console.BackgroundColor = bg;
         Console.ForegroundColor = fg;
-    }
-
-    public void Dispose()
-    {
     }
 }

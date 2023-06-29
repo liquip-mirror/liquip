@@ -5,7 +5,6 @@ namespace Zarlo.XSharp.Fluent;
 public static class ReturnEx
 {
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <returns></returns>
@@ -16,7 +15,6 @@ public static class ReturnEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="aReturnSize"></param>
@@ -28,7 +26,6 @@ public static class ReturnEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <returns></returns>

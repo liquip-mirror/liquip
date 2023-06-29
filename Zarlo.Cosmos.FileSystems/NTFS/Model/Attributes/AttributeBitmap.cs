@@ -1,40 +1,36 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
 using Zarlo.Cosmos.FileSystems.NTFS.Utility;
 
-namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes
+namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes;
+
+public class AttributeBitmap : Attribute
 {
-    public class AttributeBitmap : Attribute
+    public BitArray Bitfield { get; set; }
+
+    public override AttributeResidentAllow AllowedResidentStates =>
+        AttributeResidentAllow.Resident | AttributeResidentAllow.NonResident;
+
+    internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
     {
-        public BitArray Bitfield { get; set; }
+        base.ParseAttributeResidentBody(data, maxLength, offset);
 
-        public override AttributeResidentAllow AllowedResidentStates
-        {
-            get { return AttributeResidentAllow.Resident | AttributeResidentAllow.NonResident; }
-        }
+        // Debug.Assert(maxLength >= 1);
 
-        internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
-        {
-            base.ParseAttributeResidentBody(data, maxLength, offset);
+        var tmpData = new byte[maxLength];
+        Array.Copy(data, offset, tmpData, 0, maxLength);
 
-            // Debug.Assert(maxLength >= 1);
+        Bitfield = new BitArray(tmpData);
+    }
 
-            byte[] tmpData = new byte[maxLength];
-            Array.Copy(data, offset, tmpData, 0, maxLength);
+    internal override void ParseAttributeNonResidentBody(Ntfs ntfsInfo)
+    {
+        base.ParseAttributeNonResidentBody(ntfsInfo);
 
-            Bitfield = new BitArray(tmpData);
-        }
+        // Get all chunks
+        var data = NtfsUtils.ReadFragments(ntfsInfo, NonResidentHeader.Fragments);
 
-        internal override void ParseAttributeNonResidentBody(Ntfs ntfsInfo)
-        {
-            base.ParseAttributeNonResidentBody(ntfsInfo);
-
-            // Get all chunks
-            byte[] data = NtfsUtils.ReadFragments(ntfsInfo, NonResidentHeader.Fragments);
-
-            // Parse
-            Bitfield = new BitArray(data);
-        }
+        // Parse
+        Bitfield = new BitArray(data);
     }
 }

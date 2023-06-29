@@ -1,9 +1,8 @@
-﻿namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Enums
+﻿namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
+
+public enum AttributeFlags : ushort
 {
-    public enum AttributeFlags : ushort
-    {
-        Compressed = 0x0001,
-        Encrypted = 0x4000,
-        Sparse = 0x8000
-    }
+    Compressed = 0x0001,
+    Encrypted = 0x4000,
+    Sparse = 0x8000
 }

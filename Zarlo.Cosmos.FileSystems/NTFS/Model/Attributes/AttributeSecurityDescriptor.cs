@@ -1,52 +1,48 @@
 ﻿using Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
 
-namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes
+namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes;
+
+public class AttributeSecurityDescriptor : Attribute
 {
-    public class AttributeSecurityDescriptor : Attribute
+    /*public byte Revision { get; set; }
+    public ControlFlags ControlFlags { get; set; }
+    public uint OffsetToUserSID { get; set; }
+    public uint OffsetToGroupSID { get; set; }
+    public uint OffsetToSACL { get; set; }
+    public uint OffsetToDACL { get; set; }
+
+    public ACL SACL { get; set; }
+    public ACL DACL { get; set; }
+    public SecurityIdentifier UserSID { get; set; }
+    public SecurityIdentifier GroupSID { get; set; }*/
+
+    public override AttributeResidentAllow AllowedResidentStates => AttributeResidentAllow.Resident;
+
+    internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
     {
-        /*public byte Revision { get; set; }
-        public ControlFlags ControlFlags { get; set; }
-        public uint OffsetToUserSID { get; set; }
-        public uint OffsetToGroupSID { get; set; }
-        public uint OffsetToSACL { get; set; }
-        public uint OffsetToDACL { get; set; }
+        base.ParseAttributeResidentBody(data, maxLength, offset);
+        /*
+        // Debug.Assert(maxLength >= 20);
 
-        public ACL SACL { get; set; }
-        public ACL DACL { get; set; }
-        public SecurityIdentifier UserSID { get; set; }
-        public SecurityIdentifier GroupSID { get; set; }*/
+        Revision = data[offset];
+        ControlFlags = (ControlFlags)BitConverter.ToUInt16(data, offset + 2);
+        OffsetToUserSID = BitConverter.ToUInt32(data, offset + 4);
+        OffsetToGroupSID = BitConverter.ToUInt32(data, offset + 8);
+        OffsetToSACL = BitConverter.ToUInt32(data, offset + 12);
+        OffsetToDACL = BitConverter.ToUInt32(data, offset + 16);
 
-        public override AttributeResidentAllow AllowedResidentStates
+        if (OffsetToUserSID != 0)
+            UserSID = new SecurityIdentifier(data, offset + (int)OffsetToUserSID);
+        if (OffsetToGroupSID != 0)
+            GroupSID = new SecurityIdentifier(data, offset + (int)OffsetToGroupSID);
+
+        if (OffsetToSACL != 0 && ControlFlags.HasFlag(ControlFlags.SystemAclPresent))
         {
-            get { return AttributeResidentAllow.Resident; }
+            SACL = ACL.ParseACL(data, 8, (int)(offset + OffsetToSACL));
         }
-
-        internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
+        if (OffsetToDACL != 0 && ControlFlags.HasFlag(ControlFlags.DiscretionaryAclPresent))
         {
-            base.ParseAttributeResidentBody(data, maxLength, offset);
-            /*
-            // Debug.Assert(maxLength >= 20);
-
-            Revision = data[offset];
-            ControlFlags = (ControlFlags)BitConverter.ToUInt16(data, offset + 2);
-            OffsetToUserSID = BitConverter.ToUInt32(data, offset + 4);
-            OffsetToGroupSID = BitConverter.ToUInt32(data, offset + 8);
-            OffsetToSACL = BitConverter.ToUInt32(data, offset + 12);
-            OffsetToDACL = BitConverter.ToUInt32(data, offset + 16);
-
-            if (OffsetToUserSID != 0)
-                UserSID = new SecurityIdentifier(data, offset + (int)OffsetToUserSID);
-            if (OffsetToGroupSID != 0)
-                GroupSID = new SecurityIdentifier(data, offset + (int)OffsetToGroupSID);
-
-            if (OffsetToSACL != 0 && ControlFlags.HasFlag(ControlFlags.SystemAclPresent))
-            {
-                SACL = ACL.ParseACL(data, 8, (int)(offset + OffsetToSACL));
-            }
-            if (OffsetToDACL != 0 && ControlFlags.HasFlag(ControlFlags.DiscretionaryAclPresent))
-            {
-                DACL = ACL.ParseACL(data, 8, (int)(offset + OffsetToDACL));
-            }*/
-        }
+            DACL = ACL.ParseACL(data, 8, (int)(offset + OffsetToDACL));
+        }*/
     }
 }

@@ -10,8 +10,6 @@ public class RegisterYMM : RegisterXMM
     }
 }
 
-
 public static partial class Registers
 {
-    
 }

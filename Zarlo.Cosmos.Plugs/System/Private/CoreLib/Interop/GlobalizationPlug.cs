@@ -5,7 +5,6 @@ namespace Zarlo.Cosmos.Plugs.System.Private.CoreLib.Interop;
 [Plug("Interop+Globalization, System.Private.CoreLib")]
 public class GlobalizationPlug
 {
-
     public static unsafe int ToAscii(uint flags, char* src, int srcLen, char* dstBuffer, int dstBufferCapacity)
     {
         var dstIndex = 0;
@@ -14,13 +13,17 @@ public class GlobalizationPlug
             var c = src[i];
             if (c < 255)
             {
-                if (dstIndex > dstBufferCapacity - 1) return 0; // error need a bigger buffer
+                if (dstIndex > dstBufferCapacity - 1)
+                {
+                    return 0; // error need a bigger buffer
+                }
+
                 dstBuffer[dstIndex] = c;
                 dstIndex++;
             }
         }
 
-        dstBuffer[dstIndex] = (Char)0x00;
+        dstBuffer[dstIndex] = (char)0x00;
         return dstIndex;
     }
 
@@ -31,12 +34,16 @@ public class GlobalizationPlug
         {
             var c = src[i];
 
-            if (dstIndex > dstBufferCapacity - 1) return 0; // error need a bigger buffer
+            if (dstIndex > dstBufferCapacity - 1)
+            {
+                return 0; // error need a bigger buffer
+            }
+
             dstBuffer[dstIndex] = c;
             dstIndex++;
         }
 
-        dstBuffer[dstIndex] = (Char)0x00;
+        dstBuffer[dstIndex] = (char)0x00;
         return dstIndex;
     }
 }

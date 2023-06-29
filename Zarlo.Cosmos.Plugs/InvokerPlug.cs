@@ -1,18 +1,15 @@
-using Zarlo.Cosmos.ELF;
 using IL2CPU.API;
 using IL2CPU.API.Attribs;
-using XSharp;
+using Zarlo.Cosmos.ELF;
 using Zarlo.XSharp;
 using Zarlo.XSharp.Fluent;
 using static XSharp.XSRegisters;
 
 namespace Zarlo.Cosmos.Plugs;
 
-
 [Plug(Target = typeof(Invoker))]
 public class InvokerPlug
 {
-
     [Inline]
     public static unsafe void _CallCode(
         ref uint offset,
@@ -30,14 +27,12 @@ public class InvokerPlug
         var args = ArgumentBuilder.Inline();
 
         FluentXSharp.NewX86()
-
             .Comment("Load State")
             .SetPointer(EAX, args.GetArg(nameof(eax)))
             .SetPointer(EBX, args.GetArg(nameof(ebx)))
             .SetPointer(ECX, args.GetArg(nameof(ecx)))
             .SetPointer(EDX, args.GetArg(nameof(edx)))
             .SetPointer(EDI, args.GetArg(nameof(edi)))
-            
             .SetPointer(args.GetArg(nameof(esp)), ESP)
             .SetPointer(args.GetArg(nameof(ebp)), EBP)
             .SetPointer(EAX, args.GetArg(nameof(stack)))
@@ -47,12 +42,10 @@ public class InvokerPlug
             .SetPointer(EAX, args.GetArg(nameof(offset)))
             .Call(EAX)
             .SetPointer(ECX, args.GetArg(nameof(stack)))
-            .SetPointer(args.GetArg(nameof(ecx)), EAX, XSRegisters.RegisterSize.Int32)
+            .SetPointer(args.GetArg(nameof(ecx)), EAX, RegisterSize.Int32)
             .SetPointer(ESP, args.GetArg(nameof(esp)))
             .SetPointer(EBP, args.GetArg(nameof(ebp)))
             .Comment("DONE Load State")
             ;
-
     }
-    
 }

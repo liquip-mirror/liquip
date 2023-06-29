@@ -1,49 +1,50 @@
-﻿using System;
-using Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
+﻿using Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
 
-namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes
+namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes;
+
+public class AttributeObjectId : Attribute
 {
-    public class AttributeObjectId : Attribute
+    public Guid ObjectId { get; set; }
+    public Guid BithVolumeId { get; set; }
+    public Guid BithObjectId { get; set; }
+    public Guid DomainId { get; set; }
+
+    public override AttributeResidentAllow AllowedResidentStates => AttributeResidentAllow.Resident;
+
+    internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
     {
-        public Guid ObjectId { get; set; }
-        public Guid BithVolumeId { get; set; }
-        public Guid BithObjectId { get; set; }
-        public Guid DomainId { get; set; }
+        base.ParseAttributeResidentBody(data, maxLength, offset);
 
-        public override AttributeResidentAllow AllowedResidentStates
+        // Debug.Assert(maxLength >= 16);
+
+        var guidBytes = new byte[16];
+
+        Array.Copy(data, offset, guidBytes, 0, 16);
+        ObjectId = new Guid(guidBytes);
+
+        // Parse as much as possible
+        if (maxLength < 32)
         {
-            get { return AttributeResidentAllow.Resident; }
+            return;
         }
 
-        internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
+        Array.Copy(data, offset + 16, guidBytes, 0, 16);
+        BithVolumeId = new Guid(guidBytes);
+
+        if (maxLength < 48)
         {
-            base.ParseAttributeResidentBody(data, maxLength, offset);
-
-            // Debug.Assert(maxLength >= 16);
-
-            byte[] guidBytes = new byte[16];
-
-            Array.Copy(data, offset, guidBytes, 0, 16);
-            ObjectId = new Guid(guidBytes);
-
-            // Parse as much as possible
-            if (maxLength < 32)
-                return;
-
-            Array.Copy(data, offset + 16, guidBytes, 0, 16);
-            BithVolumeId = new Guid(guidBytes);
-
-            if (maxLength < 48)
-                return;
-
-            Array.Copy(data, offset + 32, guidBytes, 0, 16);
-            BithObjectId = new Guid(guidBytes);
-
-            if (maxLength < 64)
-                return;
-
-            Array.Copy(data, offset + 48, guidBytes, 0, 16);
-            DomainId = new Guid(guidBytes);
+            return;
         }
+
+        Array.Copy(data, offset + 32, guidBytes, 0, 16);
+        BithObjectId = new Guid(guidBytes);
+
+        if (maxLength < 64)
+        {
+            return;
+        }
+
+        Array.Copy(data, offset + 48, guidBytes, 0, 16);
+        DomainId = new Guid(guidBytes);
     }
 }

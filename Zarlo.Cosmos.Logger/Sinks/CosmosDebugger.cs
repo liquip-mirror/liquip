@@ -17,16 +17,16 @@ public class CosmosDebugger : ISink
         DoRaw(context, logLevel, message, data.ToArray());
     }
 
+    public void Dispose()
+    {
+    }
+
     [Conditional("COSMOSDEBUG")]
-    void DoRaw(string context, LogLevel logLevel, string message, params object[] data)
+    private void DoRaw(string context, LogLevel logLevel, string message, params object[] data)
     {
         // var logger = new Cosmos.Debug.Kernel.Debugger("logger", context);
 
         // logger.SendInternal(string.Format(message, data.ToArray()));
         // should we clean up the logger here or cache it?
-    }
-
-    public void Dispose()
-    {
     }
 }

@@ -2,8 +2,7 @@ namespace Zarlo.Cosmos;
 
 public class TwoDArray<T>
 {
-
-    T[] data;
+    private readonly T[] data;
 
     public TwoDArray(uint x, uint y)
     {
@@ -12,14 +11,7 @@ public class TwoDArray<T>
 
     public T this[int x, int y]
     {
-        set
-        {
-            data[x + (x * y)] = value;
-        }
-        get
-        {
-            return data[x + (x * y)];
-        }
+        set => data[x + x * y] = value;
+        get => data[x + x * y];
     }
-
 }

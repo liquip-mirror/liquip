@@ -7,9 +7,9 @@ namespace Zarlo.Cosmos.ELF;
 
 public unsafe class UnmanagedExecutable
 {
-    private PointerStream _stream;
-    private ElfFile _elf;
+    private readonly ElfFile _elf;
     private byte* _finalExecutable;
+    private readonly PointerStream _stream;
 
     public UnmanagedExecutable(PointerStream elfbin)
     {
@@ -19,8 +19,6 @@ public unsafe class UnmanagedExecutable
 
     public void Load()
     {
-
-
         /*
          * 1. determin the total size of the final loaded sections
          * 2. maloc some space for them and allocate them
@@ -42,7 +40,7 @@ public unsafe class UnmanagedExecutable
                         var size = sym.Value;
                         sym.Value = bssbase;
                         bssbase += size;
-                        sym.Shndx = (ushort) i;
+                        sym.Shndx = (ushort)i;
                     }
                 }
 
@@ -69,16 +67,19 @@ public unsafe class UnmanagedExecutable
 
         foreach (var header in _elf.SectionHeaders)
         {
-            if ((header.Flag & SectionAttributes.Alloc) != SectionAttributes.Alloc) continue;
+            if ((header.Flag & SectionAttributes.Alloc) != SectionAttributes.Alloc)
+            {
+                continue;
+            }
 
             if (header.Type == SectionType.NotPresentInFile)
             {
                 //update the meta data
                 header.Offset = (uint)writer.BaseStream.Position;
 
-                for (int i = 0; i < header.Size; i++)
+                for (var i = 0; i < header.Size; i++)
                 {
-                    writer.Write((byte) 0);
+                    writer.Write((byte)0);
                 }
             }
             else
@@ -91,7 +92,7 @@ public unsafe class UnmanagedExecutable
                 header.Offset = (uint)writer.BaseStream.Position;
 
                 //write the data from the old file into the loaded executible
-                for (int i = 0; i < header.Size; i++)
+                for (var i = 0; i < header.Size; i++)
                 {
                     writer.Write(reader.ReadByte());
                 }
@@ -104,28 +105,28 @@ public unsafe class UnmanagedExecutable
     {
         foreach (var rel in _elf.RelocationInformation)
         {
-            var symval = _elf.Symbols[(int) rel.Symbol].Value;
+            var symval = _elf.Symbols[(int)rel.Symbol].Value;
 
-            var addr = (uint) _finalExecutable +
-                       _elf.SectionHeaders[(int) _elf.SectionHeaders[rel.Section].Info].Offset;
-            var refr = (uint*) (addr + rel.Offset);
+            var addr = (uint)_finalExecutable +
+                       _elf.SectionHeaders[(int)_elf.SectionHeaders[rel.Section].Info].Offset;
+            var refr = (uint*)(addr + rel.Offset);
 
-            var memOffset = (uint) _finalExecutable +
-                            _elf.SectionHeaders[_elf.Symbols[(int) rel.Symbol].Shndx].Offset;
+            var memOffset = (uint)_finalExecutable +
+                            _elf.SectionHeaders[_elf.Symbols[(int)rel.Symbol].Shndx].Offset;
 
             switch (rel.Type)
             {
                 case RelocationType.R38632:
-                    *refr = (symval + *refr) + memOffset; // Symbol + Offset
+                    *refr = symval + *refr + memOffset; // Symbol + Offset
                     break;
                 case RelocationType.R386Pc32:
-                    *refr = (symval + *refr - (uint) refr) + memOffset; // Symbol + Offset - Section Offset
+                    *refr = symval + *refr - (uint)refr + memOffset; // Symbol + Offset - Section Offset
                     break;
                 case RelocationType.R386None:
                     //nop
                     break;
                 default:
-                    Console.WriteLine($"Error RelocationType({(int) rel.Type}) not implmented");
+                    Console.WriteLine($"Error RelocationType({(int)rel.Type}) not implmented");
                     break;
             }
         }
@@ -138,22 +139,28 @@ public unsafe class UnmanagedExecutable
         return Invoke(function, new Invoker(stack));
     }
 
-    public Pointer Invoke(string function, uint stackSize) => Invoke(function, new Invoker(Pointer.New(stackSize)));
-    
-    public Pointer Invoke(string function, Pointer stack) => Invoke(function, new Invoker(stack));
-    
+    public Pointer Invoke(string function, uint stackSize)
+    {
+        return Invoke(function, new Invoker(Pointer.New(stackSize)));
+    }
+
+    public Pointer Invoke(string function, Pointer stack)
+    {
+        return Invoke(function, new Invoker(stack));
+    }
+
     public Pointer Invoke(string function, Invoker invoker)
     {
-        for (int i = 0; i < _elf.Symbols.Count; i++)
+        for (var i = 0; i < _elf.Symbols.Count; i++)
         {
             if (function == _elf.Symbols[i].Name)
             {
                 invoker.Offset =
-                    (uint) _finalExecutable + _elf.Symbols[i].Value +
+                    (uint)_finalExecutable + _elf.Symbols[i].Value +
                     _elf.SectionHeaders[_elf.Symbols[i].Shndx].Offset;
-                
+
                 invoker.CallCode();
-                
+
                 break;
             }
         }

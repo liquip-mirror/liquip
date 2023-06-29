@@ -2,20 +2,29 @@ using System.Runtime.CompilerServices;
 
 namespace Zarlo.Cosmos.Utils;
 
-
-public static partial class Has
+public static class Has
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool Flag(uint value, int bit)
+    {
+        return ((value << bit) & 1) == 1;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool Flag(uint value, int bit) => (((value << bit) & 1) == 1);
+    public static bool Flag(byte value, byte flag)
+    {
+        return (value & flag) == 1;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool Flag(byte value, byte flag) => ((value & flag) == 1);
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool Flag(int value, int flag) => ((value & flag) == 1);
+    public static bool Flag(int value, int flag)
+    {
+        return (value & flag) == 1;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool Flag(long value, long flag) => ((value & flag) == 1);
-
+    public static bool Flag(long value, long flag)
+    {
+        return (value & flag) == 1;
+    }
 }

@@ -1,9 +1,4 @@
-using System.Security;
-using System.Text;
-using Cosmos.HAL.BlockDevice;
 using Cosmos.System.FileSystem;
-using Cosmos.System.FileSystem.FAT;
-using Cosmos.System.FileSystem.ISO9660;
 using Cosmos.System.FileSystem.Listing;
 using Cosmos.System.FileSystem.VFS;
 
@@ -11,25 +6,22 @@ namespace Zarlo.Cosmos.FileSystems;
 
 public class UnixVFS : VFSBase
 {
-    private class MountPoint
-    {
-        public string RootPath { get; set; }
-        public FileSystem FileSystem { get; set; }
-    }
-
-    private List<MountPoint> MountPoints = new List<MountPoint>();
+    private readonly List<MountPoint> MountPoints = new();
 
     /// <summary>
-    /// List of disks.
+    ///     List of disks.
     /// </summary>
-    public List<Disk> Disks { get; } = new List<Disk>();
+    public List<Disk> Disks { get; } = new();
 
-    (string Path, FileSystem FS)? GetFileSystemFromPath(string path)
+    private (string Path, FileSystem FS)? GetFileSystemFromPath(string path)
     {
         var filtered = new List<MountPoint>();
         foreach (var item in MountPoints)
         {
-            if (path.StartsWith(item.RootPath)) filtered.Add(item);
+            if (path.StartsWith(item.RootPath))
+            {
+                filtered.Add(item);
+            }
         }
 
         switch (filtered.Count)
@@ -40,7 +32,7 @@ public class UnixVFS : VFSBase
                 return (filtered[0].RootPath, filtered[0].FileSystem);
         }
 
-        int longest = 0;
+        var longest = 0;
         MountPoint output = null;
         foreach (var item in filtered)
         {
@@ -56,7 +48,6 @@ public class UnixVFS : VFSBase
 
     public override void Initialize(bool aShowInfo)
     {
-        
     }
 
     public override DirectoryEntry CreateFile(string aPath)
@@ -154,7 +145,19 @@ public class UnixVFS : VFSBase
         throw new NotImplementedException();
     }
 
-    public override string GetNextFilesystemLetter() => "";
+    public override string GetNextFilesystemLetter()
+    {
+        return "";
+    }
 
-    public override List<Disk> GetDisks() => Disks;
+    public override List<Disk> GetDisks()
+    {
+        return Disks;
+    }
+
+    private class MountPoint
+    {
+        public string RootPath { get; }
+        public FileSystem FileSystem { get; }
+    }
 }

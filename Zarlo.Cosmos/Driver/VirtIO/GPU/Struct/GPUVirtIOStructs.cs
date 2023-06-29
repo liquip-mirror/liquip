@@ -5,8 +5,6 @@ using System.Runtime.InteropServices;
 
 namespace Zarlo.Cosmos.Driver.VirtIO.GPU.Struct;
 
-
-
 [StructLayout(LayoutKind.Auto)]
 public struct GPUCtrlHdr
 {
@@ -18,10 +16,11 @@ public struct GPUCtrlHdr
     public byte Padding0;
     public byte Padding1;
     public byte Padding2;
-
 }
+
 [StructLayout(LayoutKind.Auto)]
-public struct Rect {
+public struct Rect
+{
     public int X;
     public int Y;
     public int Width;

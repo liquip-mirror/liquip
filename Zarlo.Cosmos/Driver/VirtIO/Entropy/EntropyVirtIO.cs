@@ -1,19 +1,10 @@
-using Cosmos.HAL;
-using Zarlo.Cosmos.Logger.Interfaces;
-using Zarlo.Cosmos.Memory;
-using XSharp.Tokens;
 using System;
+using Cosmos.HAL;
 
 namespace Zarlo.Cosmos.Driver.VirtIO.Entropy;
 
 public class EntropyVirtIO : BaseVirtIODevice
 {
-
-    void Check()
-    { 
-        if(DeviceID != (ushort)(DeviceTypeVirtIO.EntropySource)) throw new NotSupportedException(string.Format("wrong DeviceID {0}", DeviceID));
-    }
-
     // private ILogger _logger = Logger.Log.GetLogger<EntropyVirtIO>();
 
     public EntropyVirtIO(PCIDevice device) : base(device)
@@ -24,6 +15,14 @@ public class EntropyVirtIO : BaseVirtIODevice
     public EntropyVirtIO(uint bus, uint slot, uint function) : base(bus, slot, function)
     {
         Check();
+    }
+
+    private void Check()
+    {
+        if (DeviceID != (ushort)DeviceTypeVirtIO.EntropySource)
+        {
+            throw new NotSupportedException(string.Format("wrong DeviceID {0}", DeviceID));
+        }
     }
 
 

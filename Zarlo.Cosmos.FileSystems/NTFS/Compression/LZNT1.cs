@@ -28,16 +28,14 @@
 // (*) Puyo tools implements a different LZ-style algorithm
 //
 
-using System;
-
 namespace Zarlo.Cosmos.FileSystems.NTFS.Compression;
 
 /// <summary>
-/// Implementation of the LZNT1 algorithm used for compressing NTFS files.
+///     Implementation of the LZNT1 algorithm used for compressing NTFS files.
 /// </summary>
 /// <remarks>
-/// Due to apparent bugs in Window's LZNT1 decompressor, it is <b>strongly</b> recommended that
-/// only the block size of 4096 is used.  Other block sizes corrupt data on decompression.
+///     Due to apparent bugs in Window's LZNT1 decompressor, it is <b>strongly</b> recommended that
+///     only the block size of 4096 is used.  Other block sizes corrupt data on decompression.
 /// </remarks>
 internal sealed class LZNT1
 {
@@ -49,14 +47,14 @@ internal sealed class LZNT1
     // we assume each block is 4KB on decode also.
     private const int FixedBlockSize = 0x1000;
 
-    private static byte[] s_compressionBits = CalcCompressionBits();
-
-    public int BlockSize { get; internal set; }
+    private static readonly byte[] s_compressionBits = CalcCompressionBits();
 
     public LZNT1()
     {
         BlockSize = 4096;
     }
+
+    public int BlockSize { get; internal set; }
 
     public CompressionResult Compress(byte[] source, int sourceOffset, int sourceLength, byte[] compressed,
         int compressedOffset, ref int compressedLength)
@@ -66,19 +64,19 @@ internal sealed class LZNT1
         uint destPointer = 0;
 
         // Set up the Lz Compression Dictionary 
-        LzWindowDictionary lzDictionary = new LzWindowDictionary();
-        bool nonZeroDataFound = false;
+        var lzDictionary = new LzWindowDictionary();
+        var nonZeroDataFound = false;
 
-        for (int subBlock = 0; subBlock < sourceLength; subBlock += BlockSize)
+        for (var subBlock = 0; subBlock < sourceLength; subBlock += BlockSize)
         {
             lzDictionary.MinMatchAmount = 3;
             sourceCurrentBlock = sourcePointer;
 
-            uint decompressedSize = (uint)Math.Min(sourceLength - subBlock, BlockSize);
+            var decompressedSize = (uint)Math.Min(sourceLength - subBlock, BlockSize);
             uint compressedSize = 0;
 
             // Start compression 
-            uint headerPosition = destPointer;
+            var headerPosition = destPointer;
             compressed[compressedOffset + destPointer] = compressed[compressedOffset + destPointer + 1] = 0;
             destPointer += 2;
 
@@ -90,20 +88,20 @@ internal sealed class LZNT1
                 }
 
                 byte bitFlag = 0x0;
-                uint flagPosition = destPointer;
+                var flagPosition = destPointer;
 
                 compressed[compressedOffset + destPointer] = bitFlag; // It will be filled in later 
                 compressedSize++;
                 destPointer++;
 
-                for (int i = 0; i < 8; i++)
+                for (var i = 0; i < 8; i++)
                 {
-                    int lengthBits = 16 - s_compressionBits[sourcePointer - subBlock];
-                    ushort lengthMask = (ushort)((1 << s_compressionBits[sourcePointer - subBlock]) - 1);
+                    var lengthBits = 16 - s_compressionBits[sourcePointer - subBlock];
+                    var lengthMask = (ushort)((1 << s_compressionBits[sourcePointer - subBlock]) - 1);
 
                     lzDictionary.MaxMatchAmount = Math.Min(1 << lengthBits, BlockSize - 1);
 
-                    int[] lzSearchMatch = lzDictionary.Search(source, sourceOffset + subBlock,
+                    var lzSearchMatch = lzDictionary.Search(source, sourceOffset + subBlock,
                         (uint)(sourcePointer - subBlock), decompressedSize);
                     if (lzSearchMatch[1] > 0)
                     {
@@ -115,13 +113,13 @@ internal sealed class LZNT1
 
                         bitFlag |= (byte)(1 << i);
 
-                        int rawOffset = lzSearchMatch[0];
-                        int rawLength = lzSearchMatch[1];
+                        var rawOffset = lzSearchMatch[0];
+                        var rawLength = lzSearchMatch[1];
 
-                        int convertedOffset = (rawOffset - 1) << lengthBits;
-                        int convertedSize = (rawLength - 3) & ((1 << lengthMask) - 1);
+                        var convertedOffset = (rawOffset - 1) << lengthBits;
+                        var convertedSize = (rawLength - 3) & ((1 << lengthMask) - 1);
 
-                        ushort convertedData = (ushort)(convertedOffset | convertedSize);
+                        var convertedData = (ushort)(convertedOffset | convertedSize);
                         WriteBytesLittleEndian(convertedData, compressed, compressedOffset + (int)destPointer);
 
                         lzDictionary.AddEntryRange(source, sourceOffset + subBlock, (int)(sourcePointer - subBlock),
@@ -195,27 +193,26 @@ internal sealed class LZNT1
             compressedLength = 0;
             return CompressionResult.Incompressible;
         }
-        else if (nonZeroDataFound)
+
+        if (nonZeroDataFound)
         {
             compressedLength = (int)destPointer;
             return CompressionResult.Compressed;
         }
-        else
-        {
-            compressedLength = 0;
-            return CompressionResult.AllZeros;
-        }
+
+        compressedLength = 0;
+        return CompressionResult.AllZeros;
     }
 
     public int Decompress(byte[] source, int sourceOffset, int sourceLength, byte[] decompressed,
         int decompressedOffset)
     {
-        int sourceIdx = 0;
-        int destIdx = 0;
+        var sourceIdx = 0;
+        var destIdx = 0;
 
         while (sourceIdx < sourceLength)
         {
-            ushort header = ToUInt16LittleEndian(source, sourceOffset + sourceIdx);
+            var header = ToUInt16LittleEndian(source, sourceOffset + sourceIdx);
             sourceIdx += 2;
 
             // Look for null-terminating sub-block header
@@ -226,7 +223,7 @@ internal sealed class LZNT1
 
             if ((header & SubBlockIsCompressedFlag) == 0)
             {
-                int blockSize = (header & SubBlockSizeMask) + 1;
+                var blockSize = (header & SubBlockSizeMask) + 1;
                 Array.Copy(source, sourceOffset + sourceIdx, decompressed, decompressedOffset + destIdx, blockSize);
                 sourceIdx += blockSize;
                 destIdx += blockSize;
@@ -234,14 +231,14 @@ internal sealed class LZNT1
             else
             {
                 // compressed
-                int destSubBlockStart = destIdx;
-                int srcSubBlockEnd = sourceIdx + (header & SubBlockSizeMask) + 1;
+                var destSubBlockStart = destIdx;
+                var srcSubBlockEnd = sourceIdx + (header & SubBlockSizeMask) + 1;
                 while (sourceIdx < srcSubBlockEnd)
                 {
-                    byte tag = source[sourceOffset + sourceIdx];
+                    var tag = source[sourceOffset + sourceIdx];
                     ++sourceIdx;
 
-                    for (int token = 0; token < 8; ++token)
+                    for (var token = 0; token < 8; ++token)
                     {
                         // We might have hit the end of the sub block whilst still working though
                         // a tag - abort if we have...
@@ -263,16 +260,16 @@ internal sealed class LZNT1
                         }
                         else
                         {
-                            ushort lengthBits = (ushort)(16 - s_compressionBits[destIdx - destSubBlockStart]);
-                            ushort lengthMask = (ushort)((1 << lengthBits) - 1);
+                            var lengthBits = (ushort)(16 - s_compressionBits[destIdx - destSubBlockStart]);
+                            var lengthMask = (ushort)((1 << lengthBits) - 1);
 
-                            ushort phraseToken = ToUInt16LittleEndian(source, sourceOffset + sourceIdx);
+                            var phraseToken = ToUInt16LittleEndian(source, sourceOffset + sourceIdx);
                             sourceIdx += 2;
 
-                            int destBackAddr = destIdx - (phraseToken >> lengthBits) - 1;
-                            int length = (phraseToken & lengthMask) + 3;
+                            var destBackAddr = destIdx - (phraseToken >> lengthBits) - 1;
+                            var length = (phraseToken & lengthMask) + 3;
 
-                            for (int i = 0; i < length; ++i)
+                            for (var i = 0; i < length; ++i)
                             {
                                 decompressed[decompressedOffset + destIdx++] =
                                     decompressed[decompressedOffset + destBackAddr++];
@@ -289,9 +286,10 @@ internal sealed class LZNT1
                 {
                     return destIdx;
                 }
-                else if (destIdx < destSubBlockStart + FixedBlockSize)
+
+                if (destIdx < destSubBlockStart + FixedBlockSize)
                 {
-                    int skip = (destSubBlockStart + FixedBlockSize) - destIdx;
+                    var skip = destSubBlockStart + FixedBlockSize - destIdx;
                     Array.Clear(decompressed, decompressedOffset + destIdx, skip);
                     destIdx += skip;
                 }
@@ -303,11 +301,11 @@ internal sealed class LZNT1
 
     private static byte[] CalcCompressionBits()
     {
-        byte[] result = new byte[4096];
+        var result = new byte[4096];
         byte offsetBits = 0;
 
-        int y = 0x10;
-        for (int x = 0; x < result.Length; x++)
+        var y = 0x10;
+        for (var x = 0; x < result.Length; x++)
         {
             result[x] = (byte)(4 + offsetBits);
             if (x == y)

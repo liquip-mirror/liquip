@@ -1,6 +1,5 @@
 using IL2CPU.API.Attribs;
 
-
 namespace Zarlo.Cosmos.Plugs.System.Private.CoreLib.Interop.Sys;
 
 [Plug("Interop, System.Private.CoreLib")]

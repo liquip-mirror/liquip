@@ -1,11 +1,10 @@
 using XSharp;
-using XSharp;
+
 namespace Zarlo.XSharp.Fluent;
 
 public static partial class RegisterEx
 {
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="destinationValue"></param>
@@ -25,7 +24,6 @@ public static partial class RegisterEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="register"></param>
@@ -45,7 +43,6 @@ public static partial class RegisterEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="label"></param>
@@ -65,7 +62,6 @@ public static partial class RegisterEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <param name="value"></param>
@@ -80,7 +76,6 @@ public static partial class RegisterEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <returns></returns>
@@ -91,7 +86,6 @@ public static partial class RegisterEx
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="me"></param>
     /// <returns></returns>
@@ -100,7 +94,7 @@ public static partial class RegisterEx
         me.Popfd();
         return me;
     }
-    
+
     public static FluentXSharpX86 PopAllRegisters(this FluentXSharpX86 me)
     {
         XS.PopAllRegisters();
@@ -112,5 +106,4 @@ public static partial class RegisterEx
         XS.PushAllRegisters();
         return me;
     }
-    
 }

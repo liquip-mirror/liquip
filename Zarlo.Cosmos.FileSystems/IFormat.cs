@@ -5,8 +5,6 @@ namespace Zarlo.Cosmos.FileSystems;
 
 public interface IFormat
 {
-
     public void Format(ManagedPartition partition);
     public void Format(Partition partition);
-
 }

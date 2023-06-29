@@ -2,8 +2,7 @@ namespace Zarlo.Cosmos.Memory;
 
 public struct Address
 {
-    
-    #if IS64BIT
+#if IS64BIT
     private UInt64 _value;
     public Address(UInt64 value)
     {
@@ -20,40 +19,47 @@ public struct Address
 
     public bool Is64Bit => true;
 
-    #else
-    private UInt32 _value;
+#else
+    private readonly uint _value;
 
     public bool Is64Bit => false;
 
-    public Address(UInt32 value)
+    public Address(uint value)
     {
         _value = value;
     }
-    #endif
+#endif
 
-    public bool Is32Bit => _value > UInt16.MaxValue && _value < UInt64.MinValue;
-    public bool Is16Bit => _value < UInt32.MaxValue;
+    public bool Is32Bit => _value > ushort.MaxValue && _value < ulong.MinValue;
+    public bool Is16Bit => _value < uint.MaxValue;
 
-    public static explicit operator Address(UInt16 value) {
+    public static explicit operator Address(ushort value)
+    {
         return new Address(value);
     }
 
-    public static explicit operator Address(UInt32 value) {
+    public static explicit operator Address(uint value)
+    {
         return new Address(value);
     }
 
-    public static implicit operator UInt16(Address me) {
+    public static implicit operator ushort(Address me)
+    {
         return (ushort)me._value;
     }
 
-    public static implicit operator UInt32(Address me) {
+    public static implicit operator uint(Address me)
+    {
         return me._value;
     }
 
     public static Address operator +(Address a, Address b)
-        => new Address(a + b);
+    {
+        return new Address(a + b);
+    }
 
     public static Address operator -(Address a, Address b)
-        => new Address(a - b);
-
+    {
+        return new Address(a - b);
+    }
 }

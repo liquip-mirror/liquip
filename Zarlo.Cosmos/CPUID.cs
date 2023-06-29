@@ -5,22 +5,37 @@ using System.Runtime.CompilerServices;
 using Cosmos.Core;
 using Zarlo.Cosmos.CPUIDObjects;
 using Zarlo.Cosmos.Utils;
-using IL2CPU.API;
-using IL2CPU.API.Attribs;
-using XSharp;
 using Zarlo.XSharp;
-using Zarlo.XSharp.Fluent;
-
 
 namespace Zarlo.Cosmos;
 
 // https://sandpile.org/x86/cpuid.htm
 
-
 public class CPUID
 {
+    public static readonly ProcessorInfoObject ProcessorInfo;
 
-    public static void Raw(uint type, uint subType, ref int eax, ref int ebx, ref int ecx, ref int edx) => throw new ImplementedInPlugException();
+    public static readonly CacheConfigurationObject CacheConfiguration;
+
+    public static readonly PowerManagementInformationObject PowerManagementInformation;
+
+    public static readonly ProcessorFrequencyInformationObject ProcessorFrequencyInformation;
+
+    public static readonly FeatureFlagsObject FeatureFlags;
+
+    static CPUID()
+    {
+        ProcessorInfo = new ProcessorInfoObject();
+        CacheConfiguration = new CacheConfigurationObject();
+        PowerManagementInformation = new PowerManagementInformationObject();
+        ProcessorFrequencyInformation = new ProcessorFrequencyInformationObject();
+        FeatureFlags = new FeatureFlagsObject();
+    }
+
+    public static void Raw(uint type, uint subType, ref int eax, ref int ebx, ref int ecx, ref int edx)
+    {
+        throw new ImplementedInPlugException();
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Raw(uint type, ref int eax, ref int ebx, ref int ecx, ref int edx)
@@ -36,32 +51,36 @@ public class CPUID
     // }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool HasFlag(ref Int32 data, int flagOffset)
+    public static bool HasFlag(ref int data, int flagOffset)
     {
-        if (flagOffset is < 0 or > 31) throw new ArgumentOutOfRangeException("flagOffset");
+        if (flagOffset is < 0 or > 31)
+        {
+            throw new ArgumentOutOfRangeException("flagOffset");
+        }
+
         return Has.Flag((uint)data, (byte)flagOffset);
         // var flag = data >> flagOffset;
         // return (flag & 1) == 1;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Int32 GetBitRange(Int32 data, int start, int end)
+    public static int GetBitRange(int data, int start, int end)
     {
-        return (Int32)GetBitRange((UInt32)data, start, end);
+        return (int)GetBitRange((uint)data, start, end);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static UInt32 GetBitRange(UInt32 data, int start, int end)
+    public static uint GetBitRange(uint data, int start, int end)
     {
         //shift binary to starting point of range
-        UInt32 shifted = (data >> start);
+        var shifted = data >> start;
 
         //calculate range length (+1 for 0 index)
-        int rangeLength = (end - start) + 1;
+        var rangeLength = end - start + 1;
 
         //get binary mask based on range length 
 
-        UInt32 maskBinary = rangeLength switch
+        uint maskBinary = rangeLength switch
         {
             1 => 0b00000000_00000000_00000000_00000001,
             2 => 0b00000000_00000000_00000000_00000011,
@@ -98,25 +117,6 @@ public class CPUID
             _ => throw new ArgumentOutOfRangeException($@"end {rangeLength}")
         };
 
-        return (shifted & maskBinary);
+        return shifted & maskBinary;
     }
-
-    static CPUID()
-    {
-        ProcessorInfo = new ProcessorInfoObject();
-        CacheConfiguration = new CacheConfigurationObject();
-        PowerManagementInformation = new PowerManagementInformationObject();
-        ProcessorFrequencyInformation = new ProcessorFrequencyInformationObject();
-        FeatureFlags = new FeatureFlagsObject();
-    }
-
-    public static readonly ProcessorInfoObject ProcessorInfo;
-
-    public static readonly CacheConfigurationObject CacheConfiguration;
-
-    public static readonly PowerManagementInformationObject PowerManagementInformation;
-
-    public static readonly ProcessorFrequencyInformationObject ProcessorFrequencyInformation;
-
-    public static readonly FeatureFlagsObject FeatureFlags;
 }

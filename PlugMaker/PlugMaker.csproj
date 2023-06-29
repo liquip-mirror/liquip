@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\Zarlo.Cosmos\Zarlo.Cosmos.csproj" />
+    <ProjectReference Include="..\Zarlo.Cosmos\Zarlo.Cosmos.csproj"/>
   </ItemGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,7 +9,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="output\**" />
+    <None Remove="output\**"/>
   </ItemGroup>
 
 </Project>

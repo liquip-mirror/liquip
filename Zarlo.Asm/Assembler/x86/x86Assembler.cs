@@ -1,24 +1,22 @@
-using System.Runtime.InteropServices;
 using Zarlo.Cosmos.Memory;
 
 namespace Zarlo.Asm.Assembler.x86;
 
 public sealed class x86Assembler : IBaseAssembler
 {
+    private uint BaseOffset;
 
-    public x86OpCodes OpCodes => new x86OpCodes(this);
+    private readonly List<IBaseOpCode> Codes = new();
 
-    List<IBaseOpCode> Codes = new List<IBaseOpCode>();
+    private readonly Dictionary<string, uint> Label = new();
 
-    Dictionary<string, uint> Label = new Dictionary<string, uint>();
+    private readonly Dictionary<string, List<uint>> LabelUse = new();
 
-    Dictionary<string, List<uint>> LabelUse = new Dictionary<string, List<uint>>();
+    private uint PC;
 
-    Pointer? ptr;
+    private Pointer? ptr;
 
-    uint BaseOffset = 0;
-
-    uint PC = 0;
+    public x86OpCodes OpCodes => new(this);
 
     public void AddLabel(string name, uint offset)
     {
@@ -79,12 +77,12 @@ public sealed class x86Assembler : IBaseAssembler
                 ptr[offset + address] = value;
             }
         }
+
         this.ptr = null;
     }
 
     public Span<byte> Build()
     {
-
         uint bufferSize = 0;
         foreach (var item in Codes)
         {
@@ -96,7 +94,6 @@ public sealed class x86Assembler : IBaseAssembler
         Build(ref ptr, 0);
 
         return ptr.ToSpan();
-
     }
 
     public void Dispose()
@@ -107,7 +104,6 @@ public sealed class x86Assembler : IBaseAssembler
 
     public void Emit(uint offset, Span<byte> data)
     {
-
     }
 
     public uint GetOpCodeCount()
@@ -120,7 +116,11 @@ public sealed class x86Assembler : IBaseAssembler
         throw new NotImplementedException();
     }
 
-    public uint GetPC() => PC;
+    public uint GetPC()
+    {
+        return PC;
+    }
+
     public void RemoveOpCode(uint index)
     {
         Codes.RemoveAt((int)index);
@@ -144,6 +144,5 @@ public sealed class x86Assembler : IBaseAssembler
         }
 
         LabelUse[name].Add(offset);
-
     }
 }

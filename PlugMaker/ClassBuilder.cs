@@ -1,18 +1,11 @@
-using System.ComponentModel;
 using System.Reflection;
 using System.Text;
-using IL2CPU.API;
-using IL2CPU.API.Attribs;
-using XSharp.Assembler;
 
 namespace PlugMaker;
 
-
 public static class ClassBuilder
 {
-
-
-    public static Dictionary<Type, HashSet<MethodInfo>> classes = new Dictionary<Type, HashSet<MethodInfo>>();
+    public static Dictionary<Type, HashSet<MethodInfo>> classes = new();
 
     public static void Add(List<MethodInfo> methods)
     {
@@ -25,7 +18,6 @@ public static class ClassBuilder
             }
 
             classes[classType].Add(item);
-
         }
     }
 
@@ -48,13 +40,12 @@ public static class ClassBuilder
 
         foreach (var item in classes)
         {
-
             var sb = new StringBuilder();
             var savePath = "./output";
             var nameSpace = string.IsNullOrWhiteSpace(item.Key.Namespace) ? "" : $@".{item.Key.Namespace}";
 
             if (!string.IsNullOrWhiteSpace(item.Key.Namespace))
-            { 
+            {
                 foreach (var p in item.Key.Namespace.Split('.'))
                 {
                     savePath = savePath + '/' + p;
@@ -73,13 +64,14 @@ public static class ClassBuilder
 
             savePath = $@"{savePath}/{item.Key.FullName.Split('.').Last()}.{ii++}.cs";
 
-            for (int i = 0; i < classNames.Length; i++)
+            for (var i = 0; i < classNames.Length; i++)
             {
                 var className = classNames[i];
                 if (i == classNames.Length - 1)
                 {
                     sb.AppendLine($@"[IL2CPU_Plug( typeof({item.Key.FullName.Replace("+", ".")}) )]");
                 }
+
                 sb.AppendLine($@"public partial class {className}Plug");
                 sb.AppendLine("{");
             }
@@ -97,7 +89,6 @@ public static class ClassBuilder
 
             // Console.WriteLine(sb.ToString());
             File.WriteAllText(savePath, sb.ToString());
-
         }
 
         Console.WriteLine(ii);
@@ -105,10 +96,10 @@ public static class ClassBuilder
 
 
     public static string BuildParameter(ParameterInfo parameterInfo)
-    { 
+    {
         var sb = new StringBuilder();
 
-        if(parameterInfo.IsIn)
+        if (parameterInfo.IsIn)
         {
             sb.Append("in ");
         }
@@ -132,7 +123,6 @@ public static class ClassBuilder
 
     public static void MakeMethod(StringBuilder sb, MethodInfo method, string cName)
     {
-
         var returnType = method.ReturnType.ToString().Replace("+", ".");
         if (returnType == "System.Void")
         {
@@ -146,12 +136,11 @@ public static class ClassBuilder
             args.IndexOf($@"{cName} me", 0);
         }
 
-        sb.AppendLine(string.Format("    public static {0} {1}({2})", returnType, method.Name, string.Join(", ", args)));
+        sb.AppendLine(string.Format("    public static {0} {1}({2})", returnType, method.Name,
+            string.Join(", ", args)));
         sb.AppendLine("    {");
         sb.AppendLine("        throw new NotImplementedException();");
         sb.AppendLine("    }");
         sb.AppendLine();
-
     }
-
 }

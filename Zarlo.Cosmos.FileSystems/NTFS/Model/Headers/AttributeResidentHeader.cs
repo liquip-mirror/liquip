@@ -1,37 +1,35 @@
-﻿using System;
-using Zarlo.Cosmos.FileSystems.NTFS.Utility;
+﻿using Zarlo.Cosmos.FileSystems.NTFS.Utility;
 
-namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Headers
+namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Headers;
+
+public class AttributeResidentHeader : ISaveableObject
 {
-    public class AttributeResidentHeader : ISaveableObject
+    public uint ContentLength { get; set; }
+    public ushort ContentOffset { get; set; }
+
+    public int GetSaveLength()
     {
-        public uint ContentLength { get; set; }
-        public ushort ContentOffset { get; set; }
+        return 8;
+    }
 
-        public static AttributeResidentHeader ParseHeader(byte[] data, int offset = 0)
-        {
-            // Debug.Assert(data.Length - offset >= 6);
-            // Debug.Assert(offset >= 0);
+    public void Save(byte[] buffer, int offset)
+    {
+        // Debug.Assert(buffer.Length - offset >= GetSaveLength());
 
-            AttributeResidentHeader res = new AttributeResidentHeader();
+        LittleEndianConverter.GetBytes(buffer, offset, ContentLength);
+        LittleEndianConverter.GetBytes(buffer, offset + 4, ContentOffset);
+    }
 
-            res.ContentLength = BitConverter.ToUInt32(data, offset);
-            res.ContentOffset = BitConverter.ToUInt16(data, offset + 4);
+    public static AttributeResidentHeader ParseHeader(byte[] data, int offset = 0)
+    {
+        // Debug.Assert(data.Length - offset >= 6);
+        // Debug.Assert(offset >= 0);
 
-            return res;
-        }
+        var res = new AttributeResidentHeader();
 
-        public int GetSaveLength()
-        {
-            return 8;
-        }
+        res.ContentLength = BitConverter.ToUInt32(data, offset);
+        res.ContentOffset = BitConverter.ToUInt16(data, offset + 4);
 
-        public void Save(byte[] buffer, int offset)
-        {
-            // Debug.Assert(buffer.Length - offset >= GetSaveLength());
-
-            LittleEndianConverter.GetBytes(buffer, offset, ContentLength);
-            LittleEndianConverter.GetBytes(buffer, offset + 4, ContentOffset);
-        }
+        return res;
     }
 }

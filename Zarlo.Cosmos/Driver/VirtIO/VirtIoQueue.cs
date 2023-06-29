@@ -2,24 +2,12 @@ using Zarlo.Cosmos.Memory;
 
 namespace Zarlo.Cosmos.Driver.VirtIO;
 
-
 public class VirtIoQueue
 {
-
     public const byte RingFlags = 0;
     public const byte RingIndex = 2;
     public const byte RingRings = 4;
     public const byte RingUsedEvent = 6;
-
-
-    public ushort Size { get; }
-
-    public uint DescriptorSize { get; }
-    public uint AvailableSize { get; }
-    public uint UsedSize { get; }
-
-    public Pointer Buffer { get; }
-    public uint BufferSize { get; }
 
     private ushort index;
 
@@ -35,12 +23,25 @@ public class VirtIoQueue
         Buffer = Pointer.New(BufferSize, false);
 
         for (uint i = 0; i < size - 1; i++)
+        {
             DescriptorWrite16(i, VirtQDescriptor.NextDescIdx, (ushort)(i + 1));
-        
-        DescriptorWrite16((uint)(size - 1), VirtQDescriptor.NextDescIdx, 0xFFFF); // Last entry in the list, point it to an invalid value
+        }
+
+        DescriptorWrite16((uint)(size - 1), VirtQDescriptor.NextDescIdx,
+            0xFFFF); // Last entry in the list, point it to an invalid value
 
         index = 0;
     }
+
+
+    public ushort Size { get; }
+
+    public uint DescriptorSize { get; }
+    public uint AvailableSize { get; }
+    public uint UsedSize { get; }
+
+    public Pointer Buffer { get; }
+    public uint BufferSize { get; }
 
     public ushort NextDescriptor()
     {
@@ -54,16 +55,17 @@ public class VirtIoQueue
 
     public void SetHead(ushort head)
     {
-        var availableIndex = AvailableRingRead16(VirtIoQueue.RingIndex);
+        var availableIndex = AvailableRingRead16(RingIndex);
 
         if (availableIndex == ushort.MaxValue)
+        {
             availableIndex = 0;
+        }
 
-        AvailableRingWrite16((uint)(VirtIoQueue.RingRings + availableIndex % Size), head);
-        AvailableRingWrite16(VirtIoQueue.RingIndex, (ushort)(availableIndex + 1));
+        AvailableRingWrite16((uint)(RingRings + availableIndex % Size), head);
+        AvailableRingWrite16(RingIndex, (ushort)(availableIndex + 1));
 
         index = 0;
-
     }
 
     public void DescriptorWrite(uint descriptor, ref VirtQDescriptor value)
@@ -94,14 +96,14 @@ public class VirtIoQueue
         unsafe
         {
             *(ulong*)Buffer.Ptr[descriptor * 16 + offset] = value;
-        }    
+        }
     }
 
     public ushort AvailableRingRead16(uint offset)
     {
         unsafe
         {
-            return (ushort)Buffer.Ptr[(DescriptorSize + offset)];
+            return (ushort)Buffer.Ptr[DescriptorSize + offset];
         }
     }
 
@@ -117,7 +119,7 @@ public class VirtIoQueue
     {
         unsafe
         {
-            return (ushort)Buffer.Ptr[(AvailableSize + offset)];
+            return (ushort)Buffer.Ptr[AvailableSize + offset];
         }
     }
 }

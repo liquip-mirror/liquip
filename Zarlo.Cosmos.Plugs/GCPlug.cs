@@ -1,5 +1,6 @@
 using Cosmos.Core.Memory;
 using IL2CPU.API.Attribs;
+
 namespace Zarlo.Cosmos.Plugs;
 
 [Plug(Target = typeof(GC))]

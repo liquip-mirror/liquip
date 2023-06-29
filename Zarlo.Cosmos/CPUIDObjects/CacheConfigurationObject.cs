@@ -1,23 +1,21 @@
 using System.Text;
-using Cosmos.Core;
 
 namespace Zarlo.Cosmos.CPUIDObjects;
 
 public class CacheConfigurationObject
 {
-    public CacheConfigurationObject()
+    public CacheObject L1D = new(0);
+    public CacheObject L1I = new(1);
+    public CacheObject L2 = new(2);
+
+    public CacheObject GetCache(int index)
     {
+        return new CacheObject(index);
     }
-
-    public CacheObject GetCache(int index) => new CacheObject(index);
-
-    public CacheObject L1D = new CacheObject(0);
-    public CacheObject L1I = new CacheObject(1);
-    public CacheObject L2 = new CacheObject(2);
 
     public string DebugString()
     {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         sb.Append("L1D: ");
         sb.AppendLine(L1D.DebugString());
         sb.Append("L1I: ");
@@ -30,17 +28,12 @@ public class CacheConfigurationObject
 
 public class CacheObject
 {
-    public int eax { get; private set; } = 0;
-    public int ebx { get; private set; } = 0;
-    public int ecx { get; private set; } = 0;
-    public int edx { get; private set; } = 0;
-
     public CacheObject(int id)
     {
-        int eax = 0;
-        int ebx = 0;
-        int ecx = id;
-        int edx = 0;
+        var eax = 0;
+        var ebx = 0;
+        var ecx = id;
+        var edx = 0;
 
         CPUID.Raw(4, ref eax, ref ebx, ref ecx, ref edx);
 
@@ -69,6 +62,11 @@ public class CacheObject
         ComplexIndexing = CPUID.HasFlag(ref edx, 2);
     }
 
+    public int eax { get; }
+    public int ebx { get; }
+    public int ecx { get; }
+    public int edx { get; }
+
     //eax
     public byte CacheType { get; init; }
     public byte CacheLevel { get; init; }
@@ -95,7 +93,7 @@ public class CacheObject
 
     public string DebugString()
     {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         sb.Append("eax0: ");
         sb.Append(eax);
         sb.Append(" ebx0: ");

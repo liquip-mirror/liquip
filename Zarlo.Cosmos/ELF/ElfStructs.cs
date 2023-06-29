@@ -21,7 +21,6 @@ public struct Elf32_Rel
     [FieldOffset(4)] public uint r_info;
 }
 
-
 [StructLayout(LayoutKind.Explicit, Pack = 1)]
 public unsafe struct Elf32_Ehdr
 {
@@ -58,57 +57,56 @@ public struct Elf32_Shdr
 
 public enum SectionType
 {
-    None = 0,  
-    ProgramInformation = 1,  
-    SymbolTable = 2,   
-    StringTable = 3, 
-    RelocationAddend = 4,  
-    NotPresentInFile = 8,  
-    Relocation = 9,  
+    None = 0,
+    ProgramInformation = 1,
+    SymbolTable = 2,
+    StringTable = 3,
+    RelocationAddend = 4,
+    NotPresentInFile = 8,
+    Relocation = 9
 }
 
 [Flags]
 public enum SectionAttributes
 {
     Write = 0x01,
-    Alloc = 0x02  ,
+    Alloc = 0x02,
     Executable = 0x4
 }
-
 
 public enum SymbolBinding
 {
     Local = 0, // Local scope
     Global = 1, // Global scope
-    Weak = 2  // Weak, (ie. __attribute__((weak)))
+    Weak = 2 // Weak, (ie. __attribute__((weak)))
 }
 
 public enum RelocationType
 {
     R386None = 0, // No relocation
     R38632 = 1, // Symbol + Offset
-    R386Pc32 = 2  // Symbol + Offset - Section Offset
-};
+    R386Pc32 = 2 // Symbol + Offset - Section Offset
+}
 
 public enum SymbolType
 {
     None = 0, // No type
     Object = 1, // Variables, arrays, etc.
-    Function = 2,  // Methods or functions
+    Function = 2, // Methods or functions
     Common = 5
 }
 
 public unsafe class Elf32Sym
 {
+    public SymbolBinding Binding;
+    public byte Info;
     public string Name;
     public uint NameOffset;
-    public uint Value;
-    public uint Size;
-    public byte Info;
     public byte Other;
     public ushort Shndx;
-    public SymbolBinding Binding;
+    public uint Size;
     public SymbolType Type;
+    public uint Value;
 
     public Elf32Sym(Elf32_Sym* st)
     {
@@ -119,16 +117,15 @@ public unsafe class Elf32Sym
         Other = st->st_other;
         Shndx = st->st_shndx;
 
-        Binding = (SymbolBinding) (Info >> 0x4);
-        Type = (SymbolType) (Info & 0x0F);
+        Binding = (SymbolBinding)(Info >> 0x4);
+        Type = (SymbolType)(Info & 0x0F);
     }
 }
 
-
 public unsafe class Elf32Rel
 {
-    public uint Offset;
     public uint Info;
+    public uint Offset;
     public int Section;
     public uint Symbol;
     public RelocationType Type;
@@ -139,26 +136,25 @@ public unsafe class Elf32Rel
         Info = st->r_info;
 
         Symbol = Info >> 8;
-        Type = (RelocationType) (byte) Info;
+        Type = (RelocationType)(byte)Info;
     }
 }
 
-
 public unsafe class Elf32Ehdr
 {
-    public ushort Type;
-    public ushort Machine;
-    public uint Version;
-    public uint Entry;
-    public uint Phoff;
-    public uint Shoff;
-    public uint Flags;
     public ushort Ehsize;
+    public uint Entry;
+    public uint Flags;
+    public ushort Machine;
     public ushort Phentsize;
     public ushort Phnum;
+    public uint Phoff;
     public ushort Shentsize;
     public ushort Shnum;
+    public uint Shoff;
     public ushort Shstrndx;
+    public ushort Type;
+    public uint Version;
 
     public Elf32Ehdr(Elf32_Ehdr* st)
     {
@@ -178,20 +174,19 @@ public unsafe class Elf32Ehdr
     }
 }
 
-
 public unsafe class Elf32Shdr
 {
-    public string Name;
-    public uint NameOffset;
-    public SectionType Type;
-    public SectionAttributes Flag;
     public uint Addr;
-    public uint Offset;
-    public uint Size;
-    public uint Link;
-    public uint Info;
     public uint Addralign;
     public uint Entsize;
+    public SectionAttributes Flag;
+    public uint Info;
+    public uint Link;
+    public string Name;
+    public uint NameOffset;
+    public uint Offset;
+    public uint Size;
+    public SectionType Type;
 
     public Elf32Shdr(Elf32_Shdr* st)
     {

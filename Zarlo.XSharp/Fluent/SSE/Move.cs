@@ -14,7 +14,7 @@ public static class MoveEx
     }
 
     public static FluentXSharpX86SSE MoveSS(
-        this FluentXSharpX86SSE me, 
+        this FluentXSharpX86SSE me,
         XSRegisters.RegisterXMM destination,
         XSRegisters.Register32 source,
         bool sourceIsIndirect = false)
@@ -24,7 +24,7 @@ public static class MoveEx
     }
 
     public static FluentXSharpX86SSE MoveSS(
-        this FluentXSharpX86SSE me, 
+        this FluentXSharpX86SSE me,
         XSRegisters.Register32 destination,
         XSRegisters.RegisterXMM source,
         bool destinationIsIndirect = false)
@@ -34,7 +34,7 @@ public static class MoveEx
     }
 
     public static FluentXSharpX86SSE MoveSS(
-        this FluentXSharpX86SSE me, 
+        this FluentXSharpX86SSE me,
         XSRegisters.RegisterXMM destination,
         string sourceLabel,
         bool destinationIsIndirect = false,
@@ -42,8 +42,8 @@ public static class MoveEx
         bool sourceIsIndirect = false,
         int? sourceDisplacement = null)
     {
-        XS.SSE.MoveSS(destination, sourceLabel, destinationIsIndirect, destinationDisplacement, sourceIsIndirect, sourceDisplacement);
+        XS.SSE.MoveSS(destination, sourceLabel, destinationIsIndirect, destinationDisplacement, sourceIsIndirect,
+            sourceDisplacement);
         return me;
     }
-
 }

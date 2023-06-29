@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Title>Zarlo.Cosmos.FileSystems</Title>
-    <Authors>Zarlo</Authors>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Zarlo.Cosmos.Logger\Zarlo.Cosmos.Logger.csproj" />
-  </ItemGroup>
+    <PropertyGroup>
+        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>Zarlo.Cosmos.FileSystems</Title>
+        <Authors>Zarlo</Authors>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Zarlo.Cosmos.Logger\Zarlo.Cosmos.Logger.csproj"/>
+    </ItemGroup>
 </Project>

@@ -4,10 +4,8 @@ using Cosmos.Core.Memory;
 
 namespace Zarlo.Cosmos;
 
-
 public class ZString : IDisposable
 {
-
     public string Value;
 
     public ZString(string data)

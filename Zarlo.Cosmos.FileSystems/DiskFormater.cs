@@ -1,35 +1,30 @@
-using System.Xml;
 using Cosmos.HAL.BlockDevice;
 using Cosmos.System.FileSystem;
 
 namespace Zarlo.Cosmos.FileSystems;
 
 public enum PartitionTableType
-{ 
+{
     MBR,
     GPT
 }
 
-
 public class PartitionTable
-{ 
-
+{
     public PartitionTableType Type { get; set; }
 
     public List<PartitionTableItem> Partitions { get; set; }
 
     public class PartitionTableItem
-    { 
+    {
         public string? Format { get; set; }
         public ulong StartingSector { get; set; }
         public ulong? SectorCount { get; set; }
     }
-
 }
 
 public class DiskFormater
 {
-
     private readonly Dictionary<string, IFormat> _formaters = new();
 
     public void AddFormater(string name, IFormat formater)
@@ -40,7 +35,10 @@ public class DiskFormater
         }
     }
 
-    public IFormat GetFormater(string name) => _formaters[name];
+    public IFormat GetFormater(string name)
+    {
+        return _formaters[name];
+    }
 
     public void FormatPartition(string name, Partition partition)
     {
@@ -49,7 +47,7 @@ public class DiskFormater
 
 
     public void FormatPartition(string name, ManagedPartition partition)
-    { 
+    {
         GetFormater(name).Format(partition);
     }
 
@@ -64,17 +62,15 @@ public class DiskFormater
             {
                 mbr.WritePartitionInformation(
                     new Partition(
-                        disk, 
-                        partition.StartingSector, 
-                        partition.SectorCount ?? (disk.BlockCount - partition.StartingSector)
+                        disk,
+                        partition.StartingSector,
+                        partition.SectorCount ?? disk.BlockCount - partition.StartingSector
                     ),
                     i
-                    );
-                
+                );
+
                 i++;
             }
         }
-        
     }
-
 }

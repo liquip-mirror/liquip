@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using Cosmos.Core.Memory;
 using Cosmos.HAL.BlockDevice;
 
 namespace Zarlo.Cosmos.FileSystems;
@@ -8,6 +5,21 @@ namespace Zarlo.Cosmos.FileSystems;
 public class BlockDeviceStream : Stream
 {
     private readonly BlockDevice _blockDevice;
+    private long position;
+
+    public BlockDeviceStream(BlockDevice blockDevice)
+    {
+        _blockDevice = blockDevice;
+
+        Length = (long)(blockDevice.BlockCount * blockDevice.BlockSize);
+    }
+
+    public BlockDeviceStream(BlockDevice blockDevice, long length)
+    {
+        _blockDevice = blockDevice;
+
+        Length = length;
+    }
 
     private long BlockSize => (long)_blockDevice.BlockSize;
 
@@ -15,38 +27,31 @@ public class BlockDeviceStream : Stream
     public override bool CanSeek => true;
     public override bool CanWrite => true;
     public override long Length { get; }
-    long position = 0;
 
     public override long Position
     {
         get => position;
         set
         {
-            if (value < 0) throw new IndexOutOfRangeException("");
-            if (value > Length) throw new IndexOutOfRangeException("longer then th block device size");
+            if (value < 0)
+            {
+                throw new IndexOutOfRangeException("");
+            }
+
+            if (value > Length)
+            {
+                throw new IndexOutOfRangeException("longer then th block device size");
+            }
+
             position = value;
         }
-    }
-
-    public BlockDeviceStream(BlockDevice blockDevice)
-    {
-        this._blockDevice = blockDevice;
-
-        Length = (long)(blockDevice.BlockCount * blockDevice.BlockSize);
-    }
-
-    public BlockDeviceStream(BlockDevice blockDevice, long length)
-    {
-        this._blockDevice = blockDevice;
-
-        Length = length;
     }
 
     public override int Read(byte[] buffer, int offset, int count)
     {
         var startBlock = GetOffsetBlock(offset);
         var blockCount = GetOffsetBlock(count) + 1;
-        byte[] temp = _blockDevice.NewBlockArray((uint)blockCount);
+        var temp = _blockDevice.NewBlockArray((uint)blockCount);
         _blockDevice.ReadBlock((ulong)startBlock, (ulong)blockCount, ref temp);
         var start = (uint)(_blockDevice.BlockSize * (ulong)startBlock) - offset;
         Array.Copy(temp, start, buffer, 0, count);
@@ -94,7 +99,7 @@ public class BlockDeviceStream : Stream
     {
         var startBlock = GetOffsetBlock(offset);
         var blockCount = GetOffsetBlock(count) + 1;
-        byte[] newBuffer = _blockDevice.NewBlockArray((uint)blockCount);
+        var newBuffer = _blockDevice.NewBlockArray((uint)blockCount);
 
         if (blockCount == 1)
         {
@@ -102,7 +107,7 @@ public class BlockDeviceStream : Stream
         }
         else
         {
-            byte[] temp = _blockDevice.NewBlockArray(1);
+            var temp = _blockDevice.NewBlockArray(1);
             ReadBlock(temp, (int)startBlock, 1);
             Array.Copy(temp, newBuffer, temp.Length);
             ReadBlock(temp, (int)startBlock, 1);

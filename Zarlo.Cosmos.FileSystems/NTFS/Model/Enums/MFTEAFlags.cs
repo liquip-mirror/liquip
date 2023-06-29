@@ -1,10 +1,7 @@
-﻿using System;
+﻿namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
 
-namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Enums
+[Flags]
+public enum MFTEAFlags
 {
-    [Flags]
-    public enum MFTEAFlags
-    {
-        NeedEA = 0x80
-    }
+    NeedEA = 0x80
 }

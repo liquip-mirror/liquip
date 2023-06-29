@@ -6,12 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
-    <PackageReference Include="XSharp" Version="0.1.0-localbuild" />
+    <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604"/>
+    <PackageReference Include="XSharp" Version="0.1.0-localbuild"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Zarlo.Cosmos.Memory\Zarlo.Cosmos.Memory.csproj" />
+    <ProjectReference Include="..\Zarlo.Cosmos.Memory\Zarlo.Cosmos.Memory.csproj"/>
   </ItemGroup>
 
 

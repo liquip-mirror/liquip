@@ -1,15 +1,13 @@
-using Cosmos.Core;
-
 using System.Reflection;
+using Cosmos.Core;
 
 namespace Zarlo.XSharp;
 
 public static class Utils
 {
-
     public static MethodBase GetMethodDef(Assembly aAssembly, string aType, string aMethodName, bool aErrorWhenNotFound)
     {
-        Type xType = aAssembly.GetType(aType, false);
+        var xType = aAssembly.GetType(aType, false);
         if (xType != null)
         {
             MethodBase xMethod = xType.GetMethod(aMethodName);
@@ -18,10 +16,12 @@ public static class Utils
                 return xMethod;
             }
         }
+
         if (aErrorWhenNotFound)
         {
             throw new Exception("Method '" + aType + "::" + aMethodName + "' not found!");
         }
+
         return null;
     }
 
@@ -34,5 +34,4 @@ public static class Utils
     {
         return GetMethodDef(typeof(INTs), "HandleInterrupt_" + aInterrupt.ToString("X2"), false);
     }
-
 }

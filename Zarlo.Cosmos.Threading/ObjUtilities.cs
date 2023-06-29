@@ -3,7 +3,7 @@ using IL2CPU.API.Attribs;
 
 namespace Zarlo.Cosmos.Threading;
 
-public static unsafe class ObjUtilities
+public static class ObjUtilities
 {
     public static uint GetPointer(Delegate aVal)
     {
@@ -11,8 +11,14 @@ public static unsafe class ObjUtilities
     }
 
     [PlugMethod(PlugRequired = true)]
-    public static uint GetPointer(Object aVal) { return 0; }
+    public static uint GetPointer(object aVal)
+    {
+        return 0;
+    }
 
     [PlugMethod(PlugRequired = true)]
-    public static uint GetEntryPoint() { return 0; }
+    public static uint GetEntryPoint()
+    {
+        return 0;
+    }
 }

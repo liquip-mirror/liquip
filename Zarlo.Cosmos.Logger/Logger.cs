@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Zarlo.Cosmos.Logger.Interfaces;
 

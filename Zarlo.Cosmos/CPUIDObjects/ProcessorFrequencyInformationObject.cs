@@ -1,26 +1,15 @@
 using System.Text;
-using Cosmos.Core;
 
 namespace Zarlo.Cosmos.CPUIDObjects;
 
 public class ProcessorFrequencyInformationObject
 {
-    public int eax0 { get; private set; }
-    public int ebx0 { get; private set; }
-    public int ecx0 { get; private set; }
-    public int edx0 { get; private set; }
-
-    public int eax1 { get; private set; }
-    public int ebx1 { get; private set; }
-    public int ecx1 { get; private set; }
-    public int edx1 { get; private set; }
-
     public ProcessorFrequencyInformationObject()
     {
-        int eax0 = 0;
-        int ebx0 = 0;
-        int ecx0 = 0;
-        int edx0 = 0;
+        var eax0 = 0;
+        var ebx0 = 0;
+        var ecx0 = 0;
+        var edx0 = 0;
 
         CPUID.Raw(21, ref eax0, ref ebx0, ref ecx0, ref edx0);
 
@@ -32,10 +21,10 @@ public class ProcessorFrequencyInformationObject
         Denominator = eax0;
         Numerator = ebx0;
         CoreCrystalClockFrequency = ecx0;
-        int eax1 = 0;
-        int ebx1 = 0;
-        int ecx1 = 0;
-        int edx1 = 0;
+        var eax1 = 0;
+        var ebx1 = 0;
+        var ecx1 = 0;
+        var edx1 = 0;
 
         CPUID.Raw(22, ref eax1, ref ebx1, ref ecx1, ref edx1);
 
@@ -48,6 +37,16 @@ public class ProcessorFrequencyInformationObject
         CoreMaximumFrequency = (short)CPUID.GetBitRange(ebx1, 0, 15);
         BusFrequency = (short)CPUID.GetBitRange(ecx1, 0, 15);
     }
+
+    public int eax0 { get; }
+    public int ebx0 { get; }
+    public int ecx0 { get; }
+    public int edx0 { get; }
+
+    public int eax1 { get; }
+    public int ebx1 { get; }
+    public int ecx1 { get; }
+    public int edx1 { get; }
 
     // 0
 
@@ -63,7 +62,7 @@ public class ProcessorFrequencyInformationObject
 
     public string DebugString()
     {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         sb.Append("eax0: ");
         sb.Append(eax0);
         sb.Append("ebx0: ");

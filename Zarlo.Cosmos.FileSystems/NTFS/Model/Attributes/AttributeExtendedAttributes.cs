@@ -1,66 +1,66 @@
-﻿using System.Collections.Generic;
-using Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
+﻿using Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
 using Zarlo.Cosmos.FileSystems.NTFS.Utility;
 
-namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes
+namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes;
+
+public class AttributeExtendedAttributes : Attribute
 {
-    public class AttributeExtendedAttributes : Attribute
+    public List<ExtendedAttribute> ExtendedAttributes { get; set; }
+
+    public override AttributeResidentAllow AllowedResidentStates =>
+        AttributeResidentAllow.Resident | AttributeResidentAllow.NonResident;
+
+    internal override void ParseAttributeNonResidentBody(Ntfs ntfsInfo)
     {
-        public List<ExtendedAttribute> ExtendedAttributes { get; set; }
+        base.ParseAttributeNonResidentBody(ntfsInfo);
 
-        public override AttributeResidentAllow AllowedResidentStates
+        // Get all chunks
+        var data = NtfsUtils.ReadFragments(ntfsInfo, NonResidentHeader.Fragments);
+
+        // Parse
+        // Debug.Assert(data.Length >= 8);
+
+        var extendedAttributes = new List<ExtendedAttribute>();
+        var pointer = 0;
+        while (pointer + 8 <= data.Length) // 8 is the minimum size of an ExtendedAttribute
         {
-            get { return AttributeResidentAllow.Resident | AttributeResidentAllow.NonResident; }
-        }
-
-        internal override void ParseAttributeNonResidentBody(Ntfs ntfsInfo)
-        {
-            base.ParseAttributeNonResidentBody(ntfsInfo);
-
-            // Get all chunks
-            byte[] data = NtfsUtils.ReadFragments(ntfsInfo, NonResidentHeader.Fragments);
-
-            // Parse
-            // Debug.Assert(data.Length >= 8);
-
-            List<ExtendedAttribute> extendedAttributes = new List<ExtendedAttribute>();
-            int pointer = 0;
-            while (pointer + 8 <= data.Length) // 8 is the minimum size of an ExtendedAttribute
+            if (ExtendedAttribute.GetSize(data, pointer) <= 0)
             {
-                if (ExtendedAttribute.GetSize(data, pointer) <= 0)
-                    break;
-
-                ExtendedAttribute ea = ExtendedAttribute.ParseData(data, (int)NonResidentHeader.ContentSize, pointer);
-
-                extendedAttributes.Add(ea);
-
-                pointer += ea.Size;
+                break;
             }
 
-            ExtendedAttributes = extendedAttributes;
+            var ea = ExtendedAttribute.ParseData(data, (int)NonResidentHeader.ContentSize, pointer);
+
+            extendedAttributes.Add(ea);
+
+            pointer += ea.Size;
         }
 
-        internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
+        ExtendedAttributes = extendedAttributes;
+    }
+
+    internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
+    {
+        base.ParseAttributeResidentBody(data, maxLength, offset);
+
+        // Debug.Assert(maxLength >= 8);
+
+        var extendedAttributes = new List<ExtendedAttribute>();
+        var pointer = offset;
+        while (pointer + 8 <= offset + maxLength) // 8 is the minimum size of an ExtendedAttribute
         {
-            base.ParseAttributeResidentBody(data, maxLength, offset);
-
-            // Debug.Assert(maxLength >= 8);
-
-            List<ExtendedAttribute> extendedAttributes = new List<ExtendedAttribute>();
-            int pointer = offset;
-            while (pointer + 8 <= offset + maxLength) // 8 is the minimum size of an ExtendedAttribute
+            if (ExtendedAttribute.GetSize(data, pointer) < 0)
             {
-                if (ExtendedAttribute.GetSize(data, pointer) < 0)
-                    break;
-
-                ExtendedAttribute ea = ExtendedAttribute.ParseData(data, (int)ResidentHeader.ContentLength, pointer);
-
-                extendedAttributes.Add(ea);
-
-                pointer += ea.Size;
+                break;
             }
 
-            ExtendedAttributes = extendedAttributes;
+            var ea = ExtendedAttribute.ParseData(data, (int)ResidentHeader.ContentLength, pointer);
+
+            extendedAttributes.Add(ea);
+
+            pointer += ea.Size;
         }
+
+        ExtendedAttributes = extendedAttributes;
     }
 }

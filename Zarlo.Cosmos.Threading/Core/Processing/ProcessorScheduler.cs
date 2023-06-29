@@ -67,16 +67,10 @@ public static unsafe class ProcessorScheduler
         // if(!HAL.Global.InterruptsEnabled) return;
 
         CPU.DisableInterrupts();
-
-        var ramused = GCImplementation.GetUsedRAM() / 1024 / 1024;
-        interruptCount++;
-        var str = "interruptCount: " + interruptCount +
-        Environment.NewLine + RAT.TotalPageCount +
-        Environment.NewLine + ramused;
-
-        Console.SetCursorPosition(0, 0);
-        Console.WriteLine(str);
-        GCImplementation.Free(str);
+        unchecked
+        {
+            interruptCount++;
+        }
         // Console.WriteLine("SwitchTask {0}", interruptCount);
         if (ProcessContextManager.m_CurrentContext != null)
         {

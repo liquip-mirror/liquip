@@ -2,9 +2,8 @@ using Zarlo.Cosmos.Memory;
 
 namespace Zarlo.Asm.Assembler;
 
-public interface IBaseAssembler: IDisposable
+public interface IBaseAssembler : IDisposable
 {
-
     void Build(ref Pointer ptr, uint offset);
     Span<byte> Build();
 
@@ -27,5 +26,4 @@ public interface IBaseAssembler: IDisposable
 
     void AddOpCodes(IBaseOpCode[] opCodes);
     void AddOpCodes(IBaseOpCode[] opCodes, uint index);
-
 }

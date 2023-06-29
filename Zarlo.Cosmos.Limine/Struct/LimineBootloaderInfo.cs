@@ -9,7 +9,7 @@ public struct LimineBootloaderInfoRequest
     public ulong[] id;
 
     public ulong revision;
-    [MarshalAs(UnmanagedType.LPStruct)] unsafe public LimineBootloaderInfoResponse response;
+    [MarshalAs(UnmanagedType.LPStruct)] public LimineBootloaderInfoResponse response;
 }
 
 [StructLayout(LayoutKind.Sequential)]

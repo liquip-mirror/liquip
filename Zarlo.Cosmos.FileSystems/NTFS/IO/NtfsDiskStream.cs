@@ -1,27 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Zarlo.Cosmos.FileSystems.NTFS.Compression;
+﻿using Zarlo.Cosmos.FileSystems.NTFS.Compression;
 using Zarlo.Cosmos.FileSystems.NTFS.Model;
+using Zarlo.Cosmos.FileSystems.NTFS.Utility;
 
 namespace Zarlo.Cosmos.FileSystems.NTFS.IO;
 
 public class NtfsDiskStream : Stream
 {
+    private readonly uint _bytesPrCluster;
+    private readonly ushort _compressionClusterCount;
     private readonly LZNT1? _compressor;
 
     private readonly Stream _diskStream;
-    private readonly bool _ownsStream;
-    private readonly uint _bytesPrCluster;
-    private readonly ushort _compressionClusterCount;
     private readonly List<DataFragment> _fragments;
-    private long _position;
     private readonly long _length;
-
-    private bool IsEof
-    {
-        get { return _position >= _length; }
-    }
+    private readonly bool _ownsStream;
+    private long _position;
 
     public NtfsDiskStream(Stream diskStream, bool ownsStream, List<DataFragment> fragments, uint bytesPrCluster,
         ushort compressionClusterCount, long length)
@@ -31,7 +24,7 @@ public class NtfsDiskStream : Stream
         _bytesPrCluster = bytesPrCluster;
         _compressionClusterCount = compressionClusterCount;
 
-        _fragments = Utility.Util.Sort(fragments, new DataFragmentComparer());
+        _fragments = Util.Sort(fragments, new DataFragmentComparer());
 
         _length = length;
         _position = 0;
@@ -43,11 +36,13 @@ public class NtfsDiskStream : Stream
         }
 
         long vcn = 0;
-        bool hasCompression = false;
-        for (int i = 0; i < _fragments.Count; i++)
+        var hasCompression = false;
+        for (var i = 0; i < _fragments.Count; i++)
         {
             if (_fragments[i].IsCompressed)
+            {
                 hasCompression = true;
+            }
 
             // Debug.Assert(_fragments[i].StartingVCN == vcn);
             vcn += _fragments[i].Clusters + _fragments[i].CompressedClusters;
@@ -57,6 +52,32 @@ public class NtfsDiskStream : Stream
         // Debug.Assert(!hasCompression);
     }
 
+    private bool IsEof => _position >= _length;
+
+    public override bool CanRead => true;
+
+    public override bool CanSeek => true;
+
+    public override bool CanWrite =>
+        // Not implemented
+        false;
+
+    public override long Length => _length;
+
+    public override long Position
+    {
+        get => _position;
+        set
+        {
+            if (value < 0 || _length < value)
+            {
+                throw new ArgumentOutOfRangeException("value");
+            }
+
+            _position = value;
+        }
+    }
+
     public override void Flush()
     {
         throw new NotImplementedException();
@@ -64,7 +85,7 @@ public class NtfsDiskStream : Stream
 
     public override long Seek(long offset, SeekOrigin origin)
     {
-        long newPosition = offset;
+        var newPosition = offset;
 
         switch (origin)
         {
@@ -82,7 +103,9 @@ public class NtfsDiskStream : Stream
         }
 
         if (newPosition < 0 || _length < newPosition)
+        {
             throw new ArgumentOutOfRangeException(nameof(origin));
+        }
 
         // Set 
         _position = newPosition;
@@ -97,27 +120,27 @@ public class NtfsDiskStream : Stream
 
     public override int Read(byte[] buffer, int offset, int count)
     {
-        int totalRead = 0;
+        var totalRead = 0;
 
         // Determine fragment
         while (count > 0 && _position < _length)
         {
             long fragmentOffset;
-            DataFragment fragment = FindFragment(_position, out fragmentOffset);
+            var fragment = FindFragment(_position, out fragmentOffset);
 
-            long diskOffset = fragment.LCN * _bytesPrCluster;
-            long fragmentLength = fragment.Clusters * _bytesPrCluster;
+            var diskOffset = fragment.LCN * _bytesPrCluster;
+            var fragmentLength = fragment.Clusters * _bytesPrCluster;
 
             int actualRead;
             if (fragment.IsCompressed)
             {
                 // Read and decompress
-                byte[] compressedData = new byte[fragmentLength];
+                var compressedData = new byte[fragmentLength];
                 _diskStream.Seek(diskOffset, SeekOrigin.Begin);
                 _diskStream.Read(compressedData, 0, compressedData.Length);
 
-                int decompressedLength = (int)((fragment.Clusters + fragment.CompressedClusters) * _bytesPrCluster);
-                int toRead = (int)Math.Min(decompressedLength - fragmentOffset,
+                var decompressedLength = (int)((fragment.Clusters + fragment.CompressedClusters) * _bytesPrCluster);
+                var toRead = (int)Math.Min(decompressedLength - fragmentOffset,
                     Math.Min(_length - _position, count));
 
                 // Debug.Assert(decompressedLength == _compressionClusterCount * _bytesPrCluster);
@@ -130,8 +153,8 @@ public class NtfsDiskStream : Stream
                 else
                 {
                     // Decompress temporarily
-                    byte[] tmp = new byte[decompressedLength];
-                    int decompressed = _compressor.Decompress(compressedData, 0, compressedData.Length, tmp, 0);
+                    var tmp = new byte[decompressedLength];
+                    var decompressed = _compressor.Decompress(compressedData, 0, compressedData.Length, tmp, 0);
 
                     toRead = Math.Min(toRead, decompressed);
 
@@ -145,7 +168,7 @@ public class NtfsDiskStream : Stream
             {
                 // Fill with zeroes
                 // How much to fill?
-                int toFill = (int)Math.Min(fragmentLength - fragmentOffset, count);
+                var toFill = (int)Math.Min(fragmentLength - fragmentOffset, count);
 
                 Array.Clear(buffer, offset, toFill);
 
@@ -155,7 +178,7 @@ public class NtfsDiskStream : Stream
             {
                 // Read directly
                 // How much can we read?
-                int toRead = (int)Math.Min(fragmentLength - fragmentOffset, Math.Min(_length - _position, count));
+                var toRead = (int)Math.Min(fragmentLength - fragmentOffset, Math.Min(_length - _position, count));
 
                 // Read it
                 _diskStream.Seek(diskOffset + fragmentOffset, SeekOrigin.Begin);
@@ -172,7 +195,9 @@ public class NtfsDiskStream : Stream
 
             // Check
             if (actualRead == 0)
+            {
                 break;
+            }
         }
 
         return totalRead;
@@ -180,11 +205,11 @@ public class NtfsDiskStream : Stream
 
     private DataFragment FindFragment(long fileIndex, out long offsetInFragment)
     {
-        for (int i = 0; i < _fragments.Count; i++)
+        for (var i = 0; i < _fragments.Count; i++)
         {
-            long fragmentStart = _fragments[i].StartingVCN * _bytesPrCluster;
-            long fragmentEnd = fragmentStart +
-                               (_fragments[i].Clusters + _fragments[i].CompressedClusters) * _bytesPrCluster;
+            var fragmentStart = _fragments[i].StartingVCN * _bytesPrCluster;
+            var fragmentEnd = fragmentStart +
+                              (_fragments[i].Clusters + _fragments[i].CompressedClusters) * _bytesPrCluster;
 
             if (fragmentStart <= fileIndex && fileIndex < fragmentEnd)
             {
@@ -206,45 +231,14 @@ public class NtfsDiskStream : Stream
         throw new InvalidOperationException();
     }
 
-    public override bool CanRead
-    {
-        get { return true; }
-    }
-
-    public override bool CanSeek
-    {
-        get { return true; }
-    }
-
-    public override bool CanWrite
-    {
-        // Not implemented
-        get { return false; }
-    }
-
-    public override long Length
-    {
-        get { return _length; }
-    }
-
-    public override long Position
-    {
-        get { return _position; }
-        set
-        {
-            if (value < 0 || _length < value)
-                throw new ArgumentOutOfRangeException("value");
-
-            _position = value;
-        }
-    }
-
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
 
         if (_ownsStream)
+        {
             _diskStream.Dispose();
+        }
     }
 
     public override void Close()
@@ -252,6 +246,8 @@ public class NtfsDiskStream : Stream
         base.Close();
 
         if (_ownsStream)
+        {
             _diskStream.Close();
+        }
     }
 }

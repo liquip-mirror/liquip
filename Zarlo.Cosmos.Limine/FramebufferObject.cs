@@ -1,43 +1,18 @@
-using System.Drawing;
-using System.Reflection.Metadata;
 using Zarlo.Cosmos.Limine.Struct;
 
 namespace Zarlo.Cosmos.Limine;
 
 public class FramebufferObject
 {
-    public class Mode
+    private static readonly FramebufferRequest framebufferRequest = new()
     {
-        public Mode(VideoMode mode)
-        {
-            Pitch = mode.pitch;
-            Width = mode.width;
-            Height = mode.height;
-            BPP = mode.bpp;
-            MemoryModel = mode.memory_model;
-            RedMaskSize = mode.red_mask_size;
-            RedMaskShift = mode.red_mask_shift;
-            GreenMaskSize = mode.green_mask_size;
-            GreenMaskShift = mode.green_mask_shift;
-            BlueMaskSize = mode.blue_mask_size;
-            BlueMaskShift = mode.blue_mask_shift;
-        }
+        id = new ulong[] { 0xc7b1dd30df4c8b88, 0x0a82e883a194f07b, 0x9d5827dcd881dd75, 0xa3148604f6fab11b },
+        revision = 0
+    };
 
-        public ulong Pitch;
-        public ulong Width;
-        public ulong Height;
-        public ulong BPP;
-        public byte MemoryModel;
-        public byte RedMaskSize;
-        public byte RedMaskShift;
-        public byte GreenMaskSize;
-        public byte GreenMaskShift;
-        public byte BlueMaskSize;
-        public byte BlueMaskShift;
-    }
+    private readonly Framebuffer _framebuffer;
 
     private readonly int _id;
-    private readonly Framebuffer _framebuffer;
 
     public FramebufferObject(int id)
     {
@@ -52,23 +27,11 @@ public class FramebufferObject
 
     public static FramebufferRequest GetRaw => framebufferRequest;
 
-    private static FramebufferRequest framebufferRequest = new FramebufferRequest()
-    {
-        id = new ulong[]
-        {
-            0xc7b1dd30df4c8b88,
-            0x0a82e883a194f07b,
-            0x9d5827dcd881dd75,
-            0xa3148604f6fab11b
-        },
-        revision = 0
-    };
-
     public List<Mode> GetModes()
     {
         var output = new List<Mode>();
 
-        for (int i = 0; i < (int)_framebuffer.mode_count; i++)
+        for (var i = 0; i < (int)_framebuffer.mode_count; i++)
         {
             output.Add(new Mode(_framebuffer.modes[i]));
         }
@@ -78,21 +41,56 @@ public class FramebufferObject
 
     public void CopyFrom(uint x, uint y, ref int[] buffer)
     {
-        var offset = x + (y * _framebuffer.pitch);
+        var offset = x + y * _framebuffer.pitch;
         unsafe
         {
             fixed (int* ptr = buffer)
+            {
                 Buffer.MemoryCopy(_framebuffer.address + offset, ptr, buffer.Length * 4, buffer.Length * 4);
+            }
         }
     }
 
     public void CopyTo(uint x, uint y, ref int[] buffer)
     {
-        var offset = x + (y * _framebuffer.pitch);
+        var offset = x + y * _framebuffer.pitch;
         unsafe
         {
             fixed (int* ptr = buffer)
+            {
                 Buffer.MemoryCopy(ptr, _framebuffer.address + offset, buffer.Length * 4, buffer.Length * 4);
+            }
+        }
+    }
+
+    public class Mode
+    {
+        public byte BlueMaskShift;
+        public byte BlueMaskSize;
+        public ulong BPP;
+        public byte GreenMaskShift;
+        public byte GreenMaskSize;
+        public ulong Height;
+        public byte MemoryModel;
+
+        public ulong Pitch;
+        public byte RedMaskShift;
+        public byte RedMaskSize;
+        public ulong Width;
+
+        public Mode(VideoMode mode)
+        {
+            Pitch = mode.pitch;
+            Width = mode.width;
+            Height = mode.height;
+            BPP = mode.bpp;
+            MemoryModel = mode.memory_model;
+            RedMaskSize = mode.red_mask_size;
+            RedMaskShift = mode.red_mask_shift;
+            GreenMaskSize = mode.green_mask_size;
+            GreenMaskShift = mode.green_mask_shift;
+            BlueMaskSize = mode.blue_mask_size;
+            BlueMaskShift = mode.blue_mask_shift;
         }
     }
 }

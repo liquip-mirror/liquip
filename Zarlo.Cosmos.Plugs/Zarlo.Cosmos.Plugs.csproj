@@ -1,28 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Zarlo.Cosmos\Zarlo.Cosmos.csproj" />
-    <ProjectReference Include="..\Zarlo.Cosmos.Core\Zarlo.Cosmos.Core.csproj" />
-    <ProjectReference Include="..\Zarlo.Cosmos.Threading\Zarlo.Cosmos.Threading.csproj" />
-    <ProjectReference Include="..\Zarlo.XSharp\Zarlo.XSharp.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="build\**" Pack="True" PackagePath="build\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="$(SolutionDir)build\**" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-  <PropertyGroup>
-    <InternalsAssemblyNames>System.Private.CoreLib</InternalsAssemblyNames>
-  </PropertyGroup>
+    <PropertyGroup>
+        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Zarlo.Cosmos\Zarlo.Cosmos.csproj"/>
+        <ProjectReference Include="..\Zarlo.Cosmos.Core\Zarlo.Cosmos.Core.csproj"/>
+        <ProjectReference Include="..\Zarlo.Cosmos.Threading\Zarlo.Cosmos.Threading.csproj"/>
+        <ProjectReference Include="..\Zarlo.XSharp\Zarlo.XSharp.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="build\**" Pack="True" PackagePath="build\"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="$(SolutionDir)build\**" CopyToOutputDirectory="PreserveNewest"/>
+    </ItemGroup>
+    <PropertyGroup>
+        <InternalsAssemblyNames>System.Private.CoreLib</InternalsAssemblyNames>
+    </PropertyGroup>
 </Project>

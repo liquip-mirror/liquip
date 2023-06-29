@@ -1,26 +1,25 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Cosmos.Core;
-using Cosmos.Core.Memory;
 
 namespace Zarlo.Cosmos.Memory;
 
 public struct Pointer : IDisposable
 {
     /// <summary>
-    /// defaults as <see cref="Null"/>
+    ///     defaults as <see cref="Null" />
     /// </summary>
     public static readonly Pointer Default = Null;
 
     /// <summary>
-    /// the Null pointer
+    ///     the Null pointer
     /// </summary>
-    public static unsafe Pointer Null => new Pointer(null, 0);
+    public static unsafe Pointer Null => new(null, 0);
 
     private readonly bool _autoCleanUp;
 
     /// <summary>
-    /// get a pointer to of an object with the given size
+    ///     get a pointer to of an object with the given size
     /// </summary>
     /// <param name="size">size in bytes</param>
     /// <param name="autoCleanUp"></param>
@@ -31,68 +30,73 @@ public struct Pointer : IDisposable
         return new Pointer(NativeMemory.Alloc(size), size);
     }
 
-    
+
     /// <summary>
-    /// get a pointer to of an object with the given size
+    ///     get a pointer to of an object with the given size
     /// </summary>
     /// <param name="ptr"></param>
     /// <param name="size">size in bytes</param>
     /// <param name="autoCleanUp"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe Pointer MakeFrom(uint* ptr, uint size, bool autoCleanUp = true) 
+    public static unsafe Pointer MakeFrom(uint* ptr, uint size, bool autoCleanUp = true)
     {
         var p = new Pointer(ptr, size, autoCleanUp);
         return p;
     }
 
     /// <summary>
-    /// get a pointer to of an object with the given size
+    ///     get a pointer to of an object with the given size
     /// </summary>
     /// <param name="ptr"></param>
     /// <param name="size">size in bytes</param>
     /// <param name="autoCleanUp"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe Pointer MakeFrom(Address ptr, uint size, bool autoCleanUp = true) 
+    public static unsafe Pointer MakeFrom(Address ptr, uint size, bool autoCleanUp = true)
     {
         var p = new Pointer((uint*)(uint)ptr, size, autoCleanUp);
         return p;
     }
 
     /// <summary>
-    /// get a pointer to of an object with the given size
+    ///     get a pointer to of an object with the given size
     /// </summary>
     /// <param name="ptr"></param>
     /// <param name="size">size in bytes</param>
     /// <param name="autoCleanUp"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe Pointer MakeFrom(byte[] data, bool autoCleanUp = true) 
+    public static Pointer MakeFrom(byte[] data, bool autoCleanUp = true)
     {
         var p = new Pointer(data, autoCleanUp);
         return p;
     }
 
     /// <summary>
-    /// get a pointer to of an object with the given size
-    /// auto cleans up
+    ///     get a pointer to of an object with the given size
+    ///     auto cleans up
     /// </summary>
     /// <param name="size">size in bytes</param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe Pointer New(uint size) => New(size, true);
+    public static Pointer New(uint size)
+    {
+        return New(size, true);
+    }
 
     private unsafe Pointer(byte[] buffer, bool autoCleanUp = true)
     {
         fixed (byte* ptr = buffer)
+        {
             Ptr = (uint*)ptr;
+        }
+
         GCImplementation.IncRootCount((ushort*)Ptr);
         _autoCleanUp = autoCleanUp;
         Size = (uint)buffer.Length;
-        
     }
-    
+
     private unsafe Pointer(void* ptr, uint size, bool autoCleanUp = true) : this((uint*)ptr, size, autoCleanUp)
     {
     }
@@ -106,17 +110,21 @@ public struct Pointer : IDisposable
     }
 
     public unsafe uint* Ptr { get; private set; }
-    public uint Size { get; private set; }
+    public uint Size { get; }
 
     /// <summary>
-    /// Resize the given pointer
+    ///     Resize the given pointer
     /// </summary>
     /// <param name="size"></param>
     /// <exception cref="Exception"></exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public unsafe void Resize(uint size)
     {
-        if (Equals(this, Default)) throw new Exception("you cant resize null");
+        if (Equals(this, Default))
+        {
+            throw new Exception("you cant resize null");
+        }
+
         Ptr = (uint*)NativeMemory.Realloc(Ptr, size);
         GCImplementation.IncRootCount((ushort*)Ptr);
     }
@@ -133,7 +141,7 @@ public struct Pointer : IDisposable
         Marshal.Copy(new IntPtr(Ptr), temp, (int)sourceIndex, (int)destinationSize);
         Array.Copy(temp, 0, buffer, (int)destinationIndex, destinationSize);
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public unsafe void CopyTo(
         uint* destination,
@@ -141,8 +149,10 @@ public struct Pointer : IDisposable
         uint sourceIndex,
         uint destinationSize
     )
-    => Buffer.MemoryCopy((Ptr + sourceIndex), (destination + destinationIndex), destinationSize, Size);
-    
+    {
+        Buffer.MemoryCopy(Ptr + sourceIndex, destination + destinationIndex, destinationSize, Size);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void CopyTo(
         Pointer destination,
@@ -150,7 +160,9 @@ public struct Pointer : IDisposable
         uint sourceIndex,
         uint size
     )
-    => BufferUtils.MemoryCopy( this, destination, destinationIndex, sourceIndex, size);
+    {
+        BufferUtils.MemoryCopy(this, destination, destinationIndex, sourceIndex, size);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Fill(byte value)
@@ -162,23 +174,24 @@ public struct Pointer : IDisposable
     }
 
     public uint GetAddress()
-    { 
+    {
         unsafe
         {
             return (uint)Ptr;
         }
-
     }
 
     public uint this[uint index]
     {
-        get {
+        get
+        {
             unsafe
             {
                 return Ptr[index];
             }
         }
-        set {
+        set
+        {
             unsafe
             {
                 Ptr[index] = value;
@@ -186,10 +199,25 @@ public struct Pointer : IDisposable
         }
     }
 
-    public static unsafe explicit operator byte*(Pointer ptr) => (byte*)ptr.Ptr;
-    public static unsafe explicit operator uint*(Pointer ptr) => ptr.Ptr;
-    public static unsafe explicit operator ushort*(Pointer ptr) => (ushort*)ptr.Ptr;
-    public static unsafe explicit operator ulong*(Pointer ptr) => (ulong*)ptr.Ptr;
+    public static unsafe explicit operator byte*(Pointer ptr)
+    {
+        return (byte*)ptr.Ptr;
+    }
+
+    public static unsafe explicit operator uint*(Pointer ptr)
+    {
+        return ptr.Ptr;
+    }
+
+    public static unsafe explicit operator ushort*(Pointer ptr)
+    {
+        return (ushort*)ptr.Ptr;
+    }
+
+    public static unsafe explicit operator ulong*(Pointer ptr)
+    {
+        return (ulong*)ptr.Ptr;
+    }
 
     public void Free()
     {
@@ -219,7 +247,11 @@ public struct Pointer : IDisposable
                     return false;
             }
 
-            if (obj.GetType() != typeof(Pointer)) return false;
+            if (obj.GetType() != typeof(Pointer))
+            {
+                return false;
+            }
+
             var o = (Pointer)obj;
             return o.Ptr == Ptr && o.Size == Size;
         }
@@ -234,7 +266,7 @@ public struct Pointer : IDisposable
     }
 
     public Span<byte> ToSpan()
-    { 
+    {
         unsafe
         {
             return new Span<byte>(Ptr, (int)Size);

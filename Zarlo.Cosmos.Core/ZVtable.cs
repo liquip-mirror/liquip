@@ -1,9 +1,9 @@
 using Cosmos.Core;
+
 namespace Zarlo.Cosmos.Core;
 
-
-public static class ZVtables {
-
+public static class ZVtables
+{
     public static int GetType(Type type)
     {
         return VTablesImpl.GetType(type.Name);

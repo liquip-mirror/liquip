@@ -6,12 +6,13 @@ namespace Zarlo.Cosmos.Plugs.System;
 public class HashCodeImpl
 {
     private static uint? seed;
+
     public static uint GenerateGlobalSeed()
     {
         if (!seed.HasValue)
         {
             if (RDseed.IsSupported())
-            { 
+            {
                 seed = (uint)RDseed.GetRDSeed32();
             }
             else
@@ -19,6 +20,7 @@ public class HashCodeImpl
                 seed = 0;
             }
         }
+
         return seed.Value;
     }
 }

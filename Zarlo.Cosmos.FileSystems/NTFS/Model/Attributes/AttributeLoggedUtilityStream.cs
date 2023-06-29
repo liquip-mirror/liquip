@@ -1,25 +1,20 @@
-﻿using System;
-using Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
+﻿using Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
 
-namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes
+namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes;
+
+public class AttributeLoggedUtilityStream : Attribute
 {
-    public class AttributeLoggedUtilityStream : Attribute
+    public byte[] Data { get; set; }
+
+    public override AttributeResidentAllow AllowedResidentStates => AttributeResidentAllow.Resident;
+
+    internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
     {
-        public byte[] Data { get; set; }
+        base.ParseAttributeResidentBody(data, maxLength, offset);
 
-        public override AttributeResidentAllow AllowedResidentStates
-        {
-            get { return AttributeResidentAllow.Resident; }
-        }
+        // Debug.Assert(maxLength >= 1);
 
-        internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
-        {
-            base.ParseAttributeResidentBody(data, maxLength, offset);
-
-            // Debug.Assert(maxLength >= 1);
-
-            Data = new byte[maxLength];
-            Array.Copy(data, offset, Data, 0, maxLength);
-        }
+        Data = new byte[maxLength];
+        Array.Copy(data, offset, Data, 0, maxLength);
     }
 }

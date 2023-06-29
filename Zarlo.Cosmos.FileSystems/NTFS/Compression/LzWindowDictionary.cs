@@ -20,17 +20,14 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
-
 namespace Zarlo.Cosmos.FileSystems.NTFS.Compression;
 
 internal sealed class LzWindowDictionary
 {
     /// <summary>
-    /// Index of locations of each possible byte value within the compression window.
+    ///     Index of locations of each possible byte value within the compression window.
     /// </summary>
-    private List<int>[] _offsetList;
+    private readonly List<int>[] _offsetList;
 
     public LzWindowDictionary()
     {
@@ -38,7 +35,7 @@ internal sealed class LzWindowDictionary
 
         // Build the index list, so Lz compression will become significantly faster 
         _offsetList = new List<int>[0x100];
-        for (int i = 0; i < _offsetList.Length; i++)
+        for (var i = 0; i < _offsetList.Length; i++)
         {
             _offsetList[i] = new List<int>();
         }
@@ -54,7 +51,7 @@ internal sealed class LzWindowDictionary
     {
         Initalize();
 
-        for (int i = 0; i < _offsetList.Length; i++)
+        for (var i = 0; i < _offsetList.Length; i++)
         {
             _offsetList[i].Clear();
         }
@@ -64,7 +61,7 @@ internal sealed class LzWindowDictionary
     {
         RemoveOldEntries(decompressedData[decompressedDataOffset + index]); // Remove old entries for this index 
 
-        int[] match = new[] { 0, 0 };
+        int[] match = { 0, 0 };
 
         if (index < 1 || length - index < MinMatchAmount)
         {
@@ -72,17 +69,17 @@ internal sealed class LzWindowDictionary
             return match;
         }
 
-        for (int i = 0; i < _offsetList[decompressedData[decompressedDataOffset + index]].Count; i++)
+        for (var i = 0; i < _offsetList[decompressedData[decompressedDataOffset + index]].Count; i++)
         {
-            int matchStart = _offsetList[decompressedData[decompressedDataOffset + index]][i];
-            int matchSize = 1;
+            var matchStart = _offsetList[decompressedData[decompressedDataOffset + index]][i];
+            var matchSize = 1;
 
             if (index - matchStart > BlockSize)
             {
                 break;
             }
 
-            int maxMatchSize = (int)Math.Min(Math.Min(MaxMatchAmount, BlockSize),
+            var maxMatchSize = (int)Math.Min(Math.Min(MaxMatchAmount, BlockSize),
                 Math.Min(length - index, length - matchStart));
             while (matchSize < maxMatchSize && decompressedData[decompressedDataOffset + index + matchSize] ==
                    decompressedData[decompressedDataOffset + matchStart + matchSize])
@@ -115,7 +112,7 @@ internal sealed class LzWindowDictionary
 
     public void AddEntryRange(byte[] decompressedData, int decompressedDataOffset, int index, int length)
     {
-        for (int i = 0; i < length; i++)
+        for (var i = 0; i < length; i++)
         {
             AddEntry(decompressedData, decompressedDataOffset, index + i);
         }

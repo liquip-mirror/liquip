@@ -1,6 +1,4 @@
 using Cosmos.Debug.Kernel;
-using Cosmos.HAL;
-using Debugger = Cosmos.Debug.Kernel.Debugger;
 
 namespace Zarlo.Cosmos.FileSystems;
 

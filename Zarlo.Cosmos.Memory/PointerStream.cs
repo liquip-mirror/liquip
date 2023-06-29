@@ -1,9 +1,12 @@
-using System.Runtime.InteropServices;
-
 namespace Zarlo.Cosmos.Memory;
 
-public class PointerStream: Stream
+public class PointerStream : Stream
 {
+    public PointerStream(Pointer ptr)
+    {
+        Pointer = ptr;
+    }
+
     public Pointer Pointer { get; init; }
     public unsafe uint* Ptr => Pointer.Ptr;
 
@@ -12,11 +15,6 @@ public class PointerStream: Stream
     public override bool CanWrite { get; } = true;
     public override long Length => Pointer.Size;
     public override long Position { get; set; }
-
-    public PointerStream(Pointer ptr)
-    {
-        Pointer = ptr;
-    }
 
     public override void Flush()
     {
@@ -39,7 +37,10 @@ public class PointerStream: Stream
                 throw new ArgumentOutOfRangeException(nameof(origin), origin, null);
         }
 
-        if (Position < 0 || Position > Length) throw new IndexOutOfRangeException();
+        if (Position < 0 || Position > Length)
+        {
+            throw new IndexOutOfRangeException();
+        }
 
         return Position;
     }
@@ -53,10 +54,9 @@ public class PointerStream: Stream
         Pointer.CopyTo(buffer, (uint)offset, (uint)Position, (uint)count);
         return count;
     }
-    
+
     public override void Write(byte[] buffer, int offset, int count)
     {
         BufferUtils.MemoryCopy(Pointer.MakeFrom(buffer), Pointer, (uint)Position, (uint)(count - offset));
     }
-    
 }

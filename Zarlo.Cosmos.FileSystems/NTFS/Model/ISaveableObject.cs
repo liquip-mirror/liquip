@@ -1,8 +1,7 @@
-﻿namespace Zarlo.Cosmos.FileSystems.NTFS.Model
+﻿namespace Zarlo.Cosmos.FileSystems.NTFS.Model;
+
+public interface ISaveableObject
 {
-    public interface ISaveableObject
-    {
-        int GetSaveLength();
-        void Save(byte[] buffer, int offset);
-    }
+    int GetSaveLength();
+    void Save(byte[] buffer, int offset);
 }

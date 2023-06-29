@@ -10,7 +10,7 @@ public struct FramebufferRequest
 
     public ulong revision;
     [MarshalAs(UnmanagedType.LPStruct)] public FramebufferResponse response;
-};
+}
 
 [StructLayout(LayoutKind.Sequential)]
 public struct FramebufferResponse
@@ -18,12 +18,12 @@ public struct FramebufferResponse
     public ulong revision;
     public ulong framebuffer_count;
     [MarshalAs(UnmanagedType.LPStruct)] public Framebuffer[] framebuffers;
-};
+}
 
 [StructLayout(LayoutKind.Sequential)]
 public struct Framebuffer
 {
-    unsafe public int* address;
+    public unsafe int* address;
 
     public ulong width;
     public ulong height;
@@ -41,7 +41,7 @@ public struct Framebuffer
     public byte[] unused;
 
     public ulong edid_size;
-    unsafe public int* edid;
+    public unsafe int* edid;
 
     /* Revision 1 */
     public ulong mode_count;

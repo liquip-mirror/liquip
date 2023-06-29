@@ -1,6 +1,5 @@
 namespace Zarlo.Cosmos.Driver.VirtIO.GPU.Struct;
 
-
 public struct GpuResourceCreate2d
 {
     public GPUCtrlHdr Header;
@@ -11,7 +10,7 @@ public struct GpuResourceCreate2d
 }
 
 public struct GpuResourceUnref
-{ 
+{
     public GPUCtrlHdr Header;
     public int ResourceId;
     public int Padding;
@@ -21,7 +20,6 @@ public struct ResourceAttachBacking
 {
     public GPUCtrlHdr Header;
 
-    int ResourceId;
-    int nr_entries;
-
+    private int ResourceId;
+    private int nr_entries;
 }

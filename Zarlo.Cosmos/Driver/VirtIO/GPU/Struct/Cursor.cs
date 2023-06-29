@@ -2,9 +2,9 @@ using System.Runtime.InteropServices;
 
 namespace Zarlo.Cosmos.Driver.VirtIO.GPU.Struct;
 
-
 [StructLayout(LayoutKind.Auto)]
-public struct GpuCursorPos { 
+public struct GpuCursorPos
+{
     public uint ScanoutId;
     public uint X;
     public uint Y;

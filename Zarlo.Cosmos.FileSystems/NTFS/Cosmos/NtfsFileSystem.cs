@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Cosmos.HAL.BlockDevice;
+﻿using Cosmos.HAL.BlockDevice;
 using Cosmos.System.FileSystem;
 using Cosmos.System.FileSystem.Listing;
 using Zarlo.Cosmos.FileSystems.NTFS.IO;
@@ -12,12 +10,12 @@ namespace Zarlo.Cosmos.FileSystems.NTFS.Cosmos;
 public class NtfsFileSystem : FileSystem
 {
     private readonly Partition _device;
+
+    private readonly ILogger _Logger;
     private readonly string _rootPath;
     private readonly long _size;
 
     private Ntfs _ntfs;
-
-    private readonly ILogger _Logger;
 
     public NtfsFileSystem(Partition aDevice, string aRootPath, long aSize) : base(aDevice, aRootPath, aSize)
     {
@@ -27,6 +25,11 @@ public class NtfsFileSystem : FileSystem
         _size = aSize;
         Initialize();
     }
+
+    public override long AvailableFreeSpace { get; }
+    public override long TotalFreeSpace => _size;
+    public override string Type => "NTFS";
+    public override string Label { get; set; }
 
     private void Initialize()
     {
@@ -40,8 +43,16 @@ public class NtfsFileSystem : FileSystem
 
     public override List<DirectoryEntry> GetDirectoryListing(DirectoryEntry baseDirectory)
     {
-        if (!(baseDirectory is NtfsDirectoryEntry ntfsEntry)) throw new Exception("ntfs: invalid dirlist request");
-        if (!(ntfsEntry.NtfsEntry is NtfsDirectory ntfsDir)) throw new Exception("ntfs: dirlist: not a directory");
+        if (!(baseDirectory is NtfsDirectoryEntry ntfsEntry))
+        {
+            throw new Exception("ntfs: invalid dirlist request");
+        }
+
+        if (!(ntfsEntry.NtfsEntry is NtfsDirectory ntfsDir))
+        {
+            throw new Exception("ntfs: dirlist: not a directory");
+        }
+
         var result = new List<DirectoryEntry>();
         foreach (var f in ntfsDir.ListFiles())
         {
@@ -80,9 +91,4 @@ public class NtfsFileSystem : FileSystem
     public override void Format(string aDriveFormat, bool aQuick)
     {
     }
-
-    public override long AvailableFreeSpace { get; }
-    public override long TotalFreeSpace => _size;
-    public override string Type => "NTFS";
-    public override string Label { get; set; }
 }

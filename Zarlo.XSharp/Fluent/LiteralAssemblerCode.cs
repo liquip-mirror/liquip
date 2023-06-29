@@ -4,7 +4,6 @@ namespace Zarlo.XSharp.Fluent;
 
 public static class LiteralAssemblerCodeEx
 {
-
     public static FluentXSharpX86 LiteralCode(this FluentXSharpX86 me, string line, params object?[] args)
     {
         _ = new LiteralAssemblerCode(string.Format(line, args.ToArray()));

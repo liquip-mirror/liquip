@@ -1,74 +1,75 @@
-﻿using System;
-using System.Collections.Generic;
-using Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
+﻿using Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
 using Zarlo.Cosmos.FileSystems.NTFS.Utility;
 
-namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes
+namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes;
+
+public class AttributeList : Attribute
 {
-    public class AttributeList : Attribute
+    public List<AttributeListItem> Items { get; set; }
+
+    public override AttributeResidentAllow AllowedResidentStates =>
+        AttributeResidentAllow.Resident | AttributeResidentAllow.NonResident;
+
+    internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
     {
-        public List<AttributeListItem> Items { get; set; }
+        base.ParseAttributeResidentBody(data, maxLength, offset);
 
-        public override AttributeResidentAllow AllowedResidentStates
+        // Debug.Assert(maxLength >= ResidentHeader.ContentLength);
+
+        var results = new List<AttributeListItem>();
+
+        var pointer = offset;
+        while (pointer + 26 <= offset + maxLength) // 26 is the smallest possible MFTAttributeListItem
         {
-            get { return AttributeResidentAllow.Resident | AttributeResidentAllow.NonResident; }
-        }
+            var item =
+                AttributeListItem.ParseListItem(data, Math.Min(data.Length - pointer, maxLength), pointer);
 
-        internal override void ParseAttributeResidentBody(byte[] data, int maxLength, int offset)
-        {
-            base.ParseAttributeResidentBody(data, maxLength, offset);
-
-            // Debug.Assert(maxLength >= ResidentHeader.ContentLength);
-
-            List<AttributeListItem> results = new List<AttributeListItem>();
-
-            int pointer = offset;
-            while (pointer + 26 <= offset + maxLength) // 26 is the smallest possible MFTAttributeListItem
+            if (item.Type == AttributeType.EndOfAttributes)
             {
-                AttributeListItem item =
-                    AttributeListItem.ParseListItem(data, Math.Min(data.Length - pointer, maxLength), pointer);
-
-                if (item.Type == AttributeType.EndOfAttributes)
-                    break;
-
-                results.Add(item);
-
-                pointer += item.Length;
+                break;
             }
 
-            Items = results;
+            results.Add(item);
+
+            pointer += item.Length;
         }
 
-        internal override void ParseAttributeNonResidentBody(Ntfs ntfsInfo)
+        Items = results;
+    }
+
+    internal override void ParseAttributeNonResidentBody(Ntfs ntfsInfo)
+    {
+        base.ParseAttributeNonResidentBody(ntfsInfo);
+
+        // Get all chunks
+        var data = NtfsUtils.ReadFragments(ntfsInfo, NonResidentHeader.Fragments);
+
+        // Parse
+        var results = new List<AttributeListItem>();
+
+        var pointer = 0;
+        var contentSize = (int)NonResidentHeader.ContentSize;
+        while (pointer + 26 <= contentSize) // 26 is the smallest possible MFTAttributeListItem
         {
-            base.ParseAttributeNonResidentBody(ntfsInfo);
+            var item = AttributeListItem.ParseListItem(data, data.Length - pointer, pointer);
 
-            // Get all chunks
-            byte[] data = NtfsUtils.ReadFragments(ntfsInfo, NonResidentHeader.Fragments);
-
-            // Parse
-            List<AttributeListItem> results = new List<AttributeListItem>();
-
-            int pointer = 0;
-            int contentSize = (int)NonResidentHeader.ContentSize;
-            while (pointer + 26 <= contentSize) // 26 is the smallest possible MFTAttributeListItem
+            if (item.Type == AttributeType.EndOfAttributes)
             {
-                AttributeListItem item = AttributeListItem.ParseListItem(data, data.Length - pointer, pointer);
-
-                if (item.Type == AttributeType.EndOfAttributes)
-                    break;
-
-                if (item.Length == 0)
-                    break;
-
-                results.Add(item);
-
-                pointer += item.Length;
+                break;
             }
 
-            // Debug.Assert(pointer == contentSize);
+            if (item.Length == 0)
+            {
+                break;
+            }
 
-            Items = results;
+            results.Add(item);
+
+            pointer += item.Length;
         }
+
+        // Debug.Assert(pointer == contentSize);
+
+        Items = results;
     }
 }

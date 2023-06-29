@@ -2,19 +2,19 @@ namespace Zarlo.Asm.Assembler.x86.OpCodes;
 
 public class AddOpCode : IBaseOpCode
 {
-    private readonly x86Register? _destinationRegister;
     private readonly int? _destinationMemory;
-    private readonly byte? _toAdd8;
+    private readonly x86Register? _destinationRegister;
     private readonly short? _toAdd16;
     private readonly int? _toAdd32;
+    private readonly byte? _toAdd8;
 
     public AddOpCode(
         x86Register? destinationRegister = null,
-        Int32? destinationMemory = null,
+        int? destinationMemory = null,
         byte? toAdd8 = null,
-        Int16? toAdd16 = null,
-        Int32? toAdd32 = null
-        )
+        short? toAdd16 = null,
+        int? toAdd32 = null
+    )
     {
         _destinationRegister = destinationRegister;
         _destinationMemory = destinationMemory;

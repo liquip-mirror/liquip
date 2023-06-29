@@ -13,7 +13,6 @@ public enum GPUDeviceFeatureFlag : byte
     EDID = 1 << 1
 }
 
-
 [Flags]
 public enum DeviceStatusFlag : byte
 {
@@ -52,63 +51,61 @@ public enum NetDeviceFeatureFlag : uint
     CTRL_VQ = 1 << 17,
     CTRL_RX = 1 << 18,
     CTRL_VLAN = 1 << 19,
-    GUEST_ANNOUNCE = 1 << 21,
+    GUEST_ANNOUNCE = 1 << 21
 }
 
 [Flags]
 public enum BlockDeviceFeatureFlag : uint
 {
-    
     // Maximum size of any single segment is in size_max.
     SIZE_MAX = 1,
-    
+
     // Maximum number of segments in a request is in seg_max.
     SEG_MAX = 1 << 2,
-    
+
     // Disk-style geometry specified in geometry
     GEOMETRY = 1 << 4,
-    
+
     // Device is read-only.
     RO = 1 << 5,
-    
+
     // Block size of disk is in blk_size.
     BLK_SIZE = 1 << 6,
-    
+
     // Cache flush command support.
     FLUSH = 1 << 9,
-    
+
     // Device exports information on optimal I/O alignment.
     TOPOLOGY = 1 << 10,
-    
+
     // Device can toggle its cache between writeback and writethrough modes.
     CONFIG_WCE = 1 << 11,
-    
+
     // Device supports multiqueue.
     MQ = 1 << 12,
-    
+
     //Device can support discard command, maximum discard sectors size in
     //max_discard_sectors and maximum discard segment number in max_discard_seg.
-    DISCARD = 1 << 13,  
-    
+    DISCARD = 1 << 13,
+
     // Device can support write zeroes command, maximum write zeroes
     // sectors size in max_write_zeroes_sectors and maximum write zeroes segment number in max_write_-
     // zeroes_seg.
-    WRITE_ZEROES = 1 << 14, 
-    
+    WRITE_ZEROES = 1 << 14,
+
     // Device supports providing storage lifetime information.
     LIFETIME = 1 << 15,
-    
+
     // Device supports secure erase command, maximum erase sectors
     // count in max_secure_erase_sectors and maximum erase segment number in max_secure_erase_seg.
-    SECURE_ERASE = 1 << 16,
-
+    SECURE_ERASE = 1 << 16
 }
 
 [Flags]
 public enum ConsoleDeviceFeatureFlag : uint
 {
     SIZE = 1,
-    MULTIPORT = 1 << 1,
+    MULTIPORT = 1 << 1
 }
 
 [Flags]
@@ -120,7 +117,7 @@ public enum EntropyDeviceFeatureFlag : uint
 public enum MemoryBalloonDeviceFeatureFlag : uint
 {
     MUST_TELL_HOST = 1,
-    STATS_VQ = 1 << 1,
+    STATS_VQ = 1 << 1
 }
 
 [Flags]
@@ -128,7 +125,7 @@ public enum SCSIHostDeviceFeatureFlag : uint
 {
     INOUT = 1,
     HOTPLUG = 1 << 1,
-    CHANGE = 1 << 2,
+    CHANGE = 1 << 2
 }
 
 [Flags]
@@ -139,24 +136,26 @@ public enum DescFlags : ushort
     Indirect = 1 << 2
 }
 
-
 public enum VIRTIO_PCI_CAP_ISR_CFG
 {
     /* Common configuration */
     COMMON_CFG = 1,
+
     /* Notifications */
     NOTIFY_CFG = 2,
+
     /* ISR Status */
     ISR_CFG = 3,
+
     /* Device specific configuration */
     DEVICE_CFG = 4,
+
     /* PCI configuration access */
     PCI_CFG = 5,
+
     /* Shared memory region */
     SHARED_MEMORY_CFG = 8,
+
     /* Vendor-specific data */
     VENDOR_CFG = 9
-
 }
-
-

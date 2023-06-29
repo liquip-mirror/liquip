@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Zarlo.Cosmos.FileSystems.NTFS.Model;
+﻿using Zarlo.Cosmos.FileSystems.NTFS.Model;
 using Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes;
 using Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
 
@@ -19,17 +18,25 @@ public class NtfsDirectory : NtfsFileEntry
         foreach (var e in input)
         {
             var fileId = e.FileRefence.FileId;
-            if (fileId <= 11) continue;
+            if (fileId <= 11)
+            {
+                continue;
+            }
+
             var exists = false;
             foreach (var o in output)
+            {
                 if (o.MFTRecord.FileReference.FileId == e.FileRefence.FileId)
                 {
                     exists = true;
                     break;
                 }
+            }
 
             if (!exists)
+            {
                 output.Add(CreateEntry(ntfs, e.FileRefence.FileId));
+            }
         }
     }
 
@@ -47,7 +54,10 @@ public class NtfsDirectory : NtfsFileEntry
             }
         }
 
-        if (!largeIndex) return result;
+        if (!largeIndex)
+        {
+            return result;
+        }
 
         foreach (var att in MFTRecord.Attributes)
         {

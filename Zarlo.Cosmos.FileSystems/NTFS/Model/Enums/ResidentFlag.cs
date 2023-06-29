@@ -1,8 +1,7 @@
-﻿namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Enums
+﻿namespace Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
+
+public enum ResidentFlag : byte
 {
-    public enum ResidentFlag : byte
-    {
-        Resident = 0,
-        NonResident = 1
-    }
+    Resident = 0,
+    NonResident = 1
 }

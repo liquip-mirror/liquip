@@ -1,100 +1,109 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Zarlo.Cosmos.FileSystems.NTFS.IO;
+﻿using Zarlo.Cosmos.FileSystems.NTFS.IO;
 using Zarlo.Cosmos.FileSystems.NTFS.Model;
 using Zarlo.Cosmos.FileSystems.NTFS.Model.Attributes;
 using Zarlo.Cosmos.FileSystems.NTFS.Model.Enums;
+using Zarlo.Cosmos.FileSystems.NTFS.Utility;
 using Zarlo.Cosmos.Logger;
 
-namespace Zarlo.Cosmos.FileSystems.NTFS.Parser
+namespace Zarlo.Cosmos.FileSystems.NTFS.Parser;
+
+public class NtfsParser
 {
-    public class NtfsParser
+    private byte[] buffer;
+
+    private FileRecord mftRecord;
+    private NtfsDiskStream mftStream;
+
+
+    public NtfsParser(Stream diskStream)
     {
-        public BootSector BootSector { get; private set; }
+        DiskStream = diskStream;
+        ParseBootSector();
+        ParseMft();
+    }
 
-        public uint SectorsPerRecord { get; private set; }
+    public BootSector BootSector { get; private set; }
 
-        public uint BytesPerFileRecord { get; set; }
-        public uint BytesPerCluster => (uint)(BootSector.BytesPerSector * BootSector.SectorsPerCluster);
-        public uint BytesPerSector => BootSector.BytesPerSector;
-        public byte SectorsPerCluster => BootSector.SectorsPerCluster;
-        public ulong TotalSectors => BootSector.TotalSectors;
-        public ulong TotalClusters => BootSector.TotalSectors / BootSector.SectorsPerCluster;
+    public uint SectorsPerRecord { get; private set; }
 
-        public uint CurrentMftRecordNumber { get; set; }
-        public uint FileRecordCount { get; private set; }
+    public uint BytesPerFileRecord { get; set; }
+    public uint BytesPerCluster => (uint)(BootSector.BytesPerSector * BootSector.SectorsPerCluster);
+    public uint BytesPerSector => BootSector.BytesPerSector;
+    public byte SectorsPerCluster => BootSector.SectorsPerCluster;
+    public ulong TotalSectors => BootSector.TotalSectors;
+    public ulong TotalClusters => BootSector.TotalSectors / BootSector.SectorsPerCluster;
 
-        public bool OwnsDiskStream => false;
-        public Stream DiskStream { get; }
+    public uint CurrentMftRecordNumber { get; set; }
+    public uint FileRecordCount { get; private set; }
 
-        private FileRecord mftRecord;
-        private NtfsDiskStream mftStream;
+    public bool OwnsDiskStream => false;
+    public Stream DiskStream { get; }
 
-        private byte[] buffer;
+    private void ParseBootSector()
+    {
+        var data = new byte[512];
+        DiskStream.Seek(0, SeekOrigin.Begin);
+        DiskStream.Read(data, 0, data.Length);
 
+        BootSector = BootSector.ParseData(data, data.Length, 0);
+        BytesPerFileRecord = BootSector.MftRecordSizeBytes;
+        SectorsPerRecord = BootSector.MftRecordSizeBytes / BootSector.BytesPerSector;
+    }
 
-        public NtfsParser(Stream diskStream)
+    private void ParseMft()
+    {
+        buffer = new byte[BytesPerFileRecord];
+        DiskStream.Seek((long)(BootSector.MftCluster * BytesPerCluster), SeekOrigin.Begin);
+        DiskStream.Read(buffer, 0, buffer.Length);
+        mftRecord = FileRecord.Parse(buffer, 0, BootSector.BytesPerSector, SectorsPerRecord);
+
+        var fragmentList = new List<DataFragment>();
+        AttributeData firstAttributeData = null;
+        foreach (var attribute in mftRecord.Attributes)
         {
-            this.DiskStream = diskStream;
-            ParseBootSector();
-            ParseMft();
-        }
-
-        private void ParseBootSector()
-        {
-            var data = new byte[512];
-            DiskStream.Seek(0, SeekOrigin.Begin);
-            DiskStream.Read(data, 0, data.Length);
-
-            BootSector = BootSector.ParseData(data, data.Length, 0);
-            BytesPerFileRecord = BootSector.MftRecordSizeBytes;
-            SectorsPerRecord = BootSector.MftRecordSizeBytes / BootSector.BytesPerSector;
-        }
-
-        private void ParseMft()
-        {
-            buffer = new byte[BytesPerFileRecord];
-            DiskStream.Seek((long)(BootSector.MftCluster * BytesPerCluster), SeekOrigin.Begin);
-            DiskStream.Read(buffer, 0, buffer.Length);
-            mftRecord = FileRecord.Parse(buffer, 0, BootSector.BytesPerSector, SectorsPerRecord);
-
-            var fragmentList = new List<DataFragment>();
-            AttributeData firstAttributeData = null;
-            foreach (var attribute in mftRecord.Attributes)
-                if (attribute is AttributeData data && data.AttributeName == string.Empty &&
-                    data.NonResidentFlag == ResidentFlag.NonResident)
+            if (attribute is AttributeData data && data.AttributeName == string.Empty &&
+                data.NonResidentFlag == ResidentFlag.NonResident)
+            {
+                if (firstAttributeData == null)
                 {
-                    if (firstAttributeData == null)
-                        firstAttributeData = data;
-                    foreach (var frag in data.DataFragments)
-                        fragmentList.Add(frag);
+                    firstAttributeData = data;
                 }
 
-            fragmentList = Utility.Util.Sort(fragmentList, new DataFragmentComparer());
-            ushort compressionUnitSize = firstAttributeData.NonResidentHeader.CompressionUnitSize;
-            ushort compressionClusterCount = (ushort)(compressionUnitSize == 0 ? 0 : Math.Pow(2, compressionUnitSize));
-            mftStream = new NtfsDiskStream(DiskStream, false, fragmentList, BytesPerCluster, compressionClusterCount,
-                (long)firstAttributeData.NonResidentHeader.ContentSize);
-
-            CurrentMftRecordNumber = 0;
-            FileRecordCount = (uint)(mftStream.Length / BytesPerFileRecord);
-            Log.Logger.Info("[NTFS DRIVER] " + FileRecordCount + " file records found");
+                foreach (var frag in data.DataFragments)
+                {
+                    fragmentList.Add(frag);
+                }
+            }
         }
 
-        public FileRecord NextMFTRecord()
+        fragmentList = Util.Sort(fragmentList, new DataFragmentComparer());
+        var compressionUnitSize = firstAttributeData.NonResidentHeader.CompressionUnitSize;
+        var compressionClusterCount = (ushort)(compressionUnitSize == 0 ? 0 : Math.Pow(2, compressionUnitSize));
+        mftStream = new NtfsDiskStream(DiskStream, false, fragmentList, BytesPerCluster, compressionClusterCount,
+            (long)firstAttributeData.NonResidentHeader.ContentSize);
+
+        CurrentMftRecordNumber = 0;
+        FileRecordCount = (uint)(mftStream.Length / BytesPerFileRecord);
+        Log.Logger.Info("[NTFS DRIVER] " + FileRecordCount + " file records found");
+    }
+
+    public FileRecord NextMFTRecord()
+    {
+        var newPosition = CurrentMftRecordNumber * BytesPerFileRecord;
+        if (mftStream.Position != newPosition)
         {
-            var newPosition = CurrentMftRecordNumber * BytesPerFileRecord;
-            if (mftStream.Position != newPosition)
-                mftStream.Seek(newPosition, SeekOrigin.Begin);
-            var read = mftStream.Read(buffer, 0, buffer.Length);
-
-            if (read == 0)
-                return null;
-
-            var record = FileRecord.Parse(buffer, 0, BootSector.BytesPerSector, SectorsPerRecord);
-            CurrentMftRecordNumber = record.MFTNumber + 1;
-            return record;
+            mftStream.Seek(newPosition, SeekOrigin.Begin);
         }
+
+        var read = mftStream.Read(buffer, 0, buffer.Length);
+
+        if (read == 0)
+        {
+            return null;
+        }
+
+        var record = FileRecord.Parse(buffer, 0, BootSector.BytesPerSector, SectorsPerRecord);
+        CurrentMftRecordNumber = record.MFTNumber + 1;
+        return record;
     }
 }
