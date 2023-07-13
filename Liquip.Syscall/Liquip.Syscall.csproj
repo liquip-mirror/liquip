@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Liquip.Memory\Liquip.Memory.csproj" />
+      <ProjectReference Include="..\Liquip.Threading\Liquip.Threading.csproj" />
+      <ProjectReference Include="..\Liquip\Liquip.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Cosmos.System2" Version="0.1.0-localbuild" />
+    </ItemGroup>
+
+</Project>

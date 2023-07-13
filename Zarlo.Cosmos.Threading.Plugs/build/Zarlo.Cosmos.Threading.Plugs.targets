@@ -1,5 +1,0 @@
-<Project>
-    <ItemGroup Condition="'$(KernelPkg)' == ''">
-        <PlugsReference Include="$(MSBuildThisFileDirectory)../lib/$(TargetFramework)/Zarlo.Cosmos.Threading.Plugs.dll"/>
-    </ItemGroup>
-</Project>

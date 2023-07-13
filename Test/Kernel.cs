@@ -2,9 +2,9 @@
 
 using System;
 using System.Collections.Generic;
-using Zarlo.Cosmos;
-using Zarlo.Cosmos.Threading;
-using Zarlo.Cosmos.Threading.Core.Processing;
+using Liquip;
+using Liquip.Threading;
+using Liquip.Threading.Core.Processing;
 using Sys = Cosmos.System;
 
 namespace Test;
@@ -75,7 +75,7 @@ public class Kernel : Sys.Kernel
     protected override void BeforeRun()
     {
         Console.Clear();
-        Console.WriteLine("Zarlo.Cosmos Test");
+        Console.WriteLine("Liquip Test");
 
         mainThread = new Thread(runMain);
         mainThread.Start();

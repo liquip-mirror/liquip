@@ -1,0 +1,5 @@
+<Project>
+    <ItemGroup Condition="'$(KernelPkg)' == ''">
+        <PlugsReference Include="$(MSBuildThisFileDirectory)../lib/$(TargetFramework)/Liquip.Plugs.dll"/>
+    </ItemGroup>
+</Project>

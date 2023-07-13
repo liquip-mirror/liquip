@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Zarlo.Cosmos</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Liquip.Threading\Liquip.Threading.csproj" />
+      <ProjectReference Include="..\Liquip.DotNetParser\Liquip.DotNetParser.csproj" />
+    </ItemGroup>
+
+</Project>

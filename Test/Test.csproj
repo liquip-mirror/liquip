@@ -35,10 +35,10 @@
     <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Zarlo.Cosmos.Plugs\Zarlo.Cosmos.Plugs.csproj"/>
-    <ProjectReference Include="..\Zarlo.Cosmos.Threading\Zarlo.Cosmos.Threading.csproj"/>
-    <ProjectReference Include="..\Zarlo.Cosmos.Threading.Plugs\Zarlo.Cosmos.Threading.Plugs.csproj"/>
-    <ProjectReference Include="..\Zarlo.Cosmos\Zarlo.Cosmos.csproj"/>
+    <ProjectReference Include="..\Liquip.Plugs\Liquip.Plugs.csproj" />
+    <ProjectReference Include="..\Liquip.Threading\Liquip.Threading.csproj" />
+    <ProjectReference Include="..\Liquip.Threading.Plugs\Liquip.Threading.Plugs.csproj" />
+    <ProjectReference Include="..\Liquip\Liquip.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PlugsReference Include="$(MSBuildProjectDirectory)\..\Zarlo.Cosmos.Plugs\bin\Debug\net6.0\Zarlo.Cosmos.Plugs.dll"/>

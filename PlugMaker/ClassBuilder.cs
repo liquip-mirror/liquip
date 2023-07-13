@@ -56,7 +56,7 @@ public static class ClassBuilder
             sb.AppendLine("using IL2CPU_Plug = IL2CPU.API.Attribs.Plug;");
             sb.AppendLine();
 
-            sb.AppendLine(string.Format("namespace Zarlo.Cosmos.Plug{0};", item.Key.Namespace));
+            sb.AppendLine(string.Format("namespace Liquip.Plug{0};", item.Key.Namespace));
             sb.AppendLine();
 
 

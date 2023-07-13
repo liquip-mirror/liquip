@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604"/>
+        <PackageReference Include="XSharp" Version="0.1.0-localbuild"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Liquip.Common\Liquip.Common.csproj" />
+        <ProjectReference Include="..\Liquip.Core\Liquip.Core.csproj" />
+        <ProjectReference Include="..\Liquip.Memory\Liquip.Memory.csproj" />
+        <ProjectReference Include="..\Liquip\Liquip.csproj" />
+        <ProjectReference Include="..\Liquip.Logger\Liquip.Logger.csproj" />
+    </ItemGroup>
+</Project>
