@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Zarlo.CosmosManager;
+namespace CosmosManager;
 
 public class Paths
 {

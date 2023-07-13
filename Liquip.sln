@@ -49,7 +49,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liquip.AML", "Liquip.AML\Li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liquip.Syscall", "Liquip.Syscall\Liquip.Syscall.csproj", "{A7CFB286-2BC0-477D-AED0-10C3FBA0CADF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zarlo.CosmosManager", "Zarlo.CosmosManager\Zarlo.CosmosManager.csproj", "{FA3F77B5-F0A5-407D-AD63-45562FCDC99D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmosManager", "CosmosManager\CosmosManager.csproj", "{FA3F77B5-F0A5-407D-AD63-45562FCDC99D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liquip.DotNetParser", "Liquip.DotNetParser\Liquip.DotNetParser.csproj", "{C55D60FA-C658-4C68-AEC3-C27EEFF56D0F}"
 EndProject

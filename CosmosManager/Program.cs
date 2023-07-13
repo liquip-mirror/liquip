@@ -1,5 +1,5 @@
 ﻿using Spectre.Console.Cli;
-using Zarlo.CosmosManager;
+using CosmosManager;
 
 var app = new CommandApp();
 app.Configure(config => { config.AddCommand<InitCommand>("init"); });

@@ -22,72 +22,72 @@ stages:
 XSharp-test:
   stage: test
   script:
-    - cd ./Zarlo.XSharp.UNitTest
+    - cd ./Liquip.XSharp.UNitTest
     - dotnet test
 
 XSharp-deploy:
   stage: deploy
   script:
-    - ./CICD/build_and_push_nuget.sh ./Zarlo.XSharp
+    - ./CICD/build_and_push_nuget.sh ./Liquip.XSharp
 
 Plugs:
   stage: deploy
   script:
-    - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Plugs
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Plugs
 
 Zarlo:
   stage: deploy
   script:
-    - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Cosmos
 
 Zarlo.Core:
   stage: deploy
   script:
-    - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Core
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Core
 
 Zarlo.Common:
   stage: deploy
   script:
-    - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Common
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Common
 
 Logger:
   stage: deploy
   script:
-    - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Logger
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Logger
 
 Memory:
   stage: deploy
   script:
-    - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Memory
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Memory
 
 Threading:
   stage: deploy
   script:
-    - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Threading
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Threading
 
 Threading.Mutex:
   stage: deploy
   script:
-    - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Threading.Mutex
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Threading.Mutex
 
 Threading.Plug:
   stage: deploy
   script:
-    - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Threading.Plugs
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Threading.Plugs
 
 Limine:
   stage: deploy
   script:
-    - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Limine
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Limine
 
 FileSystems:
   stage: deploy
   script:
-    - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.FileSystems
+    - ./CICD/build_and_push_nuget.sh ./Liquip.FileSystems
 
 VirtIO:
   stage: deploy
   script:
-    - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Driver.VirtIO
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Driver.VirtIO
 
 

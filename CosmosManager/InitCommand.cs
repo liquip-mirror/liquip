@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace Zarlo.CosmosManager;
+namespace CosmosManager;
 
 public class InitCommand : Command<InitCommand.Settings>
 {

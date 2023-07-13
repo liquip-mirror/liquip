@@ -1,4 +1,4 @@
-namespace Zarlo.CosmosManager;
+namespace CosmosManager;
 
 public class Utils
 {
