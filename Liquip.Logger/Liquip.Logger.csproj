@@ -5,7 +5,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Title>Zarlo.Cosmos.Logger</Title>
+        <Title>Liquip.Logger</Title>
         <Authors>Zarlo</Authors>
         <RootNamespace>Zarlo.Cosmos.Logger</RootNamespace>
     </PropertyGroup>

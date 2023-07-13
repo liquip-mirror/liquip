@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-      <Title>Zarlo.Cosmos.Driver.VirtIO</Title>
+      <Title>Liquip.Driver.VirtIO</Title>
       <Authors>Zarlo</Authors>
     </PropertyGroup>
   <ItemGroup>

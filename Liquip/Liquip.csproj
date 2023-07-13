@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Title>Zarlo.Cosmos</Title>
+        <Title>Liquip</Title>
         <Authors>Zarlo</Authors>
     </PropertyGroup>
     <ItemGroup>
