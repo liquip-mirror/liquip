@@ -12,6 +12,7 @@
         <PackageReference Include="XSharp" Version="0.1.0-localbuild"/>
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\Zarlo.Cosmos.Common\Zarlo.Cosmos.Common.csproj" />
         <ProjectReference Include="..\Zarlo.Cosmos.Core\Zarlo.Cosmos.Core.csproj"/>
         <ProjectReference Include="..\Zarlo.Cosmos.Memory\Zarlo.Cosmos.Memory.csproj"/>
         <ProjectReference Include="..\Zarlo.Cosmos\Zarlo.Cosmos.csproj"/>

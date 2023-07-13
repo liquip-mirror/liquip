@@ -1,5 +1,19 @@
-﻿namespace Zarlo.Cosmos.Syscall;
+﻿using Cosmos.Core;
+using Zarlo.Cosmos.Memory;
 
-public class SysCallManager
+namespace Zarlo.Cosmos.Syscall;
+
+public static partial class SysCallManager
 {
+
+    public static void Initialize()
+    {
+    }
+
+    public static Address Handel(ref SysCallContext context)
+    {
+
+        return new Address(GCImplementation.GetSafePointer(context));
+    }
+
 }

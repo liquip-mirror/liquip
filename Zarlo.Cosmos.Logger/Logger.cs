@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Text;
 using Zarlo.Cosmos.Logger.Interfaces;
 
@@ -15,85 +16,82 @@ public class BaseLogger : ILogger
         _sinks = sinks;
     }
 
-    public void Info(string message)
+    public void Info(
+        string message,
+        [CallerMemberName] string? caller = null,
+        [CallerFilePath] string? filePath = null,
+        [CallerLineNumber] int? lineNumber = 0,
+        [CallerArgumentExpression("message")]
+        string? messageExpression = null
+    )
     {
-        Raw(LogLevel.Info, message);
+        throw new NotImplementedException();
     }
 
-    public void Info(string message, params object[] data)
+    public void Error(
+        string message,
+        [CallerMemberName] string? caller = null,
+        [CallerFilePath] string? filePath = null,
+        [CallerLineNumber] int? lineNumber = 0,
+        [CallerArgumentExpression("message")]
+        string? messageExpression = null
+    )
     {
-        Raw(LogLevel.Info, message, data);
+        throw new NotImplementedException();
     }
 
-    public void Error(string message)
+    public void Exception(string message,
+        [CallerMemberName] string? caller = null,
+        [CallerFilePath] string? filePath = null,
+        [CallerLineNumber] int? lineNumber = 0,
+        [CallerArgumentExpression("message")]
+        string? messageExpression = null
+    )
     {
-        Raw(LogLevel.Error, message);
+        throw new NotImplementedException();
     }
 
-    public void Error(string message, params object[] data)
+    public void Exception(Exception exception, string message,
+        [CallerMemberName] string? caller = null,
+        [CallerFilePath] string? filePath = null,
+        [CallerLineNumber] int? lineNumber = 0,
+        [CallerArgumentExpression("message")]
+        string? messageExpression = null
+    )
     {
-        Raw(LogLevel.Error, message, data);
+        throw new NotImplementedException();
     }
 
-    public void Exception(string message)
+    public void Debug(string message,
+        [CallerMemberName] string? caller = null,
+        [CallerFilePath] string? filePath = null,
+        [CallerLineNumber] int? lineNumber = 0,
+        [CallerArgumentExpression("message")]
+        string? messageExpression = null)
     {
-        Raw(LogLevel.Exception, message);
+        throw new NotImplementedException();
     }
 
-    public void Exception(string message, params object[] data)
+    public void Trace(string message,
+        [CallerMemberName] string? caller = null,
+        [CallerFilePath] string? filePath = null,
+        [CallerLineNumber] int? lineNumber = 0,
+        [CallerArgumentExpression("message")]
+        string? messageExpression = null)
     {
-        Raw(LogLevel.Exception, message, data);
+        throw new NotImplementedException();
     }
 
-    public void Exception(Exception exception, string message)
-    {
-        var newMessage = new StringBuilder();
-        newMessage.AppendLine(message);
-        newMessage.AppendLine(exception.Message);
-        Raw(LogLevel.Exception, newMessage.ToString());
-    }
-
-    public void Exception(Exception exception, string message, params object[] data)
-    {
-        var newMessage = new StringBuilder();
-        newMessage.AppendLine(message);
-        newMessage.AppendLine(exception.Message);
-        Raw(LogLevel.Exception, newMessage.ToString(), data);
-    }
-
-    public void Debug(string message)
-    {
-        Raw(LogLevel.Debug, message);
-    }
-
-    public void Debug(string message, params object[] data)
-    {
-        Raw(LogLevel.Debug, message, data);
-    }
-
-    public void Trace(string message)
-    {
-        Raw(LogLevel.Trace, message);
-    }
-
-    public void Trace(string message, params object[] data)
-    {
-        Raw(LogLevel.Trace, message, data);
-    }
-
-    public void Raw(LogLevel logLevel, string message)
+    public void Raw(LogLevel logLevel, string message,
+        [CallerMemberName] string? caller = null,
+        [CallerFilePath] string? filePath = null,
+        [CallerLineNumber] int? lineNumber = 0,
+        [CallerArgumentExpression("message")]
+        string? messageExpression = null)
     {
         foreach (var sink in _sinks)
         {
-            sink.Raw(_context ?? "", logLevel, message);
-        }
-    }
-
-    public void Raw(LogLevel logLevel, string message, params object[] data)
-    {
-        foreach (var sink in _sinks)
-        {
-            sink.Raw(_context ?? "", logLevel, message, data);
+            sink.Raw(_context ?? "", logLevel, message, caller, filePath, lineNumber, messageExpression);
         }
     }
 

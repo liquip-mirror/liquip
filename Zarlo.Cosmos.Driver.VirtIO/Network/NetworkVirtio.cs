@@ -15,6 +15,8 @@ public class NetworkVirtio : BaseVirtIODevice
 
     private readonly Queue<Pointer> _receivedPackets = new();
 
+    public NetConfig? Config;
+
     public NetworkVirtio(uint bus, uint slot, uint function) : base(bus, slot, function)
     {
         Check();

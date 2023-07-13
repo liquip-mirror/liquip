@@ -25,7 +25,7 @@ public static class ClassBuilder
     {
         // foreach (var item in classes)
         // {
-        //     Console.WriteLine("{0} | {1} | {2}: {3} {4}", 
+        //     Console.WriteLine("{0} | {1} | {2}: {3} {4}",
         //     item.Key.FullName,
         //     item.Key.Namespace,
         //     item.Key.Name,
@@ -41,9 +41,9 @@ public static class ClassBuilder
         foreach (var item in classes)
         {
             var sb = new StringBuilder();
-            var savePath = "./output";
+            var savePath = "./output/" + item.Key.Assembly.GetName().Name;
             var nameSpace = string.IsNullOrWhiteSpace(item.Key.Namespace) ? "" : $@".{item.Key.Namespace}";
-
+            Directory.CreateDirectory(savePath);
             if (!string.IsNullOrWhiteSpace(item.Key.Namespace))
             {
                 foreach (var p in item.Key.Namespace.Split('.'))
@@ -62,14 +62,14 @@ public static class ClassBuilder
 
             var classNames = item.Key.FullName.Split('.').Last().Split('+');
 
-            savePath = $@"{savePath}/{item.Key.FullName.Split('.').Last()}.{ii++}.cs";
+            savePath = $@"{savePath}/{item.Key.FullName.Split('.').Last()}.cs";
 
             for (var i = 0; i < classNames.Length; i++)
             {
                 var className = classNames[i];
                 if (i == classNames.Length - 1)
                 {
-                    sb.AppendLine($@"[IL2CPU_Plug( typeof({item.Key.FullName.Replace("+", ".")}) )]");
+                    sb.AppendLine($@"[IL2CPU_Plug( ""{item.Key.FullName}, {item.Key.Assembly.GetName().Name}"" )]");
                 }
 
                 sb.AppendLine($@"public partial class {className}Plug");
@@ -95,6 +95,22 @@ public static class ClassBuilder
     }
 
 
+    public static string ParameterInfo(ParameterInfo parameterInfo)
+    {
+        var sb = new StringBuilder();
+
+
+        if (!parameterInfo.ParameterType.IsVisible)
+        {
+            sb.Append("//");
+            sb.Append(parameterInfo.ParameterType.ToString().Replace("+", "."));
+            sb.Append(" ");
+            sb.Append(parameterInfo.Name);
+        }
+
+        return sb.ToString();
+    }
+
     public static string BuildParameter(ParameterInfo parameterInfo)
     {
         var sb = new StringBuilder();
@@ -114,7 +130,14 @@ public static class ClassBuilder
             sb.Append("ref ");
         }
 
-        sb.Append(parameterInfo.ParameterType.ToString().Replace("+", "."));
+        if (parameterInfo.ParameterType.IsVisible)
+        {
+            sb.Append(parameterInfo.ParameterType.ToString().Replace("+", "."));
+        }
+        else
+        {
+            sb.Append("object");
+        }
         sb.Append(" ");
         sb.Append(parameterInfo.Name);
 
@@ -130,12 +153,14 @@ public static class ClassBuilder
         }
 
         var args = method.GetParameters().Select(BuildParameter).ToList();
+        var argInfo = method.GetParameters().Select(ParameterInfo).Where(i => !string.IsNullOrWhiteSpace(i)).ToList();
 
         if (!method.IsStatic)
         {
             args.IndexOf($@"{cName} me", 0);
         }
 
+        sb.AppendLine(string.Join(Environment.NewLine, argInfo));
         sb.AppendLine(string.Format("    public static {0} {1}({2})", returnType, method.Name,
             string.Join(", ", args)));
         sb.AppendLine("    {");

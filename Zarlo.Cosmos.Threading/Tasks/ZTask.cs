@@ -4,7 +4,7 @@
 //
 // namespace Zarlo.Cosmos.Threading.Tasks;
 //
-// public class ZTask : Task
+// public class ZTask
 // {
 //
 //     public static readonly ThreadStatic<ZTask> CurrentTask = new ThreadStatic<ZTask>();

@@ -14,14 +14,14 @@ public readonly struct DeviceCapability
     }
 }
 
-public class DeviceBase : PCIDevice
+public class PCIDriverBase : PCIDevice
 {
-    public DeviceBase(uint bus, uint slot, uint function) : base(bus, slot, function)
+    public PCIDriverBase(uint bus, uint slot, uint function) : base(bus, slot, function)
     {
         SetUp();
     }
 
-    public DeviceBase(PCIDevice device) : base(device.bus, device.slot, device.function)
+    public PCIDriverBase(PCIDevice device) : base(device.bus, device.slot, device.function)
     {
         SetUp();
     }

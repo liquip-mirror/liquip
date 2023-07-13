@@ -10,7 +10,7 @@ public struct NetHeader
     // Bit 2: If VIRTIO_NET_F_RSC_EXT was negotiated, the device processes
     // duplicated ACK segments, reports number of coalesced TCP segments in ChecksumStart
     // field and number of duplicated ACK segments in ChecksumOffset field,
-    // and sets bit 2 in Flags(VIRTIO_NET_HDR_F_RSC_INFO) 
+    // and sets bit 2 in Flags(VIRTIO_NET_HDR_F_RSC_INFO)
     public byte SegmentationOffload; // 0:None 1:TCPv4 3:UDP 4:TCPv6 0x80:ECN
     public ushort HeaderLength; // Size of header to be used during segmentation.
     public ushort SegmentLength; // Maximum segment size (not including header).
@@ -18,3 +18,18 @@ public struct NetHeader
     public ushort ChecksumOffset; // The position after ChecksumStart to store the checksum.
     public ushort BufferCount; // Used when merging buffers.
 }
+
+[StructLayout(LayoutKind.Auto)]
+public struct NetConfig
+{
+    public unsafe fixed byte Mac[6];
+    public Int16 Status;
+    public Int16 MaxVirtQueuePairs;
+    public Int16 MTU;
+    public Int32 Speed;
+    public byte Duplex;
+    public byte RssMaxKeySize;
+    public Int16 RssMaxIndirectionTableLength;
+    public Int32 SupportedHashTypes;
+}
+

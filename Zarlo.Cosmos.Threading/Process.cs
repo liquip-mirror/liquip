@@ -4,14 +4,14 @@ using Zarlo.Cosmos.Threading.Core.Processing;
 namespace Zarlo.Cosmos.Threading;
 
 
-public class Process 
+public class Process
 {
 
     public static uint SpawnProcess(ThreadStart aStart, string name = "nameless")
     {
         return ProcessContextManager.StartContext(
-            name, 
-            aStart, 
+            name,
+            aStart,
             ProcessContextType.PROCESS
         );
     }
@@ -19,9 +19,9 @@ public class Process
     public static uint SpawnProcess(ParameterizedThreadStart aStart, object param, string name = "nameless")
     {
         return ProcessContextManager.StartContext(
-            name, 
-            aStart, 
-            ProcessContextType.PROCESS, 
+            name,
+            aStart,
+            ProcessContextType.PROCESS,
             param
             );
     }

@@ -6,14 +6,10 @@ namespace Zarlo.Cosmos.Logger.Sinks;
 
 public class ConsoleSink : ISink
 {
-    public void Raw(string context, LogLevel logLevel, string message)
+    public void Raw(string context, LogLevel logLevel, string message, string? caller, string? filePath, int? lineNumber,
+        string? messageExpression)
     {
-        Raw(context, logLevel, message, Array.Empty<object>());
-    }
-
-    public void Raw(string context, LogLevel logLevel, string message, params object[] data)
-    {
-        DoRaw(context, logLevel, message, data.ToArray());
+        DoRaw(context, logLevel, message, caller, filePath, lineNumber, messageExpression);
     }
 
     public void Dispose()
@@ -21,7 +17,8 @@ public class ConsoleSink : ISink
     }
 
 
-    private void DoRaw(string context, LogLevel logLevel, string message, params object[] data)
+    private void DoRaw(string context, LogLevel logLevel, string message, string? caller, string? filePath, int? lineNumber,
+        string? messageExpression)
     {
         var logLevelMessage = logLevel switch
         {
@@ -53,7 +50,14 @@ public class ConsoleSink : ISink
         Console.Write(logLevelMessage);
         Console.BackgroundColor = ConsoleColor.White;
         Console.Write("] ");
-        Console.Write(message, data.ToArray());
+        if (logLevel == LogLevel.Exception)
+        {
+            Console.Write("[{0}:{1}] \n {2}", filePath, lineNumber, message);
+        }
+        else
+        {
+            Console.Write(message);
+        }
         if (!message.EndsWith(Environment.NewLine))
         {
             Console.Write(Environment.NewLine);

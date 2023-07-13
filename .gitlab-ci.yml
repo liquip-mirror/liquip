@@ -13,7 +13,7 @@ default:
     paths:
       - "**/*.nupkg"
     expire_in: 1 day
- 
+
 stages:
   - test
   - deploy
@@ -85,6 +85,9 @@ FileSystems:
   script:
     - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.FileSystems
 
-
+VirtIO:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./Zarlo.Cosmos.Driver.VirtIO
 
 

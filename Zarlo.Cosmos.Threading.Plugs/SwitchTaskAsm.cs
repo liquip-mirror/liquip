@@ -46,40 +46,5 @@ public class SwitchTaskAsm
         _ = new LiteralAssemblerCode("mov ds, eax");
         _ = new LiteralAssemblerCode("popad");
 
-        // var StackContext = LabelName.GetStaticFieldName(typeof(Zarlo.Cosmos.Core.ZINTs), nameof(Zarlo.Cosmos.Core.ZINTs.mStackContext));
-        // var SwitchTaskMethod = Zarlo.XSharp.Utils.GetMethodDef(
-        //     typeof(Core.Processing.ProcessorScheduler),
-        //     nameof(Core.Processing.ProcessorScheduler.SwitchTask)
-        // );
-        // var SwitchTask = LabelName.Get(SwitchTaskMethod);
-        // // PushAllRegisters
-        // XS.PushAllRegisters();
-        // var toPush = new XSRegisters.Register[] { DS, ES, FS, GS };
-        // foreach (var register in toPush)
-        // {
-        //     XS.Set(EAX, register);
-        //     XS.Push(EAX);
-        // }
-        // XS.Set(AX, 0x10);
-        //
-        // // set
-        // var toMove = new XSRegisters.Register[] { DS, ES, FS, GS };
-        // foreach (var register in toMove)
-        // {
-        //     XS.Set(register, AX);
-        // }
-        //
-        // XS.Set(EAX, ESP);
-        // XS.Set(StackContext, EAX, destinationIsIndirect: true);
-        // XS.Call(SwitchTask);
-        // XS.Set(EAX, StackContext, sourceIsIndirect: true);
-        //
-        // var toPop = new XSRegisters.Register[] { ESP, GS, FS, ES, DS };
-        // foreach (var register in toPush)
-        // {
-        //     XS.Set(EAX, register);
-        //     XS.Pop(EAX);
-        // }
-        // XS.PopAllRegisters();
     }
 }

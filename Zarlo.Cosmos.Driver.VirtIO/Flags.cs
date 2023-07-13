@@ -32,7 +32,7 @@ public enum DeviceFeatureFlag : uint
 }
 
 [Flags]
-public enum NetDeviceFeatureFlag : uint
+public enum NetDeviceFeatureFlag : ulong
 {
     CSUM = 1,
     GUEST_CSUM = 1 << 1,
@@ -51,7 +51,16 @@ public enum NetDeviceFeatureFlag : uint
     CTRL_VQ = 1 << 17,
     CTRL_RX = 1 << 18,
     CTRL_VLAN = 1 << 19,
-    GUEST_ANNOUNCE = 1 << 21
+    GUEST_ANNOUNCE = 1 << 21,
+    MQ = 1 << 22,
+    CTRL_MAC_ADDR = (ulong)1 << 23,
+    HOST_USO = (ulong)1 << 56,
+    HASH_REPORT = (ulong)1 << 57,
+    GUEST_HDRLEN = (ulong)1 << 59,
+    RSS = (ulong)1 << 60,
+    RSC_EXT = (ulong)1 << 61,
+    STANDBY = (ulong)1 << 62,
+    SPEED_DUPLEX = (ulong)1 << 63
 }
 
 [Flags]

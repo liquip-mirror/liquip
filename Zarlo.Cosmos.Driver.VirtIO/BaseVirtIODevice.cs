@@ -7,7 +7,7 @@ using Zarlo.Cosmos.Memory;
 
 namespace Zarlo.Cosmos.Driver.VirtIO;
 
-public class BaseVirtIODevice : DeviceBase
+public class BaseVirtIODevice : PCIDriverBase
 {
     public const int DeviceIDOffset = 4160;
 

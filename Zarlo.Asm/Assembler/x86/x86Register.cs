@@ -1,5 +1,17 @@
 namespace Zarlo.Asm.Assembler.x86;
 
+public class x86IndirectRegister
+{
+    public x86Register Register { get; init; }
+    public uint Offset { get; init; }
+
+    public x86IndirectRegister(x86Register register, uint offset)
+    {
+        Register = register;
+        Offset = offset;
+    }
+}
+
 public class x86Register : IBaseRegister
 {
     private readonly byte _code;
