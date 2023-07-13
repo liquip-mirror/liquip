@@ -1,6 +1,6 @@
 
 install-cosmos:
-	python3 -m CosmosInstaller install
+	python3 -m pyCosmosInstaller install
 
 build: clean
 	dotnet build
