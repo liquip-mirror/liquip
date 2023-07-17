@@ -25,6 +25,13 @@ public class InitCommand : Command<InitCommand.Settings>
 
         Utils.CopyDirectory(Paths.CosmosContentPath, Paths.CosmosManagerPath, true);
 
+        Directory.CreateDirectory(Paths.CosmosManagerPatchesPath);
+
+        Directory.CreateDirectory(Path.Join(Paths.CosmosManagerPatchesPath, "Cosmos"));
+        Directory.CreateDirectory(Path.Join(Paths.CosmosManagerPatchesPath, "Common"));
+        Directory.CreateDirectory(Path.Join(Paths.CosmosManagerPatchesPath, "XSharp"));
+        Directory.CreateDirectory(Path.Join(Paths.CosmosManagerPatchesPath, "IL2CPU"));
+
         var defaultConfig = new ConfigFile()
         {
             Cosmos = new GitRepo()

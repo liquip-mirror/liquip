@@ -47,12 +47,17 @@ public class InstallCommand : Command<InstallCommand.Settings>
     {
         var project_patch_path = Path.Join(Paths.CosmosManagerPatchesPath, project);
         var project_path = Path.Join(Paths.CosmosSrcPath, project);
-
-        foreach (var patch in Directory.GetFiles(project_patch_path))
+        if (Directory.Exists(project_patch_path))
         {
-            Utils.RunShellCommand("git", "-C", project_path, "apply", Path.Join(project_patch_path, patch));
+            foreach (var patch in Directory.GetFiles(project_patch_path))
+            {
+                Utils.RunShellCommand("git", "-C", project_path, "apply", Path.Join(project_patch_path, patch));
+            }
         }
-
+        else
+        {
+            AnsiConsole.MarkupLine("no patches for {0} found", project);
+        }
     }
 
     void PullRepo(string Name, GitRepo repo)
