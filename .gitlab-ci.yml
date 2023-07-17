@@ -103,8 +103,4 @@ CosmosManager:
   stage: deploy
   script:
     - ./CICD/build_and_push_nuget.sh ./CosmosManager
-  only:
-    changes:
-      - CosmosManager/*
-      - CosmosManager/**/*
 
