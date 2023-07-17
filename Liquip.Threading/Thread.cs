@@ -75,8 +75,6 @@ public class Thread
 
     public static void Yield()
     {
-        Console.WriteLine("yielding");
-        // ProcessorScheduler.SwitchTask();
     }
 
     public static void Sleep(int ms)
@@ -86,8 +84,7 @@ public class Thread
         ProcessContextManager.m_CurrentContext.state = ThreadState.WAITING_SLEEP;
         while (ProcessContextManager.m_CurrentContext.state == ThreadState.WAITING_SLEEP)
         {
-            // Yield();
-            // swap task there
+            Yield();
         }
     }
 }

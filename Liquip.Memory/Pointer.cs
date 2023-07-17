@@ -4,7 +4,8 @@ using Cosmos.Core;
 
 namespace Liquip.Memory;
 
-public struct Pointer : IDisposable
+[StructLayout(LayoutKind.Auto)]
+public struct Pointer
 {
     /// <summary>
     ///     defaults as <see cref="Null" />
@@ -16,8 +17,6 @@ public struct Pointer : IDisposable
     /// </summary>
     public static unsafe Pointer Null => new(null, 0);
 
-    private readonly bool _autoCleanUp;
-
     /// <summary>
     ///     get a pointer to of an object with the given size
     /// </summary>
@@ -25,7 +24,7 @@ public struct Pointer : IDisposable
     /// <param name="autoCleanUp"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe Pointer New(uint size, bool autoCleanUp)
+    public static unsafe Pointer New(uint size)
     {
         return new Pointer(NativeMemory.Alloc(size), size);
     }
@@ -39,9 +38,9 @@ public struct Pointer : IDisposable
     /// <param name="autoCleanUp"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe Pointer MakeFrom(uint* ptr, uint size, bool autoCleanUp = true)
+    public static unsafe Pointer MakeFrom(uint* ptr, uint size)
     {
-        var p = new Pointer(ptr, size, autoCleanUp);
+        var p = new Pointer(ptr, size);
         return p;
     }
 
@@ -53,9 +52,9 @@ public struct Pointer : IDisposable
     /// <param name="autoCleanUp"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe Pointer MakeFrom(Address ptr, uint size, bool autoCleanUp = true)
+    public static unsafe Pointer MakeFrom(Address ptr, uint size)
     {
-        var p = new Pointer((uint*)(uint)ptr, size, autoCleanUp);
+        var p = new Pointer((uint*)(uint)ptr, size);
         return p;
     }
 
@@ -67,25 +66,13 @@ public struct Pointer : IDisposable
     /// <param name="autoCleanUp"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pointer MakeFrom(byte[] data, bool autoCleanUp = true)
+    public static Pointer MakeFrom(byte[] data)
     {
-        var p = new Pointer(data, autoCleanUp);
+        var p = new Pointer(data);
         return p;
     }
 
-    /// <summary>
-    ///     get a pointer to of an object with the given size
-    ///     auto cleans up
-    /// </summary>
-    /// <param name="size">size in bytes</param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pointer New(uint size)
-    {
-        return New(size, true);
-    }
-
-    private unsafe Pointer(byte[] buffer, bool autoCleanUp = true)
+    private unsafe Pointer(byte[] buffer)
     {
         fixed (byte* ptr = buffer)
         {
@@ -93,17 +80,15 @@ public struct Pointer : IDisposable
         }
 
         GCImplementation.IncRootCount((ushort*)Ptr);
-        _autoCleanUp = autoCleanUp;
         Size = (uint)buffer.Length;
     }
 
-    private unsafe Pointer(void* ptr, uint size, bool autoCleanUp = true) : this((uint*)ptr, size, autoCleanUp)
+    private unsafe Pointer(void* ptr, uint size) : this((uint*)ptr, size)
     {
     }
 
-    private unsafe Pointer(uint* ptr, uint size, bool autoCleanUp = true)
+    private unsafe Pointer(uint* ptr, uint size)
     {
-        _autoCleanUp = autoCleanUp;
         Ptr = ptr;
         GCImplementation.IncRootCount((ushort*)Ptr);
         Size = size;
@@ -227,13 +212,6 @@ public struct Pointer : IDisposable
         }
     }
 
-    public void Dispose()
-    {
-        if (_autoCleanUp)
-        {
-            Free();
-        }
-    }
 
     public override bool Equals(object? obj)
     {

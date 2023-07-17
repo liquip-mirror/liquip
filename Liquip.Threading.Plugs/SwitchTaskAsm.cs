@@ -1,7 +1,7 @@
 using IL2CPU.API;
 using XSharp;
 using XSharp.Assembler;
-using Zarlo.Cosmos.Core;
+using Liquip.Core;
 using Liquip.Threading.Core.Processing;
 using static XSharp.XSRegisters;
 

@@ -46,12 +46,12 @@ public static unsafe class ProcessContextManager
     public static uint* SetupStack(uint* stack)
     {
         uint origin = (uint)stack;
-        *--stack = 0xFFFFFFFF; // trash
-        *--stack = 0xFFFFFFFF; // trash
-        *--stack = 0xFFFFFFFF; // trash
-        *--stack = 0xFFFFFFFF; // trash
+        *--stack = 0xFF_FF_FF_FF; // trash
+        *--stack = 0xFF_FF_FF_FF; // trash
+        *--stack = 0xFF_FF_FF_FF; // trash
+        *--stack = 0xFF_FF_FF_FF; // trash
         *--stack = 0x10; // ss ?
-        *--stack = 0x00000202; // eflags
+        *--stack = 0x00_00_02_02; // eflags
         *--stack = 0x8; // cs
         *--stack = ObjUtilities.GetEntryPoint(); // eip
         *--stack = 0; // error

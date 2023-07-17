@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using Spectre.Console;
+
 namespace CosmosManager;
 
 public class Utils
@@ -38,4 +41,31 @@ public class Utils
             CopyDirectory(subDir.FullName, newDestinationDir, true);
         }
     }
+
+
+    public static void RunShellCommand(string command) => RunShellCommand(command, "");
+
+    public static void RunShellCommand(string command, params string[] args)
+    {
+        AnsiConsole.MarkupLine("Running command {0} {1}", command, string.Join(' ', args));
+        var process = new Process()
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = command,
+                Arguments = string.Join(' ', args),
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            }
+        };
+        process.OutputDataReceived += (sender, args) => AnsiConsole.WriteLine(args.Data ?? "");
+        process.Start();
+        process.BeginOutputReadLine();
+        process.WaitForExit();
+
+    }
+
+
 }

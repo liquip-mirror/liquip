@@ -50,7 +50,7 @@ public class VBEConsole : TextScreenBase, IDisposable
         // If the buffer is allocated, free it.
         if (_frameBuffer.Size != 0)
         {
-            _frameBuffer.Dispose();
+            // _frameBuffer.Dispose();
         }
 
         GC.SuppressFinalize(this);

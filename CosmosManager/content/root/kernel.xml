@@ -28,20 +28,18 @@
     <RemoveBootDebugOutput>True</RemoveBootDebugOutput>
     <OptimizationLevel>2</OptimizationLevel>
   </PropertyGroup>
+  {% if PackageReference.size > 0 %}
   <ItemGroup>
-    <PackageReference Include="Cosmos.Build" Version="0-*" NoWarn="NU1604"/>
-    <PackageReference Include="Cosmos.Debug.Kernel" Version="0-*" NoWarn="NU1604"/>
-    <PackageReference Include="Cosmos.Plugs" Version="0.1.0-localbuild"/>
-    <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604"/>
+      {% for package in PackageReference %}
+      <PackageReference Include="{{package.Name}}" Version="{{package.Version}}" NoWarn="NU1604"/>
+      {% endfor %}
   </ItemGroup>
+  {% endif %}
+  {% if ProjectReference.size > 0 %}
   <ItemGroup>
-    <ProjectReference Include="..\Liquip.Plugs\Liquip.Plugs.csproj" />
-    <ProjectReference Include="..\Liquip.Threading\Liquip.Threading.csproj" />
-    <ProjectReference Include="..\Liquip.Threading.Plugs\Liquip.Threading.Plugs.csproj" />
-    <ProjectReference Include="..\Liquip\Liquip.csproj" />
+      {% for project in ProjectReference %}
+      <ProjectReference Include="..\{{project}}\{{project}}.csproj" />
+      {% endfor %}
   </ItemGroup>
-  <ItemGroup>
-    <PlugsReference Include="$(MSBuildProjectDirectory)\..\Liquip.Plugs\bin\Debug\net6.0\Liquip.Plugs.dll"/>
-    <PlugsReference Include="$(MSBuildProjectDirectory)\..\Liquip.Threading.Plugs\bin\Debug\net6.0\Liquip.Threading.Plugs.dll"/>
-  </ItemGroup>
+  {% endif %}
 </Project>

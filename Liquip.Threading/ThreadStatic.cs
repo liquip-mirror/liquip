@@ -49,11 +49,13 @@ public sealed class ProcessStatic<T> : IDisposable
 
     public ProcessStatic()
     {
+        StaticManager.Register(this);
         _value = new Dictionary<uint, T?>();
     }
 
     public ProcessStatic(T value)
     {
+        StaticManager.Register(this);
         _value = new Dictionary<uint, T?>();
         _value.Add(ProcessContextManager.m_CurrentContext.tid, value);
     }
@@ -77,5 +79,14 @@ public sealed class ProcessStatic<T> : IDisposable
     public static explicit operator T?(ProcessStatic<T> value)
     {
         return value.Value;
+    }
+}
+
+
+public static class StaticManager
+{
+
+    public static void Register<T>(ProcessStatic<T> pstatic)
+    {
     }
 }

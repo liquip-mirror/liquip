@@ -8,6 +8,7 @@
         <ToolCommandName>cosmos-manager</ToolCommandName>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="Fluid.Core" Version="2.4.0" />
         <PackageReference Include="Spectre.Console" Version="0.47.0"/>
         <PackageReference Include="Spectre.Console.Cli" Version="0.47.0"/>
     </ItemGroup>
@@ -22,7 +23,10 @@
             <copyToOutput>true</copyToOutput>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <Compile Remove="content\root\Kernel.cs" />
+        <Content Include="content\root\Kernel.cs">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
-
 
 </Project>

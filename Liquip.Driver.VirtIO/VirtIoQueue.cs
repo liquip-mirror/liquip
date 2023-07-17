@@ -20,7 +20,7 @@ public class VirtIoQueue
         UsedSize = (uint)(6 + 8 * size);
 
         BufferSize = DescriptorSize + AvailableSize + UsedSize;
-        Buffer = Pointer.New(BufferSize, false);
+        Buffer = Pointer.New(BufferSize);
 
         for (uint i = 0; i < size - 1; i++)
         {

@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
+        <ProjectReference Include="..\Liquip.Core\Liquip.Core.csproj" />
         <ProjectReference Include="..\Liquip.Threading\Liquip.Threading.csproj" />
         <ProjectReference Include="..\Liquip.XSharp\Liquip.XSharp.csproj" />
     </ItemGroup>

@@ -19,8 +19,10 @@ public class Paths
         }
     }
 
-    public static string ContentPath => Path.Join(Assembly.GetExecutingAssembly().Location, "content");
-    public static string CosmosContentPath => Path.Join(Assembly.GetExecutingAssembly().Location, "cosmos");
+    public static string RootPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+    public static string ContentPath => Path.Join(RootPath, "content");
+    public static string CosmosContentPath => Path.Join(ContentPath, "cosmos");
     public static string CosmosManagerPath => Path.Join(Root, "CosmosManager");
     public static string CosmosManagerPatchesPath => Path.Join(CosmosManagerPath, "Patches");
 

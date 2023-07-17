@@ -20,7 +20,7 @@ public class GPUVirtIOHead : IDisposable
 
     public void Dispose()
     {
-        FrameBuffer.Dispose();
+        // FrameBuffer.Dispose();
     }
 
     public void Clear()

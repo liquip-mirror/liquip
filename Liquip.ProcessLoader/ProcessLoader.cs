@@ -2,7 +2,7 @@
 using Liquip.Threading;
 using Liquip.DotNetParser;
 
-namespace Zarlo.Cosmos;
+namespace Liquip;
 
 public class StartOptions
 {

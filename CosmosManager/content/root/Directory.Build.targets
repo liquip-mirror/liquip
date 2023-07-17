@@ -2,6 +2,6 @@
 <Project>
 
     <!-- this like is needed for the cosmos manager tool -->
-    <Import Project="CosmosManager/Targets/Cosmos.Build.props"/>
+    <Import Project="CosmosManager/Targets/Cosmos.Build.targets"/>
 
 </Project>

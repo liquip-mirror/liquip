@@ -36,7 +36,7 @@ public struct VirtQDescriptor
     {
         unsafe
         {
-            return Pointer.MakeFrom((uint*)addr, len, false);
+            return Pointer.MakeFrom((uint*)addr, len);
         }
     }
 }

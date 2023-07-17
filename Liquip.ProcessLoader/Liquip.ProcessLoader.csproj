@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Liquip.Common\Liquip.Common.csproj" />
       <ProjectReference Include="..\Liquip.Threading\Liquip.Threading.csproj" />
       <ProjectReference Include="..\Liquip.DotNetParser\Liquip.DotNetParser.csproj" />
     </ItemGroup>

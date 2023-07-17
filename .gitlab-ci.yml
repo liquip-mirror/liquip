@@ -90,4 +90,8 @@ VirtIO:
   script:
     - ./CICD/build_and_push_nuget.sh ./Liquip.Driver.VirtIO
 
+CosmosManager:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./CosmosManager
 

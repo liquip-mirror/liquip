@@ -1,22 +1,22 @@
 namespace Liquip.Threading.Core.Context;
 
 
-    public enum ThreadState
-    {
-        ALIVE = 0,
-        DEAD = 1,
-        WAITING_SLEEP = 2,
-        PAUSED = 3,
-        WAITING_IO = 4,
-    }
+public enum ThreadState
+{
+    ALIVE = 0,
+    DEAD = 1,
+    WAITING_SLEEP = 2,
+    PAUSED = 3,
+    WAITING_IO = 4,
+}
 
-    public enum ProcessContextType
-    {
-        THREAD = 0,
-        PROCESS = 1,
-        PROCESS_FORK = 2,
-        SYSCALL = 3
-    }
+public enum ProcessContextType
+{
+    THREAD = 0,
+    PROCESS = 1,
+    PROCESS_FORK = 2,
+    SYSCALL = 3
+}
 
 
 

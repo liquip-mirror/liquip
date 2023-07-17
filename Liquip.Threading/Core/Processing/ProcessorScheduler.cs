@@ -60,17 +60,8 @@ public static unsafe class ProcessorScheduler
 
     public static int interruptCount;
 
-    [ForceInclude]
-    public static void SwitchTask()
+    public static void DoSwitchTask()
     {
-
-        // if(!HAL.Global.InterruptsEnabled) return;
-
-        CPU.DisableInterrupts();
-        unchecked
-        {
-            interruptCount++;
-        }
         // Console.WriteLine("SwitchTask {0}", interruptCount);
         if (ProcessContextManager.m_CurrentContext != null)
         {
@@ -101,7 +92,7 @@ public static unsafe class ProcessorScheduler
                 ctx = ctx.next;
             }
             ProcessContextManager.m_CurrentContext.esp = ZINTs.mStackContext;
-        tryagain:;
+            tryagain:;
             if (ProcessContextManager.m_CurrentContext.next != null)
             {
                 ProcessContextManager.m_CurrentContext = ProcessContextManager.m_CurrentContext.next;
@@ -117,6 +108,21 @@ public static unsafe class ProcessorScheduler
             ProcessContextManager.m_CurrentContext.age = ProcessContextManager.m_CurrentContext.priority;
             ZINTs.mStackContext = ProcessContextManager.m_CurrentContext.esp;
         }
+    }
+
+    [ForceInclude]
+    public static void SwitchTask()
+    {
+
+        // if(!HAL.Global.InterruptsEnabled) return;
+
+        CPU.DisableInterrupts();
+        unchecked
+        {
+            interruptCount++;
+        }
+
+        DoSwitchTask();
         CPU.EnableInterrupts();
         CCore.Global.PIC.EoiMaster();
         CCore.Global.PIC.EoiSlave();
@@ -124,9 +130,19 @@ public static unsafe class ProcessorScheduler
 
     public static void KillProcess(uint pid, uint sig)
     {
+        uint limit = 100;
+        DoKillProcess(pid, sig, ref limit);
+    }
+
+    private static void DoKillProcess(uint pid, uint sig, ref uint limit)
+    {
+        if(limit == 0) return;
+
+        limit--;
+
         var processContext = ProcessContextManager.GetContext(pid);
 
-        if (processContext.type == ProcessContextType.PROCESS || processContext.type == ProcessContextType.PROCESS_FORK)
+        if (processContext.type is ProcessContextType.PROCESS or ProcessContextType.PROCESS_FORK)
         {
             ProcessContext ctx = ProcessContextManager.m_ContextList;
             while (ctx.next != null)

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>{{ProjectName}}</Title>
+    </PropertyGroup>
+    {% if PackageReference.size > 0 %}
+    <ItemGroup>
+      {% for package in PackageReference %}
+      <PackageReference Include="{{package.Name}}" Version="{{package.Version}}" NoWarn="NU1604"/>
+      {% endfor %}
+    </ItemGroup>
+    {% endif %}
+    {% if ProjectReference.size > 0 %}
+    <ItemGroup>
+      {% for project in ProjectReference %}
+      <ProjectReference Include="..\{{project}}\{{project}}.csproj" />
+      {% endfor %}
+    </ItemGroup>
+    {% endif %}
+</Project>
