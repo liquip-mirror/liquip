@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <SelfContained>True</SelfContained>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Platform>cosmos</Platform>
+    <SupportsX86Intrinsics>false</SupportsX86Intrinsics>
+    <EnableGDB>False</EnableGDB>
+    <StartCosmosGDB>False</StartCosmosGDB>
+    <VisualStudioDebugPort>Pipe: Cosmos\Serial</VisualStudioDebugPort>
+    <CosmosDebugPort>Serial: COM1</CosmosDebugPort>
+    <Launch>VMware</Launch>
+    <Profile>VMware</Profile>
+    <Description>Use VMware Player or Workstation to deploy and debug.</Description>
+    <PxeInterface>192.168.0.8</PxeInterface>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CompileVBEMultiboot>False</CompileVBEMultiboot>
+    <VBEResolution>1280x720x32</VBEResolution>
+    <VMWareEdition>Workstation</VMWareEdition>
+    <DebugEnabled>False</DebugEnabled>
+    <EnableBochsDebug>True</EnableBochsDebug>
+    <StartBochsDebugGui>True</StartBochsDebugGui>
+    <ExtractMapFile>False</ExtractMapFile>
+    <StackCorruptionDetectionLevel>AllInstructions</StackCorruptionDetectionLevel>
+    <DebugType>none</DebugType>
+    <CompressionType>Gzip</CompressionType>
+    <RemoveBootDebugOutput>True</RemoveBootDebugOutput>
+    <OptimizationLevel>2</OptimizationLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Cosmos.Build" Version="0-*" NoWarn="NU1604"/>
+    <PackageReference Include="Cosmos.Debug.Kernel" Version="0-*" NoWarn="NU1604"/>
+    <PackageReference Include="Cosmos.Plugs" Version="0.1.0-localbuild"/>
+    <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Liquip.Plugs\Liquip.Plugs.csproj" />
+    <ProjectReference Include="..\..\Liquip.Threading\Liquip.Threading.csproj" />
+    <ProjectReference Include="..\..\Liquip.Threading.Plugs\Liquip.Threading.Plugs.csproj" />
+    <ProjectReference Include="..\..\Liquip.WASM\Liquip.WASM.csproj" />
+    <ProjectReference Include="..\..\Liquip\Liquip.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PlugsReference Include="$(MSBuildProjectDirectory)\..\..\Liquip.Plugs\bin\Debug\net6.0\Liquip.Plugs.dll"/>
+    <PlugsReference Include="$(MSBuildProjectDirectory)\..\..\Liquip.Threading.Plugs\bin\Debug\net6.0\Liquip.Threading.Plugs.dll"/>
+  </ItemGroup>
+</Project>
