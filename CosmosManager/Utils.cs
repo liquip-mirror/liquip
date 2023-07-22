@@ -67,5 +67,21 @@ public class Utils
 
     }
 
+    public static string StringBool(bool boolean)
+    {
+        return boolean ? "[lime]Yes[/]" : "[maroon]No[/]";
+    }
+
+
+    public static bool IsInPath(string fileName)
+    {
+        if (File.Exists(fileName))
+            return true;
+
+        var values = Environment.GetEnvironmentVariable("PATH");
+        return values.Split(Path.PathSeparator)
+            .Select(path => Path.Combine(path, fileName))
+            .Any(fullPath => File.Exists(fullPath));
+    }
 
 }

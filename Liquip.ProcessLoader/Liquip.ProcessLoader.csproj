@@ -10,7 +10,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Liquip.Common\Liquip.Common.csproj" />
       <ProjectReference Include="..\Liquip.Threading\Liquip.Threading.csproj" />
-      <ProjectReference Include="..\Liquip.DotNetParser\Liquip.DotNetParser.csproj" />
+      <ProjectReference Include="..\Liquip.Process.DotNetParser\Liquip.Process.DotNetParser.csproj" />
     </ItemGroup>
 
 </Project>

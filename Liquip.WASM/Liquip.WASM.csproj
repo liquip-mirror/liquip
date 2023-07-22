@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <None Include="VM\Inst.cs" />
+    <None Include="VM\Label.cs" />
+    <None Include="VM\Runtime.cs" />
+    <None Include="VM\State.cs" />
+  </ItemGroup>
+
+</Project>

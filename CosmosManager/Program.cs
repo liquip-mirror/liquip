@@ -6,6 +6,7 @@ app.Configure(config =>
 {
     config.AddCommand<InitCommand>("init");
     config.AddCommand<InstallCommand>("install");
+    config.AddCommand<StatsCommand>("stats");
 });
 
 

@@ -1,0 +1,8 @@
+﻿namespace Liquip.WASM.Instruction;
+
+internal class I64rotr : Instruction
+{
+    public I64rotr(Parser parser) : base(parser, true)
+    {
+    }
+}

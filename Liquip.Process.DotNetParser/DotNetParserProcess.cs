@@ -2,7 +2,7 @@ using libDotNetClr;
 using LibDotNetParser.CILApi;
 using Liquip.Common;
 
-namespace Liquip.DotNetParser;
+namespace Liquip.Process.DotNetParser;
 
 public class DotNetParserProcess: IProcess
 {
@@ -18,13 +18,12 @@ public class DotNetParserProcess: IProcess
         Clr = new DotNetClr(File, FrameWorkPath);
     }
 
-
     public void SetWorkingDir(string wd)
     {
         throw new NotImplementedException();
     }
 
-    public void Env(object env)
+    public void Environment(ProcessEnvironment env)
     {
         throw new NotImplementedException();
     }

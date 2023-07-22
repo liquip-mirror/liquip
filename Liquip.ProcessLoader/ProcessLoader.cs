@@ -1,6 +1,6 @@
 ﻿using Liquip.Common;
 using Liquip.Threading;
-using Liquip.DotNetParser;
+using Liquip.Process.DotNetParser;
 
 namespace Liquip;
 
@@ -15,7 +15,7 @@ public class StartOptions
 public static class ProcessLoader
 {
 
-    public static Process? Start(StartOptions startOptions)
+    public static Threading.Process? Start(StartOptions startOptions)
     {
         IProcess? process = null;
         using var file = new FileStream(startOptions.Exe, FileMode.Open);
@@ -25,6 +25,13 @@ public static class ProcessLoader
             case 0xAD:
                 switch (file.ReadByte())
                 {
+                    case 0x00:
+                        if (file.ReadByte() != 0x61 || file.ReadByte() != 0x73 ||
+                            file.ReadByte() != 0x6D)
+                        {
+                        }
+
+                        break;
                     case 0x5A: // PE files
                         process = new DotNetParserProcess(startOptions.Exe);
                         break;
@@ -41,7 +48,7 @@ public static class ProcessLoader
             process.Main(startOptions.Args);
         }
 
-        return new Process(run);
+        return new Threading.Process(run);
     }
 
 }
