@@ -14,8 +14,20 @@ public static unsafe class ProcessContextManager
     public const uint STACK_SIZE_PROCESS = 102400;
 
     public const uint STACK_SIZE_SYSCALL = 1024;
+
+    /// <summary>
+    /// stores the last TID used
+    /// </summary>
     public static uint m_NextCID;
+
+    /// <summary>
+    /// stores the current context
+    /// </summary>
     public static ProcessContext m_CurrentContext;
+
+    /// <summary>
+    /// stores the first context
+    /// </summary>
     public static ProcessContext m_ContextList;
 
     public static Mutex ContextListMutex = new Mutex();
@@ -43,6 +55,11 @@ public static unsafe class ProcessContextManager
         return null;
     }
 
+    /// <summary>
+    /// sets up the default stack
+    /// </summary>
+    /// <param name="stack">pointer to the stack</param>
+    /// <returns></returns>
     public static uint* SetupStack(uint* stack)
     {
         uint origin = (uint)stack;
@@ -91,6 +108,10 @@ public static unsafe class ProcessContextManager
     }
 
 
+    /// <summary>
+    /// Counts all none dead tasks
+    /// </summary>
+    /// <returns></returns>
     public static uint Count()
     {
 
@@ -110,6 +131,14 @@ public static unsafe class ProcessContextManager
         return output;
     }
 
+    /// <summary>
+    /// starts a new thread/process with no args
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="entry"></param>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     public static uint StartContext(string name, ThreadStart entry, ProcessContextType type)
     {
         ProcessContext context = new ProcessContext();
@@ -155,6 +184,15 @@ public static unsafe class ProcessContextManager
         return context.tid;
     }
 
+
+    /// <summary>
+    /// starts a thread/process with args
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="entry"></param>
+    /// <param name="type"></param>
+    /// <param name="param"></param>
+    /// <returns></returns>
     public static uint StartContext(string name, ParameterizedThreadStart entry, ProcessContextType type, object param)
     {
         ProcessContext context = new ProcessContext();

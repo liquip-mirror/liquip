@@ -3,7 +3,9 @@ using Liquip.Threading.Core.Processing;
 
 namespace Liquip.Threading;
 
-
+/// <summary>
+/// a high level abstraction for Process
+/// </summary>
 public class Process
 {
 

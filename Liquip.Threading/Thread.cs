@@ -7,6 +7,9 @@ using Liquip.Threading.Core.Processing;
 namespace Liquip.Threading;
 
 
+/// <summary>
+/// a high level abstraction for Threads
+/// </summary>
 public class Thread
 {
 
@@ -30,6 +33,9 @@ public class Thread
     }
 
 
+    /// <summary>
+    /// returns the current thread
+    /// </summary>
     public static Thread Current => new Thread(ProcessContextManager.m_CurrentContext.tid);
 
 

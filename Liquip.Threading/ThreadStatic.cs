@@ -6,6 +6,11 @@ using Liquip.Threading.Core.Processing;
 
 namespace Liquip.Threading;
 
+/// <summary>
+/// a simple thread statics
+/// Note: this will leak memory
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public sealed class ThreadStatic<T> : IDisposable
 {
     private readonly Dictionary<uint, T?> _value;
@@ -43,6 +48,11 @@ public sealed class ThreadStatic<T> : IDisposable
     }
 }
 
+/// <summary>
+/// a simple Process static
+/// Note: this will leak memory
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public sealed class ProcessStatic<T> : IDisposable
 {
     private readonly Dictionary<uint, T?> _value;

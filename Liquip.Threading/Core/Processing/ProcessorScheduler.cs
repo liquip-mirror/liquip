@@ -12,6 +12,9 @@ namespace Liquip.Threading.Core.Processing;
 
 public static unsafe class ProcessorScheduler
 {
+    /// <summary>
+    /// Setup the task Scheduler and starts process 0
+    /// </summary>
     public static void Initialize()
     {
 
@@ -60,6 +63,9 @@ public static unsafe class ProcessorScheduler
 
     public static int interruptCount;
 
+    /// <summary>
+    /// This changes the current task context
+    /// </summary>
     public static void DoSwitchTask()
     {
         // Console.WriteLine("SwitchTask {0}", interruptCount);
@@ -110,6 +116,10 @@ public static unsafe class ProcessorScheduler
         }
     }
 
+
+    /// <summary>
+    /// this is called by the Interrupt
+    /// </summary>
     [ForceInclude]
     public static void SwitchTask()
     {
@@ -128,6 +138,11 @@ public static unsafe class ProcessorScheduler
         CCore.Global.PIC.EoiSlave();
     }
 
+    /// <summary>
+    /// kills a process and all its sub process
+    /// </summary>
+    /// <param name="pid"></param>
+    /// <param name="sig"></param>
     public static void KillProcess(uint pid, uint sig)
     {
         uint limit = 100;
@@ -174,6 +189,9 @@ public static unsafe class ProcessorScheduler
         }
     }
 
+    /// <summary>
+    /// removes dead Tasks from the task list
+    /// </summary>
     public static void CleanUp()
     {
         ProcessContextManager.ContextListMutex.Lock();

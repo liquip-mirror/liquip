@@ -1,0 +1,207 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "Liquip/Liquip.csproj",
+            "Liquip.Common/Liquip.Common.csproj",
+            "Liquip.Core/Liquip.Core.csproj",
+            "Liquip.Logger/Liquip.Logger.csproj",
+            "Liquip.Memory/Liquip.Memory.csproj"
+          ],
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**"
+          ],
+          "src": "../"
+        }
+      ],
+      "dest": "Api/Core",
+      "includePrivateMembers": false,
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false,
+      "noRestore": false,
+      "namespaceLayout": "nested",
+      "memberLayout": "samePage",
+      "allowCompilationErrors": false
+    },
+    {
+      "src": [
+        {
+          "files": [
+            "Liquip.FileSystems/Liquip.FileSystems.csproj",
+          ],
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**"
+          ],
+          "src": "../"
+        }
+      ],
+      "dest": "Api/FileSystems",
+      "includePrivateMembers": false,
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false,
+      "noRestore": false,
+      "namespaceLayout": "nested",
+      "memberLayout": "samePage",
+      "allowCompilationErrors": false
+    },
+    {
+      "src": [
+        {
+          "files": [
+            "Liquip.Threading/Liquip.Threading.csproj"
+          ],
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**"
+          ],
+          "src": "../"
+        }
+      ],
+      "dest": "Api/Threading",
+      "includePrivateMembers": false,
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false,
+      "noRestore": false,
+      "namespaceLayout": "nested",
+      "memberLayout": "samePage",
+      "allowCompilationErrors": false
+    },
+    {
+      "src": [
+        {
+          "files": [
+            "Liquip.ProcessLoader/Liquip.ProcessLoader.csproj",
+            "Liquip.Process.*/Liquip.Process.*.csproj"
+          ],
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**"
+          ],
+          "src": "../"
+        }
+      ],
+      "dest": "Api/Process",
+      "includePrivateMembers": false,
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false,
+      "noRestore": false,
+      "namespaceLayout": "nested",
+      "memberLayout": "samePage",
+      "allowCompilationErrors": false
+    },
+    {
+      "src": [
+        {
+          "files": [
+            "Liquip.WASM/Liquip.WASM.csptoj"
+          ],
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**"
+          ],
+          "src": "../"
+        }
+      ],
+      "dest": "Api/WASM",
+      "includePrivateMembers": false,
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false,
+      "noRestore": false,
+      "namespaceLayout": "nested",
+      "memberLayout": "samePage",
+      "allowCompilationErrors": false
+    },
+    {
+      "src": [
+        {
+          "files": [
+            "CosmosManager/CosmosManager.csptoj",
+            "PlugMaker/PlugMaker.csptoj"
+          ],
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**"
+          ],
+          "src": "../"
+        }
+      ],
+      "dest": "Tools",
+      "includePrivateMembers": false,
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false,
+      "noRestore": false,
+      "namespaceLayout": "nested",
+      "memberLayout": "samePage",
+      "allowCompilationErrors": false
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "Api/**.yml",
+          "Api/index.md"
+        ]
+      },
+      {
+        "files": [
+          "Api/Core/**.yml",
+          "Api/Core/index.md"
+        ]
+      },
+      {
+        "files": [
+          "Api/FileSystem/**.yml",
+          "Api/FileSystem/index.md"
+        ]
+      },
+      {
+        "files": [
+          "Api/Process/**.yml",
+          "Api/Process/index.md"
+        ]
+      },
+      {
+        "files": [
+          "Api/Threading/**.yml",
+          "Api/Threading/index.md"
+        ]
+      },
+      {
+        "files": [
+          "Api/WASM/**.yml",
+          "Api/WASM/index.md"
+        ]
+      },
+      {
+        "files": [
+          "Articles/**.md",
+          "Articles/**/toc.yml",
+          "toc.yml",
+          "*.md"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "globalMetadataFiles": [],
+    "fileMetadataFiles": [],
+    "template": [
+      "default",
+      "modern"
+    ],
+    "postProcessors": [],
+    "keepFileLink": false,
+    "disableGitFeatures": false
+  }
+}
