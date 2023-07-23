@@ -60,6 +60,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CICD", "CICD", "{F0A8DEA7-794E-40F5-9B59-D5D34C667DDE}"
 	ProjectSection(SolutionItems) = preProject
 		.gitlab-ci.yml = .gitlab-ci.yml
+		CICD\build_and_push_nuget.sh = CICD\build_and_push_nuget.sh
+		CICD\Dockerfile = CICD\Dockerfile
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liquip.ProcessLoader", "Liquip.ProcessLoader\Liquip.ProcessLoader.csproj", "{D947AAB5-83B6-4F0A-B789-4793C3E93AB7}"
