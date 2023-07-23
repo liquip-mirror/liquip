@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<Project>
+  <PropertyGroup>
+    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+  </PropertyGroup>
+
+</Project>

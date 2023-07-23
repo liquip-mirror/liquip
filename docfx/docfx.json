@@ -52,6 +52,28 @@
       "src": [
         {
           "files": [
+            "Liquip.Driver.*/Liquip.Driver.*.csproj",
+          ],
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**"
+          ],
+          "src": "../"
+        }
+      ],
+      "dest": "Api/Drivers",
+      "includePrivateMembers": false,
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false,
+      "noRestore": false,
+      "namespaceLayout": "nested",
+      "memberLayout": "samePage",
+      "allowCompilationErrors": false
+    },
+    {
+      "src": [
+        {
+          "files": [
             "Liquip.Threading/Liquip.Threading.csproj"
           ],
           "exclude": [
@@ -97,7 +119,30 @@
       "src": [
         {
           "files": [
-            "Liquip.WASM/Liquip.WASM.csptoj"
+            "Liquip.SysCall/Liquip.SysCall.csproj",
+            "Liquip.SysCall.*/Liquip.SysCall.*.csproj"
+          ],
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**"
+          ],
+          "src": "../"
+        }
+      ],
+      "dest": "Api/SysCall",
+      "includePrivateMembers": false,
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false,
+      "noRestore": false,
+      "namespaceLayout": "nested",
+      "memberLayout": "samePage",
+      "allowCompilationErrors": false
+    },
+    {
+      "src": [
+        {
+          "files": [
+            "Liquip.WASM/Liquip.WASM.csproj"
           ],
           "exclude": [
             "**/obj/**",
@@ -119,8 +164,30 @@
       "src": [
         {
           "files": [
-            "CosmosManager/CosmosManager.csptoj",
-            "PlugMaker/PlugMaker.csptoj"
+            "Liquip.XSharp/Liquip.XSharp.csproj"
+          ],
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**"
+          ],
+          "src": "../"
+        }
+      ],
+      "dest": "Api/XSharp",
+      "includePrivateMembers": false,
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false,
+      "noRestore": false,
+      "namespaceLayout": "nested",
+      "memberLayout": "samePage",
+      "allowCompilationErrors": false
+    },
+    {
+      "src": [
+        {
+          "files": [
+            "CosmosManager/CosmosManager.csproj",
+            "PlugMaker/PlugMaker.csproj"
           ],
           "exclude": [
             "**/obj/**",
@@ -155,8 +222,8 @@
       },
       {
         "files": [
-          "Api/FileSystem/**.yml",
-          "Api/FileSystem/index.md"
+          "Api/FileSystems/**.yml",
+          "Api/FileSystems/index.md"
         ]
       },
       {
@@ -175,6 +242,30 @@
         "files": [
           "Api/WASM/**.yml",
           "Api/WASM/index.md"
+        ]
+      },
+      {
+        "files": [
+          "Api/Drivers/**.yml",
+          "Api/Drivers/index.md"
+        ]
+      },
+      {
+        "files": [
+          "Api/SysCall/**.yml",
+          "Api/SysCall/index.md"
+        ]
+      },
+      {
+        "files": [
+          "Api/XSharp/**.yml",
+          "Api/XSharp/index.md"
+        ]
+      },
+      {
+        "files": [
+          "Tools/**.yml",
+          "Tools/index.md"
         ]
       },
       {
@@ -202,6 +293,10 @@
     ],
     "postProcessors": [],
     "keepFileLink": false,
-    "disableGitFeatures": false
+    "disableGitFeatures": false,
+    "xref": [
+      "https://cosmosos.github.io/xrefmap.yml",
+      "https://project-prism.github.io/Prism-OS/Documentation/xrefmap.yml"
+    ]
   }
 }

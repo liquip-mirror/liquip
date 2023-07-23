@@ -17,6 +17,13 @@ default:
 stages:
   - test
   - deploy
+  - docs
+
+make-Docs:
+  stage: docs
+  script:
+    - dotnet tool update -g docfx
+    - docfx build ./docfx/docfx.json -o public
 
 
 XSharp-test:
