@@ -31,7 +31,7 @@ make-Docs:
 XSharp-test:
   stage: test
   script:
-    - cd ./Liquip.XSharp.UNitTest
+    - cd ./Tests/UNit/Liquip.XSharp.UNitTest
     - dotnet test
 
 XSharp-deploy:
