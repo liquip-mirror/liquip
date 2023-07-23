@@ -1,2 +1,115 @@
-# The Docker image that will be used to build your app
-image: a
+default:
+  image: mcr.microsoft.com/dotnet/sdk:6.0
+  before_script:
+    - apt-get update && apt-get -y install build-essential python3
+    - make install-cosmos
+  cache:
+    key: cosmos-cache-$CI_COMMIT_REF_SLUG
+    paths:
+      - cosmos/
+  artifacts:
+    exclude:
+      - cosmos/**
+    paths:
+      - "**/*.nupkg"
+    expire_in: 1 day
+
+stages:
+  - test
+  - deploy
+  - docs
+
+make-Docs:
+  stage: docs
+  script:
+    - dotnet tool update -g docfx
+    - ~/.dotnet/tools/docfx build ./docfx/docfx.json -o public
+  artifacts:
+    paths:
+      - public
+
+XSharp-test:
+  stage: test
+  script:
+    - cd ./Tests/UNit/Liquip.XSharp.UNitTest
+    - dotnet test
+
+XSharp-deploy:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./Liquip.XSharp
+
+
+Plugs:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Plugs
+
+
+Liquip:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./Liquip
+
+
+Liquip.Core:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Core
+
+
+Liquip.Common:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Common
+
+
+Logger:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Logger
+
+
+
+Memory:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Memory
+
+
+
+Threading:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Threading
+
+
+Threading.Plug:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Threading.Plugs
+
+
+Limine:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Limine
+
+
+FileSystems:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./Liquip.FileSystems
+
+
+VirtIO:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./Liquip.Driver.VirtIO
+
+
+CosmosManager:
+  stage: deploy
+  script:
+    - ./CICD/build_and_push_nuget.sh ./CosmosManager
+
