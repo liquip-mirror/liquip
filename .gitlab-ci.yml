@@ -23,7 +23,7 @@ make-Docs:
   stage: docs
   script:
     - dotnet tool update -g docfx
-    - docfx build ./docfx/docfx.json -o public
+    - ~/.dotnet/tools/docfx build ./docfx/docfx.json -o public
   artifacts:
     paths:
       - public
