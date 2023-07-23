@@ -10,7 +10,6 @@ default:
 stages:
   - setup
   - test
-  - docs
   - deploy
 
 docker-setup:
@@ -25,7 +24,7 @@ docker-setup:
       --destination "${CI_REGISTRY_IMAGE}:${CI_PIPELINE_IID}"
 
 make-Docs:
-  stage: docs
+  stage: deploy
   script:
     - dotnet tool update -g docfx
     - ~/.dotnet/tools/docfx build ./docfx/docfx.json -o public
@@ -38,83 +37,83 @@ XSharp-test:
   script:
     - cd ./Tests/UNit/Liquip.XSharp.UNitTest
     - dotnet test
-
-XSharp-deploy:
-  stage: deploy
-  script:
-    - ./CICD/build_and_push_nuget.sh ./Liquip.XSharp
-
-
-Plugs:
-  stage: deploy
-  script:
-    - ./CICD/build_and_push_nuget.sh ./Liquip.Plugs
-
-
-Liquip:
-  stage: deploy
-  script:
-    - ./CICD/build_and_push_nuget.sh ./Liquip
-
-
-Liquip.Core:
-  stage: deploy
-  script:
-    - ./CICD/build_and_push_nuget.sh ./Liquip.Core
-
-
-Liquip.Common:
-  stage: deploy
-  script:
-    - ./CICD/build_and_push_nuget.sh ./Liquip.Common
-
-
-Logger:
-  stage: deploy
-  script:
-    - ./CICD/build_and_push_nuget.sh ./Liquip.Logger
-
-
-
-Memory:
-  stage: deploy
-  script:
-    - ./CICD/build_and_push_nuget.sh ./Liquip.Memory
-
-
-
-Threading:
-  stage: deploy
-  script:
-    - ./CICD/build_and_push_nuget.sh ./Liquip.Threading
-
-
-Threading.Plug:
-  stage: deploy
-  script:
-    - ./CICD/build_and_push_nuget.sh ./Liquip.Threading.Plugs
-
-
-Limine:
-  stage: deploy
-  script:
-    - ./CICD/build_and_push_nuget.sh ./Liquip.Limine
-
-
-FileSystems:
-  stage: deploy
-  script:
-    - ./CICD/build_and_push_nuget.sh ./Liquip.FileSystems
-
-
-VirtIO:
-  stage: deploy
-  script:
-    - ./CICD/build_and_push_nuget.sh ./Liquip.Driver.VirtIO
-
-
-CosmosManager:
-  stage: deploy
-  script:
-    - ./CICD/build_and_push_nuget.sh ./CosmosManager
+#
+#XSharp-deploy:
+#  stage: deploy
+#  script:
+#    - ./CICD/build_and_push_nuget.sh ./Liquip.XSharp
+#
+#
+#Plugs:
+#  stage: deploy
+#  script:
+#    - ./CICD/build_and_push_nuget.sh ./Liquip.Plugs
+#
+#
+#Liquip:
+#  stage: deploy
+#  script:
+#    - ./CICD/build_and_push_nuget.sh ./Liquip
+#
+#
+#Liquip.Core:
+#  stage: deploy
+#  script:
+#    - ./CICD/build_and_push_nuget.sh ./Liquip.Core
+#
+#
+#Liquip.Common:
+#  stage: deploy
+#  script:
+#    - ./CICD/build_and_push_nuget.sh ./Liquip.Common
+#
+#
+#Logger:
+#  stage: deploy
+#  script:
+#    - ./CICD/build_and_push_nuget.sh ./Liquip.Logger
+#
+#
+#
+#Memory:
+#  stage: deploy
+#  script:
+#    - ./CICD/build_and_push_nuget.sh ./Liquip.Memory
+#
+#
+#
+#Threading:
+#  stage: deploy
+#  script:
+#    - ./CICD/build_and_push_nuget.sh ./Liquip.Threading
+#
+#
+#Threading.Plug:
+#  stage: deploy
+#  script:
+#    - ./CICD/build_and_push_nuget.sh ./Liquip.Threading.Plugs
+#
+#
+#Limine:
+#  stage: deploy
+#  script:
+#    - ./CICD/build_and_push_nuget.sh ./Liquip.Limine
+#
+#
+#FileSystems:
+#  stage: deploy
+#  script:
+#    - ./CICD/build_and_push_nuget.sh ./Liquip.FileSystems
+#
+#
+#VirtIO:
+#  stage: deploy
+#  script:
+#    - ./CICD/build_and_push_nuget.sh ./Liquip.Driver.VirtIO
+#
+#
+#CosmosManager:
+#  stage: deploy
+#  script:
+#    - ./CICD/build_and_push_nuget.sh ./CosmosManager
 
