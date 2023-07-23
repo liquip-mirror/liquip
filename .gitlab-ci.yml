@@ -10,8 +10,8 @@ default:
 stages:
   - setup
   - test
-  - deploy
   - docs
+  - deploy
 
 docker-setup:
   stage: setup
@@ -20,7 +20,7 @@ docker-setup:
     entrypoint: [""]
   script:
     - /kaniko/executor
-      --context "${CI_PROJECT_DIR}/CICD/"
+      --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/CICD/Dockerfile"
       --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}"
 
