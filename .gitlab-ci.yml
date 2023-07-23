@@ -1,5 +1,5 @@
 default:
-  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+  image: $CI_REGISTRY_IMAGE:$CI_PIPELINE_IID
   artifacts:
     exclude:
       - cosmos/**
@@ -22,7 +22,7 @@ docker-setup:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/CICD/Dockerfile"
-      --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}"
+      --destination "${CI_REGISTRY_IMAGE}:${CI_PIPELINE_IID}"
 
 make-Docs:
   stage: docs
