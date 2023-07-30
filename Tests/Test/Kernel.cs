@@ -6,6 +6,7 @@ using Liquip;
 using Liquip.Threading;
 using Liquip.Threading.Core.Processing;
 using Liquip.WASM;
+using Liquip.WASM.VM;
 using Sys = Cosmos.System;
 
 namespace Test;
@@ -31,6 +32,8 @@ public class Kernel : Sys.Kernel
 
     public void runMain()
     {
+        // var host = new Host();
+        // host.Step(100);
         while (true)
         {
             Thread.Sleep(1000);

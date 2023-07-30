@@ -43,13 +43,6 @@ public class CPUID
         CPU.ReadCPUID(type, ref eax, ref ebx, ref ecx, ref edx);
     }
 
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    // public static bool HasFlag(Int32 data, int flagOffset)
-    // {
-    //     var i = (UInt32)data;
-    //     return HasFlag(ref i, flagOffset);
-    // }
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool HasFlag(ref int data, int flagOffset)
     {
@@ -72,25 +65,30 @@ public class CPUID
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static uint GetBitRange(uint data, int start, int end)
     {
+        if (System.Runtime.Intrinsics.X86.Bmi1.IsSupported)
+        {
+            return System.Runtime.Intrinsics.X86.Bmi1.BitFieldExtract(data, (byte)start, (byte)end);
+        }
+
         //shift binary to starting point of range
         var shifted = data >> start;
 
         //calculate range length (+1 for 0 index)
         var rangeLength = end - start + 1;
 
-        //get binary mask based on range length 
+        //get binary mask based on range length
 
         uint maskBinary = rangeLength switch
         {
-            1 => 0b00000000_00000000_00000000_00000001,
-            2 => 0b00000000_00000000_00000000_00000011,
-            3 => 0b00000000_00000000_00000000_00000111,
-            4 => 0b00000000_00000000_00000000_00001111,
-            5 => 0b00000000_00000000_00000000_00011111,
-            6 => 0b00000000_00000000_00000000_00111111,
-            7 => 0b00000000_00000000_00000000_01111111,
-            8 => 0b00000000_00000000_00000000_11111111,
-            9 => 0b00000000_00000000_00000001_11111111,
+            1 =>  0b00000000_00000000_00000000_00000001,
+            2 =>  0b00000000_00000000_00000000_00000011,
+            3 =>  0b00000000_00000000_00000000_00000111,
+            4 =>  0b00000000_00000000_00000000_00001111,
+            5 =>  0b00000000_00000000_00000000_00011111,
+            6 =>  0b00000000_00000000_00000000_00111111,
+            7 =>  0b00000000_00000000_00000000_01111111,
+            8 =>  0b00000000_00000000_00000000_11111111,
+            9 =>  0b00000000_00000000_00000001_11111111,
             10 => 0b00000000_00000000_00000011_11111111,
             11 => 0b00000000_00000000_00000111_11111111,
             12 => 0b00000000_00000000_00001111_11111111,

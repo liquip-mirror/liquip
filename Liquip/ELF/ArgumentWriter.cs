@@ -41,7 +41,7 @@ public class ArgumentWriter
             output.Add(0x00);
             fixed (byte* ptr = output.ToArray())
             {
-                Push((uint)ptr);
+                Push((byte)ptr);
             }
         }
     }

@@ -11,35 +11,24 @@ namespace Liquip;
 
 public static class RDseed
 {
-    public static bool IsSupported()
-    {
-        if (CPU.CanReadCPUID() > 0)
-        {
-            //mov eax, 7     ; set EAX to request function 7
-            //mov ecx, 0     ; set ECX to request subfunction 0
-            //cpuid
-            var eax = 0;
-            var ebx = 0;
-            var ecx = 0;
-            var edx = 0;
-            CPU.ReadCPUID(7, ref eax, ref ebx, ref ecx, ref edx);
-
-            //shr ebx, 18
-            var flag = ebx >> 18;
-            //and ebx, 1
-            return (flag & 1) == 1;
-        }
-
-        return false;
-    }
+    public static bool IsSupported() => CPUID.FeatureFlags.RDSEED;
 
     // ReSharper disable once InconsistentNaming
+    /// <summary>
+    /// calls rdseed
+    /// </summary>
+    /// <returns></returns>
     public static long GetRDSeed64()
     {
         return (GetRDSeed32() << 32) | GetRDSeed32();
     }
 
     // ReSharper disable once InconsistentNaming
+    /// <summary>
+    /// calls rdseed
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ImplementedInPlugException"></exception>
     [PlugMethod(Assembler = typeof(GetRDSeed32Asm))]
     public static int GetRDSeed32()
     {

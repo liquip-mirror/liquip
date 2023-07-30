@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Liquip.Memory;
@@ -56,6 +57,8 @@ public unsafe class ElfFile
                     }
 
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }

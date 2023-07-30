@@ -28,3 +28,48 @@ public static class Has
         return (value & flag) == 1;
     }
 }
+
+public static class Set
+{
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Flag(ref uint value, int bit, bool set = true)
+    {
+        if (set)
+        {
+            value |= ((uint)1 << bit);
+        }
+        else
+        {
+            value &= ~((uint)1 << bit);
+
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Flag(ref int value, int bit, bool set = true)
+    {
+        if (set)
+        {
+            value |= (1 << bit);
+        }
+        else
+        {
+            value &= ~(1 << bit);
+
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Flag(ref long value, int bit, bool set = true)
+    {
+        if (set)
+        {
+            value |= ((long)1 << bit);
+        }
+        else
+        {
+            value &= ~((long)1 << bit);
+
+        }
+    }
+}

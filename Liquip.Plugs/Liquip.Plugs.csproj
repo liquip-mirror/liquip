@@ -13,7 +13,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Liquip\Liquip.csproj" />
         <ProjectReference Include="..\Liquip.Core\Liquip.Core.csproj" />
-        <ProjectReference Include="..\Liquip.Threading\Liquip.Threading.csproj" />
         <ProjectReference Include="..\Liquip.XSharp\Liquip.XSharp.csproj" />
     </ItemGroup>
     <ItemGroup>
@@ -21,6 +20,9 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="$(SolutionDir)build\**" CopyToOutputDirectory="PreserveNewest"/>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="System.Private.CoreLib\" />
     </ItemGroup>
     <PropertyGroup>
         <InternalsAssemblyNames>System.Private.CoreLib</InternalsAssemblyNames>

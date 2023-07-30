@@ -1,7 +1,7 @@
 using Cosmos.Core.Memory;
 using IL2CPU.API.Attribs;
 
-namespace Liquip.Plugs;
+namespace Liquip.Plugs.System.Runtime.System;
 
 [Plug(Target = typeof(GC))]
 public class GCPlug

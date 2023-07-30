@@ -27,6 +27,7 @@
     <CompressionType>Gzip</CompressionType>
     <RemoveBootDebugOutput>True</RemoveBootDebugOutput>
     <OptimizationLevel>2</OptimizationLevel>
+    <AllowComments>True</AllowComments>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Cosmos.Build" Version="0-*" NoWarn="NU1604"/>

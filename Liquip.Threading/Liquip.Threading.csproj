@@ -15,6 +15,7 @@
         <ProjectReference Include="..\Liquip.Common\Liquip.Common.csproj" />
         <ProjectReference Include="..\Liquip.Core\Liquip.Core.csproj" />
         <ProjectReference Include="..\Liquip.Memory\Liquip.Memory.csproj" />
+        <ProjectReference Include="..\Liquip.XSharp\Liquip.XSharp.csproj" />
         <ProjectReference Include="..\Liquip\Liquip.csproj" />
         <ProjectReference Include="..\Liquip.Logger\Liquip.Logger.csproj" />
     </ItemGroup>

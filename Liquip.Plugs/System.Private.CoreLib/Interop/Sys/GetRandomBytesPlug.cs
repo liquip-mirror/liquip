@@ -5,11 +5,11 @@ namespace Liquip.Plugs.System.Private.CoreLib.Interop.Sys;
 [Plug("Interop, System.Private.CoreLib")]
 public class GetRandomBytesPlug
 {
+    private static readonly Random Random = new Random();
     public static unsafe void GetRandomBytes(byte* buffer, int length)
     {
-        var random = new Random();
         var b = new byte[length];
-        random.NextBytes(b);
+        Random.NextBytes(b);
         for (var i = 0; i < length; i++)
         {
             buffer[i] = b[i];
