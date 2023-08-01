@@ -28,6 +28,9 @@ make-Docs:
   script:
     - dotnet tool update -g docfx
     - ~/.dotnet/tools/docfx build ./docfx/docfx.json -o public
+  artifacts:
+    paths:
+      - public
 
 
 XSharp-test:
