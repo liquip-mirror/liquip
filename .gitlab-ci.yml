@@ -23,7 +23,7 @@ docker-setup:
       --dockerfile "${CI_PROJECT_DIR}/CICD/Dockerfile"
       --destination "${CI_REGISTRY_IMAGE}:${CI_PIPELINE_IID}"
 
-make-Docs:
+pages:
   stage: deploy
   script:
     - dotnet tool update -g docfx
