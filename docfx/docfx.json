@@ -30,7 +30,7 @@
       "src": [
         {
           "files": [
-            "Liquip.FileSystems/Liquip.FileSystems.csproj",
+            "Liquip.FileSystems/Liquip.FileSystems.csproj"
           ],
           "exclude": [
             "**/obj/**",
@@ -209,7 +209,7 @@
   "build": {
 
     "sitemap": {
-      "baseUrl": "https://liquip.gitlab.io/liquip/",
+      "baseUrl": "https://liquip.zarlo.dev/",
       "priority": 0.1,
       "changefreq": "monthly"
     },
