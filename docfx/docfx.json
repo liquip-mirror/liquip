@@ -52,7 +52,7 @@
       "src": [
         {
           "files": [
-            "Liquip.Driver.*/Liquip.Driver.*.csproj",
+            "Liquip.Driver.*/Liquip.Driver.*.csproj"
           ],
           "exclude": [
             "**/obj/**",
@@ -207,6 +207,13 @@
     }
   ],
   "build": {
+
+    "sitemap": {
+      "baseUrl": "https://liquip.gitlab.io/liquip/",
+      "priority": 0.1,
+      "changefreq": "monthly"
+    },
+
     "content": [
       {
         "files": [
