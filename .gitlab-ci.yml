@@ -28,7 +28,7 @@ pages:
   script:
     - dotnet build ./Liquip.NoTests.sln
     - dotnet tool update -g docfx
-    - ~/.dotnet/tools/docfx build ./docfx/docfx.json -o public
+    - cd ./docfx && ~/.dotnet/tools/docfx metadata && ~/.dotnet/tools/docfx build -o ./../public
   artifacts:
     paths:
       - public
