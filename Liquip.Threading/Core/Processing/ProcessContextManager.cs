@@ -52,18 +52,18 @@ public static unsafe class ProcessContextManager
 
     private static ILogger _logger = Log.GetLogger("Process Context Manager");
 
-    public static ref ProcessContext GetContext(uint tid)
+    public static ProcessContext GetContext(uint tid)
     {
         _logger.Info("looking for context");
         for (var node = ContextListHead; node != null; node = node.Next)
         {
             if (node.Id == tid)
             {
-                return ref node;
+                return node;
             }
         }
 
-        return ref ProcessContext.NULL;
+        return ProcessContext.NULL;
     }
 
     /// <summary>

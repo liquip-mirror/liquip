@@ -1,5 +1,5 @@
 default:
-  image: $CI_REGISTRY_IMAGE:$CI_PIPELINE_IID
+  image: $CI_REGISTRY_IMAGE:76 
   artifacts:
     exclude:
       - cosmos/**
@@ -8,25 +8,25 @@ default:
     expire_in: 1 day
 
 stages:
-  - setup
+  # - setup
   - test
   - deploy
 
-docker-setup:
-  stage: setup
-  image:
-    name: gcr.io/kaniko-project/executor:v1.9.0-debug
-    entrypoint: [""]
-  script:
-    - /kaniko/executor
-      --context "${CI_PROJECT_DIR}"
-      --dockerfile "${CI_PROJECT_DIR}/CICD/Dockerfile"
-      --destination "${CI_REGISTRY_IMAGE}:${CI_PIPELINE_IID}"
+# docker-setup:
+#   stage: setup
+#   image:
+#     name: gcr.io/kaniko-project/executor:v1.9.0-debug
+#     entrypoint: [""]
+#   script:
+#     - /kaniko/executor
+#       --context "${CI_PROJECT_DIR}"
+#       --dockerfile "${CI_PROJECT_DIR}/CICD/Dockerfile"
+#       --destination "${CI_REGISTRY_IMAGE}:${CI_PIPELINE_IID}"
 
 pages:
   stage: deploy
   script:
-    - make build
+    - dotnet build ./Liquip.NoTests.sln
     - dotnet tool update -g docfx
     - ~/.dotnet/tools/docfx build ./docfx/docfx.json -o public
   artifacts:
