@@ -46,93 +46,49 @@ public enum DeviceTypeVirtIO : ushort
 
 public static class DeviceTypeVirtIOEx
 {
-    public static string AsString(this DeviceTypeVirtIO me)
-    {
-        switch (me)
+    public static string AsString(this DeviceTypeVirtIO me) =>
+        me switch
         {
-            case DeviceTypeVirtIO.Reserved:
-                return "Reserved";
-            case DeviceTypeVirtIO.NetworkCard:
-                return "NetworkCard";
-            case DeviceTypeVirtIO.BlockDevice:
-                return "BlockDevice";
-            case DeviceTypeVirtIO.Console:
-                return "Console";
-            case DeviceTypeVirtIO.EntropySource:
-                return "EntropySource";
-            case DeviceTypeVirtIO.MemoryBallooning:
-                return "MemoryBallooning";
-            case DeviceTypeVirtIO.IoMemory:
-                return "IoMemory";
-            case DeviceTypeVirtIO.Rpmsg:
-                return "Rpmsg";
-            case DeviceTypeVirtIO.SCSIhost:
-                return "SCSIhost";
-            case DeviceTypeVirtIO._9PTransport:
-                return "_9PTransport";
-            case DeviceTypeVirtIO.Mac80211Wlan:
-                return "Mac80211Wlan";
-            case DeviceTypeVirtIO.RprocSerial:
-                return "RprocSerial";
-            case DeviceTypeVirtIO.VirtioCAIF:
-                return "VirtioCAIF";
-            case DeviceTypeVirtIO.MemoryBalloon:
-                return "MemoryBalloon";
-            case DeviceTypeVirtIO.GPU_device:
-                return "GPU_device";
-            case DeviceTypeVirtIO.Timer_ClockDevice:
-                return "Timer_ClockDevice";
-            case DeviceTypeVirtIO.InputDevice:
-                return "InputDevice";
-            case DeviceTypeVirtIO.SocketDevice:
-                return "SocketDevice";
-            case DeviceTypeVirtIO.CryptoDevice:
-                return "CryptoDevice";
-            case DeviceTypeVirtIO.SignalDistributionModule:
-                return "SignalDistributionModule";
-            case DeviceTypeVirtIO.PstoreDevice:
-                return "PstoreDevice";
-            case DeviceTypeVirtIO.IOMMU_device:
-                return "IOMMU_device";
-            case DeviceTypeVirtIO.MemoryDevice:
-                return "MemoryDevice";
-            case DeviceTypeVirtIO.AudioDevice:
-                return "AudioDevice";
-            case DeviceTypeVirtIO.FileSystemDevice:
-                return "FileSystemDevice";
-            case DeviceTypeVirtIO.PMEMDevice:
-                return "PMEMDevice";
-            case DeviceTypeVirtIO.RPMBDevice:
-                return "RPMBDevice";
-            case DeviceTypeVirtIO.Mac80211HwsimWirelessSimulationDevice:
-                return "Mac80211HwsimWirelessSimulationDevice";
-            case DeviceTypeVirtIO.VideoEncoderDevice:
-                return "VideoEncoderDevice";
-            case DeviceTypeVirtIO.VideoDecoderDevice:
-                return "VideoDecoderDevice";
-            case DeviceTypeVirtIO.SCMIDevice:
-                return "SCMIDevice";
-            case DeviceTypeVirtIO.NitroSecureModule:
-                return "NitroSecureModule";
-            case DeviceTypeVirtIO.I2C_adapter:
-                return "I2C_adapter";
-            case DeviceTypeVirtIO.Watchdog:
-                return "Watchdog";
-            case DeviceTypeVirtIO.CAN_device:
-                return "CAN_device";
-            case DeviceTypeVirtIO.ParameterServer:
-                return "ParameterServer";
-            case DeviceTypeVirtIO.AudioPolicyDevice:
-                return "AudioPolicyDevice";
-            case DeviceTypeVirtIO.BluetoothDevice:
-                return "BluetoothDevice";
-            case DeviceTypeVirtIO.GPIO_device:
-                return "GPIO_device";
-            case DeviceTypeVirtIO.RDMA_device:
-                return "RDMA_device";
-
-            default:
-                return "unknown" + (int)me;
-        }
-    }
+            DeviceTypeVirtIO.Reserved => "Reserved",
+            DeviceTypeVirtIO.NetworkCard => "NetworkCard",
+            DeviceTypeVirtIO.BlockDevice => "BlockDevice",
+            DeviceTypeVirtIO.Console => "Console",
+            DeviceTypeVirtIO.EntropySource => "EntropySource",
+            DeviceTypeVirtIO.MemoryBallooning => "MemoryBallooning",
+            DeviceTypeVirtIO.IoMemory => "IoMemory",
+            DeviceTypeVirtIO.Rpmsg => "Rpmsg",
+            DeviceTypeVirtIO.SCSIhost => "SCSIhost",
+            DeviceTypeVirtIO._9PTransport => "_9PTransport",
+            DeviceTypeVirtIO.Mac80211Wlan => "Mac80211Wlan",
+            DeviceTypeVirtIO.RprocSerial => "RprocSerial",
+            DeviceTypeVirtIO.VirtioCAIF => "VirtioCAIF",
+            DeviceTypeVirtIO.MemoryBalloon => "MemoryBalloon",
+            DeviceTypeVirtIO.GPU_device => "GPU_device",
+            DeviceTypeVirtIO.Timer_ClockDevice => "Timer_ClockDevice",
+            DeviceTypeVirtIO.InputDevice => "InputDevice",
+            DeviceTypeVirtIO.SocketDevice => "SocketDevice",
+            DeviceTypeVirtIO.CryptoDevice => "CryptoDevice",
+            DeviceTypeVirtIO.SignalDistributionModule => "SignalDistributionModule",
+            DeviceTypeVirtIO.PstoreDevice => "PstoreDevice",
+            DeviceTypeVirtIO.IOMMU_device => "IOMMU_device",
+            DeviceTypeVirtIO.MemoryDevice => "MemoryDevice",
+            DeviceTypeVirtIO.AudioDevice => "AudioDevice",
+            DeviceTypeVirtIO.FileSystemDevice => "FileSystemDevice",
+            DeviceTypeVirtIO.PMEMDevice => "PMEMDevice",
+            DeviceTypeVirtIO.RPMBDevice => "RPMBDevice",
+            DeviceTypeVirtIO.Mac80211HwsimWirelessSimulationDevice => "Mac80211HwsimWirelessSimulationDevice",
+            DeviceTypeVirtIO.VideoEncoderDevice => "VideoEncoderDevice",
+            DeviceTypeVirtIO.VideoDecoderDevice => "VideoDecoderDevice",
+            DeviceTypeVirtIO.SCMIDevice => "SCMIDevice",
+            DeviceTypeVirtIO.NitroSecureModule => "NitroSecureModule",
+            DeviceTypeVirtIO.I2C_adapter => "I2C_adapter",
+            DeviceTypeVirtIO.Watchdog => "Watchdog",
+            DeviceTypeVirtIO.CAN_device => "CAN_device",
+            DeviceTypeVirtIO.ParameterServer => "ParameterServer",
+            DeviceTypeVirtIO.AudioPolicyDevice => "AudioPolicyDevice",
+            DeviceTypeVirtIO.BluetoothDevice => "BluetoothDevice",
+            DeviceTypeVirtIO.GPIO_device => "GPIO_device",
+            DeviceTypeVirtIO.RDMA_device => "RDMA_device",
+            _ => "unknown" + (int)me
+        };
 }

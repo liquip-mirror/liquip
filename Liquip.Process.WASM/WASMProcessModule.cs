@@ -1,4 +1,5 @@
 using Liquip.WASM;
+using Liquip.WASM.VM;
 using Type = Liquip.WASM.Type;
 
 namespace Liquip.Process.WASM;
@@ -7,14 +8,16 @@ public class WASMProcessModule: BaseModule
 {
     private readonly WASMProcess _process;
 
-    public WASMProcessModule(WASMProcess process, Store store) : base(nameof(WASMProcessModule), store)
+    public WASMProcessModule(WASMProcess process, Host host) : base(nameof(WASMProcessModule), host)
     {
         _process = process;
+        RegisterMethods();
     }
 
-    public WASMProcessModule(WASMProcess process, Store store, byte[] bytes) : base(nameof(WASMProcessModule), store, bytes)
+    public WASMProcessModule(WASMProcess process, Host host, byte[] bytes) : base(nameof(WASMProcessModule), host, bytes)
     {
         _process = process;
+        RegisterMethods();
     }
 
     public void RegisterMethods()

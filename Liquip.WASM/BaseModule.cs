@@ -1,4 +1,6 @@
-﻿namespace Liquip.WASM;
+﻿using Liquip.WASM.VM;
+
+namespace Liquip.WASM;
 
 public class BaseModule
 {
@@ -16,21 +18,21 @@ public class BaseModule
     private readonly Parser _parser;
 
     private Function _startFunction;
-    public readonly Store Store;
+    public readonly Host Host;
     public readonly List<Table> Tables = new();
 
     private readonly List<Type> _types = new();
 
-    public BaseModule(string name, Store store)
+    public BaseModule(string name, Host host)
     {
         Name = name;
-        Store = store;
+        Host = host;
     }
 
-    public BaseModule(string name, Store store, byte[] bytes)
+    public BaseModule(string name, Host host, byte[] bytes)
     {
         Name = name;
-        Store = store;
+        Host = host;
         _parser = new Parser(bytes, this);
 
         if (_parser.GetByte() != 0x00 || _parser.GetByte() != 0x61 || _parser.GetByte() != 0x73 ||
@@ -94,8 +96,8 @@ public class BaseModule
 
         if (_startFunction != null)
         {
-            Store.runtime.Call(_startFunction.GlobalIndex);
-            while (Store.Step(1000))
+            Host.Runtime.Call(_startFunction.GlobalIndex);
+            while (Host.Step(1000))
             {
             }
         }
@@ -145,12 +147,12 @@ public class BaseModule
 
             var type = _parser.GetByte();
 
-            if (!Store.Modules.ContainsKey(mod))
+            if (!Host.Modules.ContainsKey(mod))
             {
                 throw new Exception("Import module not found: " + mod + "@" + nm);
             }
 
-            if (!Store.Modules[mod].Exports.ContainsKey(nm))
+            if (!Host.Modules[mod].Exports.ContainsKey(nm))
             {
                 var typeString = "unknown";
                 switch (type)
@@ -176,55 +178,55 @@ public class BaseModule
             {
                 case 0x00: // x:typeidx => func x
                     var funcTypeIdx = (int)_parser.GetIndex();
-                    if (funcTypeIdx >= _types.Count())
+                    if (funcTypeIdx >= _types.Count)
                     {
                         throw new Exception("Import function type does not exist: " + mod + "@" + nm + " " +
                                             _types[funcTypeIdx]);
                     }
 
-                    if (!_types[funcTypeIdx].SameAs(((Function)Store.Modules[mod].Exports[nm]).Type))
+                    if (!_types[funcTypeIdx].SameAs(((Function)Host.Modules[mod].Exports[nm]).Type))
                     {
                         throw new Exception("Import function type mismatch: " + mod + "@" + nm + " - " +
                                             _types[funcTypeIdx] + " != " +
-                                            ((Function)Store.Modules[mod].Exports[nm]).Type);
+                                            ((Function)Host.Modules[mod].Exports[nm]).Type);
                     }
 
-                    Functions.Add((Function)Store.Modules[mod].Exports[nm]);
+                    Functions.Add((Function)Host.Modules[mod].Exports[nm]);
                     _functionIndex++;
 
                     break;
                 case 0x01: // tt:tabletype => table tt
                     var t = _parser.GetTableType();
-                    if (!t.CompatibleWith((Table)Store.Modules[mod].Exports[nm]))
+                    if (!t.CompatibleWith((Table)Host.Modules[mod].Exports[nm]))
                     {
                         throw new Exception("Import table type mismatch: " + mod + "@" + nm + " " + t + " != " +
-                                            (Table)Store.Modules[mod].Exports[nm]);
+                                            (Table)Host.Modules[mod].Exports[nm]);
                     }
 
-                    Tables.Add((Table)Store.Modules[mod].Exports[nm]);
+                    Tables.Add((Table)Host.Modules[mod].Exports[nm]);
                     break;
                 case 0x02: // mt:memtype => mem mt
                     var m = _parser.GetMemType();
-                    if (!m.CompatibleWith((Memory)Store.Modules[mod].Exports[nm]))
+                    if (!m.CompatibleWith((Memory)Host.Modules[mod].Exports[nm]))
                     {
                         throw new Exception("Import memory type mismatch: " + mod + "@" + nm + " " + m +
-                                            " != " + (Memory)Store.Modules[mod].Exports[nm]);
+                                            " != " + (Memory)Host.Modules[mod].Exports[nm]);
                     }
 
                     Console.WriteLine("Memory import found.");
-                    Memory.Add((Memory)Store.Modules[mod].Exports[nm]);
+                    Memory.Add((Memory)Host.Modules[mod].Exports[nm]);
                     break;
                 case 0x03: // gt:globaltype => global gt
                     byte gType;
                     bool mutable;
                     _parser.GetGlobalType(out gType, out mutable);
 
-                    if (((Global)Store.Modules[mod].Exports[nm]).Type != gType)
+                    if (((Global)Host.Modules[mod].Exports[nm]).Type != gType)
                     {
                         throw new Exception("Import global type mismatch: " + mod + "@" + nm);
                     }
 
-                    var global = (Global)Store.Modules[mod].Exports[nm];
+                    var global = (Global)Host.Modules[mod].Exports[nm];
                     global.SetName(mod + "." + nm);
                     Globals.Add(global);
                     break;
@@ -288,12 +290,12 @@ public class BaseModule
 
             var f = new Function(this, "$loadGlobal" + import + "", new Type(null, new[] { type }));
             f.program = _parser.GetExpr();
-            Store.runtime.Call(f.GlobalIndex);
+            Host.Runtime.Call(f.GlobalIndex);
             do
             {
-            } while (Store.Step(1000));
+            } while (Host.Step(1000));
 
-            Globals.Add(new Global(type, mutable, Store.runtime.ReturnValue(), (uint)Globals.Count()));
+            Globals.Add(new Global(type, mutable, Host.Runtime.ReturnValue(), (uint)Globals.Count()));
         }
     }
 
@@ -371,7 +373,7 @@ public class BaseModule
         var sectionSize = _parser.GetUInt32();
         var index = (int)_parser.GetIndex();
 
-        if (index < Functions.Count())
+        if (index < Functions.Count)
         {
             _startFunction = Functions[index];
         }
@@ -389,19 +391,19 @@ public class BaseModule
         for (uint element = 0; element < vectorSize; element++)
         {
             var tableidx = (int)_parser.GetUInt32();
-            if (tableidx >= Tables.Count())
+            if (tableidx >= Tables.Count)
             {
                 throw new Exception("Element table index does not exist");
             }
 
             var f = new Function(this, "$loadElement" + element, new Type(null, new[] { Type.i32 }));
             f.program = _parser.GetExpr();
-            Store.runtime.Call(f.GlobalIndex);
+            Host.Runtime.Call(f.GlobalIndex);
             do
             {
-            } while (Store.Step(1000));
+            } while (Host.Step(1000));
 
-            var offset = Store.runtime.ReturnValue().i32;
+            var offset = Host.Runtime.ReturnValue().i32;
 
             var funcVecSize = _parser.GetUInt32();
             for (uint func = 0; func < funcVecSize; func++)
@@ -420,7 +422,7 @@ public class BaseModule
 
         for (uint funcidx = 0; funcidx < vectorSize; funcidx++)
         {
-            if (funcidx >= Functions.Count())
+            if (funcidx >= Functions.Count)
             {
                 throw new Exception("Missing function in code segment.");
             }
@@ -460,19 +462,19 @@ public class BaseModule
         for (uint data = 0; data < vectorSize; data++)
         {
             var memidx = (int)_parser.GetUInt32();
-            if (memidx >= Memory.Count())
+            if (memidx >= Memory.Count)
             {
                 throw new Exception("Data memory index does not exist");
             }
 
             var f = new Function(this, "loadData" + data, new Type(null, new[] { Type.i32 }));
             f.program = _parser.GetExpr();
-            Store.runtime.Call(f.GlobalIndex);
+            Host.Runtime.Call(f.GlobalIndex);
             do
             {
-            } while (Store.Step(1000));
+            } while (Host.Step(1000));
 
-            ulong offset = Store.runtime.ReturnValue().i32;
+            ulong offset = Host.Runtime.ReturnValue().i32;
             var memVecSize = _parser.GetUInt32();
             Buffer.BlockCopy(_parser.GetBytes((int)_parser.GetPointer(), (int)memVecSize), 0, Memory[memidx].Buffer,
                 (int)offset, (int)memVecSize);
@@ -528,7 +530,7 @@ public class BaseModule
 
     public Global AddExportGlob(string name, byte type, bool mutable, Value v)
     {
-        var global = new Global(type, mutable, v, (uint)Exports.Count());
+        var global = new Global(type, mutable, v, (uint)Exports.Count);
         Exports.Add(name, global);
         return global;
     }
@@ -548,19 +550,15 @@ public class BaseModule
         Console.WriteLine(Name + " exports:");
         foreach (var export in Exports)
         {
-            var f = export.Value as Function;
-            var t = export.Value as Table;
-            var m = export.Value as Memory;
-
-            if (f != null)
+            if (export.Value is Function f)
             {
                 Console.WriteLine("Function " + export.Key + " " + f.Type);
             }
-            else if (t != null)
+            else if (export.Value is Table t)
             {
                 Console.WriteLine("Table " + export.Key);
             }
-            else if (m != null)
+            else if (export.Value is Memory m)
             {
                 Console.WriteLine("Memory " + export.Key);
             }
@@ -575,7 +573,7 @@ public class BaseModule
     {
         CallVoid(function, parameters);
 
-        return Store.runtime.ReturnValue();
+        return Host.Runtime.ReturnValue();
     }
 
     public void CallVoid(string function)
@@ -592,9 +590,8 @@ public class BaseModule
 
         var f = Exports[function] as Function;
 
-        Store.runtime.Call(f.GlobalIndex, parameters);
-        Store.runtime.Step(999999999);
-
+        Host.Runtime.Call(f.GlobalIndex, parameters);
+        Host.Runtime.Step(null);
 
     }
 }

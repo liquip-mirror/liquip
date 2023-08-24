@@ -114,6 +114,14 @@ public struct Pointer
         GCImplementation.IncRootCount((ushort*)Ptr);
     }
 
+    public int ToInt()
+    {
+        unsafe
+        {
+            return (int)Ptr;
+        }
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public unsafe void CopyTo(
         byte[] buffer,

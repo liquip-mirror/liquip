@@ -6,6 +6,11 @@ public static class LiteralAssemblerCodeEx
 {
     public static FluentXSharpX86 LiteralCode(this FluentXSharpX86 me, string line, params object?[] args)
     {
+        var data = new List<object?>();
+        foreach (var arg in args)
+        {
+
+        }
         _ = new LiteralAssemblerCode(string.Format(line, args.ToArray()));
         return me;
     }

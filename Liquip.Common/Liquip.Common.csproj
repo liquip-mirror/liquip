@@ -15,4 +15,8 @@
 
 
 
+    <ItemGroup>
+      <ProjectReference Include="..\Liquip.Memory\Liquip.Memory.csproj" />
+    </ItemGroup>
+
 </Project>

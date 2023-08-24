@@ -1,8 +1,13 @@
 namespace EMU6502;
 
+/// <summary>
+/// 6502 opcodes
+/// </summary>
 public enum OpCode: byte
 {
-
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    // ReSharper disable InconsistentNaming
+    // ReSharper disable IdentifierTypo
     //LDA
     LDA_IM = 0xA9,
     LDA_ZP = 0xA5,
@@ -12,18 +17,21 @@ public enum OpCode: byte
     LDA_ABSY = 0xB9,
     LDA_INDX = 0xA1,
     LDA_INDY = 0xB1,
+
     //LDX
     LDX_IM = 0xA2,
     LDX_ZP = 0xA6,
     LDX_ZPY = 0xB6,
     LDX_ABS = 0xAE,
     LDX_ABSY = 0xBE,
+
     //LDY
     LDY_IM = 0xA0,
     LDY_ZP = 0xA4,
     LDY_ZPX = 0xB4,
     LDY_ABS = 0xAC,
     LDY_ABSX = 0xBC,
+
     //STA
     STA_ZP = 0x85,
     STA_ZPX = 0x95,
@@ -32,10 +40,12 @@ public enum OpCode: byte
     STA_ABSY = 0x99,
     STA_INDX = 0x81,
     STA_INDY = 0x91,
+
     //STX
     STX_ZP = 0x86,
     STX_ZPY = 0x96,
     STX_ABS = 0x8E,
+
     //STY
     STY_ZP = 0x84,
     STY_ZPX = 0x94,
@@ -52,7 +62,7 @@ public enum OpCode: byte
     JMP_IND = 0x6C,
     JSR = 0x20,
     RTS = 0x60,
-    
+
     //Logical Ops
 
     //AND
@@ -183,6 +193,7 @@ public enum OpCode: byte
     ROL_ABS = 0x2E,
     ROL_ABSX = 0x3E,
 
+
     ROR = 0x6A,
     ROR_ZP = 0x66,
     ROR_ZPX = 0x76,
@@ -193,5 +204,8 @@ public enum OpCode: byte
     NOP = 0xEA,
     BRK = 0x00,
     RTI = 0x40
-		
+
+    // ReSharper restore IdentifierTypo
+    // ReSharper restore InconsistentNaming
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

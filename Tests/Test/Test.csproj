@@ -21,7 +21,7 @@
     <DebugEnabled>False</DebugEnabled>
     <EnableBochsDebug>True</EnableBochsDebug>
     <StartBochsDebugGui>True</StartBochsDebugGui>
-    <ExtractMapFile>False</ExtractMapFile>
+    <ExtractMapFile>true</ExtractMapFile>
     <StackCorruptionDetectionLevel>AllInstructions</StackCorruptionDetectionLevel>
     <DebugType>none</DebugType>
     <CompressionType>Gzip</CompressionType>

@@ -14,7 +14,7 @@ public static class IPCManager
 
     public static IpcContext? GetCurrent()
     {
-        return GetContext(ProcessContextManager.m_CurrentContext.tid);
+        return GetContext(ProcessContextManager.CurrentContext.Id);
     }
 
     public static IpcContext GetContext(uint tid)
@@ -42,10 +42,10 @@ public static class IPCManager
 
     public static List<IpcContext> GetCurrentProcessContext()
     {
-        var pid = ProcessContextManager.m_CurrentContext.parent;
+        var pid = ProcessContextManager.CurrentContext.ParentId;
         if (pid == 0)
         {
-            pid = ProcessContextManager.m_CurrentContext.tid;
+            pid = ProcessContextManager.CurrentContext.Id;
         }
 
         return GetProcessContext(pid);
@@ -77,8 +77,8 @@ public static class IPCManager
 
     public static void CreateContext()
     {
-        var tid = ProcessContextManager.m_CurrentContext.tid;
-        var pid = ProcessContextManager.m_CurrentContext.parent;
+        var tid = ProcessContextManager.CurrentContext.Id;
+        var pid = ProcessContextManager.CurrentContext.ParentId;
         CreateContext(pid, tid);
     }
 
@@ -100,12 +100,12 @@ public static class IPCManager
     public static void SendMessage(ref IpcContext context, ref Pointer message)
     {
         context.Messages.Add(
-            new IpcMessageContext { From = ProcessContextManager.m_CurrentContext.tid, Data = message });
+            new IpcMessageContext { From = ProcessContextManager.CurrentContext.Id, Data = message });
     }
 
     public static IpcMessageContext? GetCurrentMessage()
     {
-        return GetMessage(ProcessContextManager.m_CurrentContext.tid);
+        return GetMessage(ProcessContextManager.CurrentContext.Id);
     }
 
     public static IpcMessageContext? GetMessage(uint tid)
@@ -126,7 +126,7 @@ public static class IPCManager
 
     public static bool CurrentHasMessage()
     {
-        return HasMessage(ProcessContextManager.m_CurrentContext.tid);
+        return HasMessage(ProcessContextManager.CurrentContext.Id);
     }
 
     public static bool HasMessage(uint tid)

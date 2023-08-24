@@ -6,10 +6,9 @@ namespace Zarlo.Cosmos.Logger.Sinks;
 
 public class ConsoleSink : ISink
 {
-    public void Raw(string context, LogLevel logLevel, string message, string? caller, string? filePath, int? lineNumber,
-        string? messageExpression)
+    public void Raw(string context, LogLevel logLevel, string message)
     {
-        DoRaw(context, logLevel, message, caller, filePath, lineNumber, messageExpression);
+        DoRaw(context, logLevel, message);
     }
 
     public void Dispose()
@@ -17,8 +16,7 @@ public class ConsoleSink : ISink
     }
 
 
-    private void DoRaw(string context, LogLevel logLevel, string message, string? caller, string? filePath, int? lineNumber,
-        string? messageExpression)
+    private void DoRaw(string context, LogLevel logLevel, string message)
     {
         var logLevelMessage = logLevel switch
         {
@@ -34,7 +32,7 @@ public class ConsoleSink : ISink
         var fg = Console.ForegroundColor;
 
         Console.BackgroundColor = ConsoleColor.Black;
-        Console.BackgroundColor = ConsoleColor.White;
+        Console.ForegroundColor = ConsoleColor.White;
 
         Console.Write("[");
 
@@ -44,15 +42,16 @@ public class ConsoleSink : ISink
             LogLevel.Error => ConsoleColor.Red,
             LogLevel.Trace => ConsoleColor.DarkBlue,
             LogLevel.Debug => ConsoleColor.White,
-            LogLevel.Exception => ConsoleColor.Magenta
+            LogLevel.Exception => ConsoleColor.Magenta,
+            _ => throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, null)
         };
 
         Console.Write(logLevelMessage);
-        Console.BackgroundColor = ConsoleColor.White;
+        Console.ForegroundColor = ConsoleColor.White;
         Console.Write("] ");
         if (logLevel == LogLevel.Exception)
         {
-            Console.Write("[{0}:{1}] \n {2}", filePath, lineNumber, message);
+            Console.Write(message);
         }
         else
         {

@@ -10,3 +10,7 @@ clean:
 
 package: build
 	dotent package
+
+
+start-test-vm:
+	bochs -q -f ./Tests/Test/config

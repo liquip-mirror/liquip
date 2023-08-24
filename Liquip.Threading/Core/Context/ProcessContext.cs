@@ -37,7 +37,8 @@ public enum ProcessContextType
     THREAD = 0,
     PROCESS = 1,
     PROCESS_FORK = 2,
-    SYSCALL = 3
+    SYSCALL = 3,
+    NULL = -1
 }
 
 
@@ -46,31 +47,93 @@ public enum ProcessContextType
 /// </summary>
 public class ProcessContext
 {
-    /// <summary>
-    /// gets the next item in the list
-    /// </summary>
-    public ProcessContext next;
+
+    public static ProcessContext NULL = new ProcessContext()
+    {
+        Id = uint.MaxValue,
+        ESP = 0,
+        Name = "NULL",
+        OwnerGid = 1,
+        OwnerUid = 1,
+        ParentId = 0,
+    };
+
     /// <summary>
     /// is the type of task this context if for
     /// </summary>
-    public ProcessContextType type;
+    public ProcessContextType Type { get; set; }
+
     /// <summary>
     /// get the threadTd
     /// </summary>
-    public uint tid;
+    public uint Id { get; set; }
     /// <summary>
     /// a name of the thread may be blank
     /// </summary>
-    public string name;
-    public uint esp;
-    public uint stacktop;
-    public ThreadStart entry;
-    public ParameterizedThreadStart paramentry;
-    public ThreadState state;
-    public object param;
-    public int arg;
-    public uint priority;
-    public uint age;
-    public uint parent;
+    public string Name { get; set; }
+    /// <summary>
+    ///
+    /// </summary>
+    public uint ESP { get; set; }
+    /// <summary>
+    ///
+    /// </summary>
+    public uint Stacktop { get; set; }
 
+    /// <summary>
+    ///
+    /// </summary>
+    public ThreadStart Entry { get; set; }
+    /// <summary>
+    ///
+    /// </summary>
+    public ParameterizedThreadStart ParamEntry { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    public ThreadHandle HadleEntry { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    public ThreadState State { get; set; }
+    /// <summary>
+    ///
+    /// </summary>
+    public object Param { get; set; }
+
+    public uint Priority { get; set; }
+
+    public uint OwnerUid { get; set; }
+    public uint OwnerGid { get; set; }
+
+    /// <summary>
+    /// context parent id
+    /// </summary>
+    public uint ParentId { get; set; }
+
+    public uint SleepUntil { get; set; } = 0;
+
+    public ProcessContext Next { get; set; }
+
+    /// <inheritdoc />
+    public override bool Equals(object? obj)
+    {
+        if (obj?.GetType() == typeof(ProcessContext))
+        {
+            if ((obj as ProcessContext)?.Id == Id)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <inheritdoc />
+    public override int GetHashCode()
+    {
+        return (int)Id;
+    }
 }

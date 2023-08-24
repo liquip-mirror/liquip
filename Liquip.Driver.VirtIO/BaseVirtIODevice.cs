@@ -11,16 +11,100 @@ public class BaseVirtIODevice : PCIDriverBase
 {
     public const int DeviceIDOffset = 4160;
 
+    public Pointer Bar { get; private set; }
+    public uint Offset { get; private set; }
+
+    public Pointer NotifyCapability { get; private set; }
+    public uint NotifyCapabilityOffset { get; private set; }
+    public uint NotifyOffMultiplier { get; private set; }
+
+    public Pointer DeviceConfigurationPointer { get; private set; }
+    public uint DeviceConfigurationOffset { get; private set; }
+
+
     private readonly VirtIoQueue[] virtqueues = new VirtIoQueue[32];
 
     public BaseVirtIODevice(uint bus, uint slot, uint function) : base(bus, slot, function)
     {
+        SetUp();
     }
 
     // private ILogger _logger = Logger.Log.GetLogger<BaseVirtIODevice>();
 
     public BaseVirtIODevice(PCIDevice device) : base(device.bus, device.slot, device.function)
     {
+        SetUp();
+    }
+
+    private void SetUp()
+    {
+
+		foreach (var capability in Capabilities)
+		{
+			if (capability.Capability != 0x09)
+				continue;
+
+			var configType = ReadRegister8((byte)(capability.Offset + 3));
+			var bar = ReadRegister8((byte)(capability.Offset + 4));
+			var offset = ReadRegister32((byte)(capability.Offset + 8));
+            var pciBar = BaseAddressBar[bar] ?? null;
+			switch ((VirtIOConfigurationCapabilities)configType)
+			{
+				case VirtIOConfigurationCapabilities.Common:
+					{
+
+
+						if (!pciBar.IsIO)
+						{
+							Bar = Pointer.MakeFrom((Address)pciBar.BaseAddress, uint.MaxValue);
+							Offset = offset;
+						}
+						else
+						{
+
+							return;
+						}
+
+						break;
+					}
+				case VirtIOConfigurationCapabilities.Notify:
+					{
+
+						if (!pciBar.IsIO)
+						{
+							NotifyCapability = Pointer.MakeFrom((Address)pciBar.BaseAddress, uint.MaxValue);
+							NotifyCapabilityOffset = offset;
+						}
+						else
+						{
+							return;
+						}
+
+						NotifyOffMultiplier = ReadRegister32((byte)(capability.Offset + 16));
+						break;
+					}
+				case VirtIOConfigurationCapabilities.ISR: break;
+				case VirtIOConfigurationCapabilities.Device:
+					{
+
+						if (!pciBar.IsIO)
+						{
+							DeviceConfigurationPointer = Pointer.MakeFrom((Address)pciBar.BaseAddress, uint.MaxValue);
+							DeviceConfigurationOffset = offset;
+						}
+						else
+						{
+							return;
+						}
+
+						break;
+					}
+				case VirtIOConfigurationCapabilities.PCI: break;
+				case VirtIOConfigurationCapabilities.SharedMemory: break;
+				case VirtIOConfigurationCapabilities.Vendor: break;
+			}
+		}
+
     }
 
 
@@ -32,23 +116,6 @@ public class BaseVirtIODevice : PCIDriverBase
         {
             throw new NotSupportedException(string.Format("wrong VendorID {0}", VendorID));
         }
-    }
-
-    public int BAR()
-    {
-        for (var i = 0; i < BaseAddressBar.Length; i++)
-        {
-            if (BaseAddressBar[i].BaseAddress != 0)
-            {
-                return (int)BaseAddressBar[i].BaseAddress;
-            }
-        }
-
-        return 0;
-    }
-
-    public void SetUp()
-    {
     }
 
     public virtual void Initialization()
@@ -71,23 +138,23 @@ public class BaseVirtIODevice : PCIDriverBase
 
     public void SetDeviceStatusFlag(DeviceStatusFlag flag)
     {
-        IOPort.Write8(BAR() + VirtIORegisters.DeviceStatus, (byte)flag);
+        IOPort.Write8(Bar.ToInt() + VirtIORegisters.DeviceStatus, (byte)flag);
     }
 
     public DeviceStatusFlag GetDeviceStatusFlag()
     {
-        return (DeviceStatusFlag)IOPort.Read8(BAR() + VirtIORegisters.DeviceStatus);
+        return (DeviceStatusFlag)IOPort.Read8(Bar.ToInt() + VirtIORegisters.DeviceStatus);
     }
 
 
     public void SetDeviceFeaturesFlag(byte flag)
     {
-        IOPort.Write8(BAR() + VirtIORegisters.DeviceFeatures, flag);
+        IOPort.Write8(Bar.ToInt() + VirtIORegisters.DeviceFeatures, flag);
     }
 
     public byte GetDeviceFeaturesFlag()
     {
-        return IOPort.Read8(BAR() + VirtIORegisters.DeviceFeatures);
+        return IOPort.Read8(Bar.ToInt() + VirtIORegisters.DeviceFeatures);
     }
 
 
@@ -157,8 +224,8 @@ public class BaseVirtIODevice : PCIDriverBase
     public void SetVirtqueueBuffer(uint index, ref VirtIoQueue buffer)
     {
         virtqueues[index] = buffer;
-        IOPort.Write32(BAR() + VirtIORegisters.QueueSelect, index);
-        IOPort.Write32(BAR() + VirtIORegisters.QueueAddress, GCImplementation.GetSafePointer(buffer));
+        IOPort.Write32(Bar.ToInt() + VirtIORegisters.QueueSelect, index);
+        IOPort.Write32(Bar.ToInt() + VirtIORegisters.QueueAddress, GCImplementation.GetSafePointer(buffer));
     }
 
 
@@ -200,15 +267,8 @@ public class BaseVirtIODevice : PCIDriverBase
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine($@"BAR: {BAR()}, BAR0: {BAR0}, bus: {bus}, slot: {slot} ");
+            sb.AppendLine($@"BAR: {Bar.ToInt()}, BAR0: {BAR0}, bus: {bus}, slot: {slot} ");
             sb.AppendLine($@"DeviceID: {DeviceID}, DeviceType: {DeviceType.AsString()}");
-            sb.AppendLine(
-                $@"BAR1: {BARAddress(1)}, BAR2: {BARAddress(2)}, BAR3: {BARAddress(3)}, BAR4: {BARAddress(4)}, BAR5: {BARAddress(5)},");
-            sb.AppendLine(
-                $@"BAR6: {BARAddress(6)}, BAR7: {BARAddress(7)}, BAR8: {BARAddress(8)}, BAR9: {BARAddress(9)}, BAR10: {BARAddress(10)},");
-            sb.AppendLine(
-                $@"BAR11: {BARAddress(11)}, BAR12: {BARAddress(12)}, BAR13: {BARAddress(13)}, BAR14: {BARAddress(14)}, BAR15: {BARAddress(15)}");
-
             return sb.ToString();
         }
         catch (Exception ex)

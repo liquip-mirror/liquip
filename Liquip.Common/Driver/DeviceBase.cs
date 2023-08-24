@@ -1,4 +1,5 @@
 using Cosmos.HAL;
+using Liquip.Memory;
 
 namespace Liquip.Common.Driver;
 

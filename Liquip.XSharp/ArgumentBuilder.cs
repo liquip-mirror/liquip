@@ -47,6 +47,22 @@ public class ArgumentBuilder
         return new ArgumentBuilder();
     }
 
+    public static ArgumentBuilder New(Type type, string methodName)
+    {
+        var builder = new ArgumentBuilder();
+
+        var method = type.GetMethod(methodName);
+
+        var parameters = method.GetParameters().Reverse();
+
+        foreach (var parameter in parameters)
+        {
+            builder.Add(parameter.ParameterType, parameter.Name);
+        }
+
+        return builder;
+    }
+
     public static ArgumentBuilder New(params (Type ArgType, string Name)[] args)
     {
         var output = New();
@@ -135,7 +151,7 @@ public class ArgumentBuilder
 
         if (!found)
         {
-            throw new ArgumentException($@"argument not found {name}");
+            throw new ArgumentException($"argument not found {name}");
         }
 
         return i;

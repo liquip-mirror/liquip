@@ -17,81 +17,46 @@ public class BaseLogger : ILogger
     }
 
     public void Info(
-        string message,
-        [CallerMemberName] string? caller = null,
-        [CallerFilePath] string? filePath = null,
-        [CallerLineNumber] int? lineNumber = 0,
-        [CallerArgumentExpression("message")]
-        string? messageExpression = null
+        string message
     )
     {
-        throw new NotImplementedException();
+        Raw(LogLevel.Info, message);
     }
 
     public void Error(
-        string message,
-        [CallerMemberName] string? caller = null,
-        [CallerFilePath] string? filePath = null,
-        [CallerLineNumber] int? lineNumber = 0,
-        [CallerArgumentExpression("message")]
-        string? messageExpression = null
+        string message
     )
     {
-        throw new NotImplementedException();
+        Raw(LogLevel.Error, message);
     }
 
-    public void Exception(string message,
-        [CallerMemberName] string? caller = null,
-        [CallerFilePath] string? filePath = null,
-        [CallerLineNumber] int? lineNumber = 0,
-        [CallerArgumentExpression("message")]
-        string? messageExpression = null
+    public void Exception(string message
     )
     {
-        throw new NotImplementedException();
+        Raw(LogLevel.Exception, message);
     }
 
-    public void Exception(Exception exception, string message,
-        [CallerMemberName] string? caller = null,
-        [CallerFilePath] string? filePath = null,
-        [CallerLineNumber] int? lineNumber = 0,
-        [CallerArgumentExpression("message")]
-        string? messageExpression = null
+    public void Exception(Exception exception, string message
     )
     {
-        throw new NotImplementedException();
+        Raw(LogLevel.Exception, string.Format("{0} \n {1}", message, exception.ToString()));
     }
 
-    public void Debug(string message,
-        [CallerMemberName] string? caller = null,
-        [CallerFilePath] string? filePath = null,
-        [CallerLineNumber] int? lineNumber = 0,
-        [CallerArgumentExpression("message")]
-        string? messageExpression = null)
+    public void Debug(string message)
     {
-        throw new NotImplementedException();
+        Raw(LogLevel.Debug, message);
     }
 
-    public void Trace(string message,
-        [CallerMemberName] string? caller = null,
-        [CallerFilePath] string? filePath = null,
-        [CallerLineNumber] int? lineNumber = 0,
-        [CallerArgumentExpression("message")]
-        string? messageExpression = null)
+    public void Trace(string message)
     {
-        throw new NotImplementedException();
+        Raw(LogLevel.Trace, message);
     }
 
-    public void Raw(LogLevel logLevel, string message,
-        [CallerMemberName] string? caller = null,
-        [CallerFilePath] string? filePath = null,
-        [CallerLineNumber] int? lineNumber = 0,
-        [CallerArgumentExpression("message")]
-        string? messageExpression = null)
+    public void Raw(LogLevel logLevel, string message)
     {
         foreach (var sink in _sinks)
         {
-            sink.Raw(_context ?? "", logLevel, message, caller, filePath, lineNumber, messageExpression);
+            sink.Raw(_context ?? "", logLevel, message);
         }
     }
 

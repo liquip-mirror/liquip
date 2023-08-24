@@ -36,7 +36,7 @@ public class Thread
     /// <summary>
     /// returns the current thread
     /// </summary>
-    public static Thread Current => new Thread(ProcessContextManager.m_CurrentContext.tid);
+    public static Thread Current => new Thread(ProcessContextManager.CurrentContext.Id);
 
 
     public readonly uint ThreadID;
@@ -61,34 +61,34 @@ public class Thread
 
     private void ThreadFinalSetup()
     {
-        Data.state = ThreadState.PAUSED;
+        Data.State = ThreadState.PAUSED;
     }
 
     public void Start()
     {
-        Data.state = ThreadState.ALIVE;
+        Data.State = ThreadState.ALIVE;
     }
 
     public void Stop()
     {
-        Data.state = ThreadState.PAUSED;
+        Data.State = ThreadState.PAUSED;
     }
 
     public void Kill()
     {
-        Data.state = ThreadState.DEAD;
+        Data.State = ThreadState.DEAD;
     }
 
     public static void Yield()
     {
     }
 
-    public static void Sleep(int ms)
+    public static void Sleep(uint ms)
     {
-        if(ProcessContextManager.m_CurrentContext == null) return;
-        ProcessContextManager.m_CurrentContext.arg = ms;
-        ProcessContextManager.m_CurrentContext.state = ThreadState.WAITING_SLEEP;
-        while (ProcessContextManager.m_CurrentContext.state == ThreadState.WAITING_SLEEP)
+        var context = ProcessContextManager.CurrentContext;
+        context.SleepUntil = ms;
+        context.State = ThreadState.WAITING_SLEEP;
+        while (context.State == ThreadState.WAITING_SLEEP)
         {
             Yield();
         }

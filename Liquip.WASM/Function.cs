@@ -15,38 +15,63 @@ public class Function
     public Inst[]? program = null;
     public Type Type;
 
-    // Standard constructor
+    /// <summary>
+    /// WASM function constructor
+    /// </summary>
+    /// <param name="baseModule"></param>
+    /// <param name="name"></param>
+    /// <param name="type"></param>
+    /// <param name="index"></param>
+    /// <param name="start"></param>
     public Function(BaseModule baseModule, string name, Type? type = null, uint index = 0xFFFFFFFF,
         Instruction.Instruction? start = null)
     {
         BaseModule = baseModule;
         Name = name;
         Index = index;
-        GlobalIndex = BaseModule.Store.runtime.AddFunction(this);
+        GlobalIndex = BaseModule.Host.Runtime.AddFunction(this);
 
         Type = type ?? new Type(Array.Empty<byte>(), Array.Empty<byte>());
     }
 
-    // Native function constructor
+    /// <summary>
+    /// Native function constructor
+    /// </summary>
+    /// <param name="baseModule"></param>
+    /// <param name="name"></param>
+    /// <param name="action"></param>
+    /// <param name="type"></param>
     public Function(BaseModule baseModule, string name, Func<Value[], Value[]> action, Type type)
     {
         BaseModule = baseModule;
         Name = name;
         Type = type;
-        GlobalIndex = BaseModule.Store.runtime.AddFunction(this);
+        GlobalIndex = BaseModule.Host.Runtime.AddFunction(this);
         native = action;
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <exception cref="Exception"></exception>
     protected void NotImplemented()
     {
         throw new Exception("Function not implemented: " + BaseModule.Name + "@" + Name);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="name"></param>
     public void SetName(string name)
     {
         Name = name;
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     public string GetName()
     {
         return Name;

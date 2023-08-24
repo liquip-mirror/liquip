@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 
 namespace Liquip.WASM;
 
@@ -26,6 +27,34 @@ public struct Value
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="v"></param>
+    /// <returns></returns>
+    public static implicit operator Value(uint v) => From(v);
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="v"></param>
+    /// <returns></returns>
+    public static implicit operator Value(ulong v) => From(v);
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="v"></param>
+    /// <returns></returns>
+    public static implicit operator Value(float v) => From(v);
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="v"></param>
+    /// <returns></returns>
+    public static implicit operator Value(double v) => From(v);
+
+    /// <summary>
     /// make a uint in to a value type
     /// </summary>
     /// <param name="v"></param>
@@ -34,6 +63,17 @@ public struct Value
     {
         type = Type.i32,
         i32 = v
+    };
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="v"></param>
+    /// <returns></returns>
+    public static Value From(ulong v) => new Value
+    {
+        type = Type.i64,
+        i64 = v
     };
 
     /// <summary>
@@ -46,5 +86,34 @@ public struct Value
         type = Type.f32,
         f32 = v
     };
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="v"></param>
+    /// <returns></returns>
+    public static Value From(double v) => new Value
+    {
+        type = Type.f64,
+        f64 = v
+    };
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="v"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public static Value From(object v)
+    {
+        return v switch
+        {
+            uint u => From(u),
+            ulong @ulong => From(@ulong),
+            float f => From(f),
+            double d => From(d),
+            _ => throw new Exception()
+        };
+    }
 
 }

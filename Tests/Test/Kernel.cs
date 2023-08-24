@@ -26,7 +26,6 @@ public class Kernel : Sys.Kernel
     protected override void OnBoot()
     {
         base.OnBoot();
-
         ProcessorScheduler.Initialize();
     }
 

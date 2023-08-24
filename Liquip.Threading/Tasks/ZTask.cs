@@ -15,35 +15,35 @@
 //
 //     public int Id { get; } = NextId++;
 //
-//     public ZTask(Action action) : base(action)
+//     public ZTask(Action action)
 //     {
 //     }
 //
-//     public ZTask(Action action, CancellationToken cancellationToken) : base(action, cancellationToken)
+//     public ZTask(Action action, CancellationToken cancellationToken)
 //     {
 //     }
 //
-//     public ZTask(Action action, CancellationToken cancellationToken, TaskCreationOptions creationOptions) : base(action, cancellationToken, creationOptions)
+//     public ZTask(Action action, CancellationToken cancellationToken, TaskCreationOptions creationOptions)
 //     {
 //     }
 //
-//     public ZTask(Action action, TaskCreationOptions creationOptions) : base(action, creationOptions)
+//     public ZTask(Action action, TaskCreationOptions creationOptions)
 //     {
 //     }
 //
-//     public ZTask(Action<object?> action, object? state) : base(action, state)
+//     public ZTask(Action<object?> action, object? state)
 //     {
 //     }
 //
-//     public ZTask(Action<object?> action, object? state, CancellationToken cancellationToken) : base(action, state, cancellationToken)
+//     public ZTask(Action<object?> action, object? state, CancellationToken cancellationToken)
 //     {
 //     }
 //
-//     public ZTask(Action<object?> action, object? state, CancellationToken cancellationToken, TaskCreationOptions creationOptions) : base(action, state, cancellationToken, creationOptions)
+//     public ZTask(Action<object?> action, object? state, CancellationToken cancellationToken, TaskCreationOptions creationOptions)
 //     {
 //     }
 //
-//     public ZTask(Action<object?> action, object? state, TaskCreationOptions creationOptions) : base(action, state, creationOptions)
+//     public ZTask(Action<object?> action, object? state, TaskCreationOptions creationOptions)
 //     {
 //     }
 // }

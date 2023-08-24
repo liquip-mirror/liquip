@@ -4,55 +4,66 @@ using System.Collections.Generic;
 using Cosmos.Core;
 
 using Liquip.Threading.Core.Context;
+using Zarlo.Cosmos.Logger;
+using Zarlo.Cosmos.Logger.Interfaces;
 
 namespace Liquip.Threading.Core.Processing;
 
+/// <summary>
+///
+/// </summary>
 public static unsafe class ProcessContextManager
 {
 
+    /// <summary>
+    ///
+    /// </summary>
+    // ReSharper disable once InconsistentNaming
     public const uint STACK_SIZE_THEAD = 102400;
+
+    /// <summary>
+    ///
+    /// </summary>
+    // ReSharper disable once InconsistentNaming
     public const uint STACK_SIZE_PROCESS = 102400;
 
+    /// <summary>
+    ///
+    /// </summary>
+    // ReSharper disable once InconsistentNaming
     public const uint STACK_SIZE_SYSCALL = 1024;
 
     /// <summary>
     /// stores the last TID used
     /// </summary>
-    public static uint m_NextCID;
+    public static uint NextCid = 0;
 
     /// <summary>
     /// stores the current context
     /// </summary>
-    public static ProcessContext m_CurrentContext;
+    public static ProcessContext? CurrentContext = null;
 
     /// <summary>
     /// stores the first context
     /// </summary>
-    public static ProcessContext m_ContextList;
+    public static ProcessContext ContextListHead;
 
     public static Mutex ContextListMutex = new Mutex();
 
-    public static unsafe uint* GetContextPointer(uint tid)
-    {
-        return GCImplementation.GetPointer(GetContext(tid));
-    }
+    private static ILogger _logger = Log.GetLogger("Process Context Manager");
 
-    public static ProcessContext GetContext(uint tid)
+    public static ref ProcessContext GetContext(uint tid)
     {
-        ProcessContext ctx = m_ContextList;
-        while (ctx.next != null)
+        _logger.Info("looking for context");
+        for (var node = ContextListHead; node != null; node = node.Next)
         {
-            if (ctx.tid == tid)
+            if (node.Id == tid)
             {
-                return ctx;
+                return ref node;
             }
-            ctx = ctx.next;
         }
-        if (ctx.tid == tid)
-        {
-            return ctx;
-        }
-        return null;
+
+        return ref ProcessContext.NULL;
     }
 
     /// <summary>
@@ -62,7 +73,7 @@ public static unsafe class ProcessContextManager
     /// <returns></returns>
     public static uint* SetupStack(uint* stack)
     {
-        uint origin = (uint)stack;
+        var origin = (uint)stack;
         *--stack = 0xFF_FF_FF_FF; // trash
         *--stack = 0xFF_FF_FF_FF; // trash
         *--stack = 0xFF_FF_FF_FF; // trash
@@ -88,26 +99,6 @@ public static unsafe class ProcessContextManager
         return stack;
     }
 
-    public static LinkedList<ProcessContext> GetProcess()
-    {
-
-        var current = m_ContextList;
-
-        var output = new LinkedList<ProcessContext>();
-
-        while (current != null)
-        {
-            if (current.type != ProcessContextType.THREAD && current.state != ThreadState.DEAD)
-            {
-                output.AddLast(current);
-            }
-            current = current.next;
-        }
-
-        return output;
-    }
-
-
     /// <summary>
     /// Counts all none dead tasks
     /// </summary>
@@ -115,17 +106,17 @@ public static unsafe class ProcessContextManager
     public static uint Count()
     {
 
-        var current = m_ContextList;
+        var current = ContextListHead;
 
         uint output = 0;
 
         while (current != null)
         {
-            if (current.state != ThreadState.DEAD)
+            if (current.State != ThreadState.DEAD)
             {
                 output++;
             }
-            current = current.next;
+            current = current.Next;
         }
 
         return output;
@@ -141,47 +132,60 @@ public static unsafe class ProcessContextManager
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public static uint StartContext(string name, ThreadStart entry, ProcessContextType type)
     {
+        _logger.Info("starting new context");
         ProcessContext context = new ProcessContext();
-        context.type = type;
-        context.tid = m_NextCID++;
-        context.name = name;
+        context.Type = type;
+        context.Id = NextCid++;
+        context.Name = name;
         switch (type)
         {
             case ProcessContextType.THREAD:
-                context.stacktop = GCImplementation.AllocNewObject(STACK_SIZE_THEAD);
+                context.Stacktop = GCImplementation.AllocNewObject(STACK_SIZE_THEAD);
                 break;
             case ProcessContextType.PROCESS:
             case ProcessContextType.PROCESS_FORK:
-                context.stacktop = GCImplementation.AllocNewObject(STACK_SIZE_PROCESS);
+                context.Stacktop = GCImplementation.AllocNewObject(STACK_SIZE_PROCESS);
                 break;
             case ProcessContextType.SYSCALL:
-                context.stacktop = GCImplementation.AllocNewObject(STACK_SIZE_SYSCALL);
+                context.Stacktop = GCImplementation.AllocNewObject(STACK_SIZE_SYSCALL);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
 
-        context.esp = (uint)SetupStack((uint*)(context.stacktop + 4000));
-        context.state = ThreadState.PAUSED;
-        context.entry = entry;
+        context.ESP = (uint)SetupStack((uint*)(context.Stacktop + 4000));
+        context.State = ThreadState.PAUSED;
+        context.Entry = entry;
         if (type == ProcessContextType.PROCESS)
         {
-            context.parent = 0;
+            context.ParentId = 0;
         }
         else
         {
-            context.parent = m_CurrentContext.tid;
+            context.ParentId = CurrentContext.Id;
         }
-        // ContextListMutex.Lock();
-        ProcessContext ctx = m_ContextList;
-        while (ctx.next != null)
+        ContextListMutex.Lock();
+        for (var node = ContextListHead; node != null; node = node.Next)
         {
-            ctx = ctx.next;
+            if (node.Next == null)
+            {
+                node.Next = context;
+            }
         }
-        ctx.next = context;
         GCImplementation.IncRootCount((ushort*)GCImplementation.GetPointer(context));
-        // ContextListMutex.Unlock();
-        return context.tid;
+        ContextListMutex.Unlock();
+
+        if (ContextListHead == null)
+        {
+            ContextListHead = context;
+        }
+
+        if (CurrentContext == null)
+        {
+            CurrentContext = ContextListHead;
+        }
+
+        return context.Id;
     }
 
 
@@ -195,32 +199,59 @@ public static unsafe class ProcessContextManager
     /// <returns></returns>
     public static uint StartContext(string name, ParameterizedThreadStart entry, ProcessContextType type, object param)
     {
+        _logger.Info("starting new context");
         ProcessContext context = new ProcessContext();
-        context.type = type;
-        context.tid = m_NextCID++;
-        context.name = name;
-        context.stacktop = GCImplementation.AllocNewObject(STACK_SIZE_THEAD);
-        context.esp = (uint)SetupStack((uint*)(context.stacktop + 4000));
-        context.state = ThreadState.ALIVE;
-        context.paramentry = entry;
-        context.param = param;
+        context.Type = type;
+        context.Id = NextCid++;
+        context.Name = name;
+        switch (type)
+        {
+            case ProcessContextType.THREAD:
+                context.Stacktop = GCImplementation.AllocNewObject(STACK_SIZE_THEAD);
+                break;
+            case ProcessContextType.PROCESS:
+            case ProcessContextType.PROCESS_FORK:
+                context.Stacktop = GCImplementation.AllocNewObject(STACK_SIZE_PROCESS);
+                break;
+            case ProcessContextType.SYSCALL:
+                context.Stacktop = GCImplementation.AllocNewObject(STACK_SIZE_SYSCALL);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+
+        context.ESP = (uint)SetupStack((uint*)(context.Stacktop + 4000));
+        context.State = ThreadState.PAUSED;
+        context.ParamEntry = entry;
+        context.Param = param;
         if (type == ProcessContextType.PROCESS)
         {
-            context.parent = 0;
+            context.ParentId = 0;
         }
         else
         {
-            context.parent = m_CurrentContext.tid;
+            context.ParentId = CurrentContext.Id;
         }
-        // ContextListMutex.Lock();
-        ProcessContext ctx = m_ContextList;
-        while (ctx.next != null)
+        ContextListMutex.Lock();
+        for (var node = ContextListHead; node != null; node = node.Next)
         {
-            ctx = ctx.next;
+            if (node.Next == null)
+            {
+                node.Next = context;
+            }
         }
-        ctx.next = context;
         GCImplementation.IncRootCount((ushort*)GCImplementation.GetPointer(context));
-        // ContextListMutex.Unlock();
-        return context.tid;
+        ContextListMutex.Unlock();
+
+        if (ContextListHead == null)
+        {
+            ContextListHead = context;
+        }
+
+        if (CurrentContext == null)
+        {
+            CurrentContext = ContextListHead;
+        }
+        return context.Id;
     }
 }

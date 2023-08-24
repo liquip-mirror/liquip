@@ -32,9 +32,9 @@ public class SwitchTaskAsm
         _ = new LiteralAssemblerCode("mov fs, ax");
         _ = new LiteralAssemblerCode("mov gs, ax");
         _ = new LiteralAssemblerCode("mov eax, esp");
-        XS.Set(StackContext, EAX, true);
+        XS.Set(StackContext, EAX, true); // save context
         XS.Call(SwitchTask);
-        XS.Set(EAX, StackContext, sourceIsIndirect: true);
+        XS.Set(EAX, StackContext, sourceIsIndirect: true); // load context
         _ = new LiteralAssemblerCode("mov esp, eax");
         _ = new LiteralAssemblerCode("pop eax");
         _ = new LiteralAssemblerCode("mov gs, eax");

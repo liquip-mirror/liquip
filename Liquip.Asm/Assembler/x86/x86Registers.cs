@@ -2,11 +2,23 @@ namespace Liquip.Asm.Assembler.x86;
 
 public static class x86Registers
 {
-    public static List<x86Register> Allx86Registers = new();
+    /// <summary>
+    ///
+    /// </summary>
+    public static readonly List<x86Register> Allx86Registers = new();
 
     // Segment registers
+    /// <summary>
+    ///
+    /// </summary>
     public static readonly x86Register CS = new(nameof(CS), 16, 0b000);
+    /// <summary>
+    ///
+    /// </summary>
     public static readonly x86Register DS = new(nameof(DS), 16, 0b000);
+    /// <summary>
+    ///
+    /// </summary>
     public static readonly x86Register SS = new(nameof(SS), 16, 0b000);
     public static readonly x86Register ES = new(nameof(ES), 16, 0b000);
     public static readonly x86Register FS = new(nameof(FS), 16, 0b000);
@@ -92,7 +104,6 @@ public static class x86Registers
     public static readonly x86Register MMX12 = new(nameof(MMX12), 64, 0b000);
     public static readonly x86Register MMX13 = new(nameof(MMX13), 64, 0b000);
     public static readonly x86Register MMX14 = new(nameof(MMX14), 64, 0b000);
-
     public static readonly x86Register MMX15 = new(nameof(MMX15), 64, 0b000);
     // End SIMD
 

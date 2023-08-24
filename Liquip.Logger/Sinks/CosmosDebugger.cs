@@ -12,15 +12,13 @@ public class CosmosDebugger : ISink
     {
     }
 
-    public void Raw(string context, LogLevel logLevel, string message, string? caller, string? filePath, int? lineNumber,
-        string? messageExpression)
+    public void Raw(string context, LogLevel logLevel, string message)
     {
-        DoRaw(context, logLevel, message, caller, filePath, lineNumber, messageExpression);
+        DoRaw(context, logLevel, message);
     }
 
     [Conditional("COSMOSDEBUG")]
-    private void DoRaw(string context, LogLevel logLevel, string message, string? caller, string? filePath, int? lineNumber,
-        string? messageExpression)
+    private void DoRaw(string context, LogLevel logLevel, string messagen)
     {
         // var logger = new Cosmos.Debug.Kernel.Debugger("logger", context);
 
