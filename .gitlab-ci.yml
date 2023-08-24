@@ -26,6 +26,7 @@ docker-setup:
 pages:
   stage: deploy
   script:
+    - make build
     - dotnet tool update -g docfx
     - ~/.dotnet/tools/docfx build ./docfx/docfx.json -o public
   artifacts:
