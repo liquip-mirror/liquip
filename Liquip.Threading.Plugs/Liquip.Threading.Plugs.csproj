@@ -5,9 +5,7 @@
         <ProjectReference Include="..\Liquip.XSharp\Liquip.XSharp.csproj" />
     </ItemGroup>
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <ItemGroup>

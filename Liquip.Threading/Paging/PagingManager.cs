@@ -2,9 +2,10 @@ using IL2CPU.API.Attribs;
 using Liquip.Memory;
 using Liquip.Threading.Paging.Struct;
 using Liquip.XSharp;
-using Liquip.XSharp.Fluent;
+using Liquip.XSharp.Fluent;using XSharp;
 using XSharp.Assembler;
 using XSharp.Assembler.x86;
+using static XSharp.XSRegisters;
 
 namespace Liquip.Threading.Paging;
 
@@ -18,7 +19,7 @@ public class PagingManager
 
     public static readonly ProcessStatic<PagingDirectory> Current = new ProcessStatic<PagingDirectory>();
 
-    public static void EnablePaging() => throw new ImplementedInPlugException();
+    public static void EnablePaging(uint pageDirectory) => throw new ImplementedInPlugException();
 
 
 }
@@ -27,18 +28,13 @@ public class EnablePagingAsm : AssemblerMethod
 {
     public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
     {
-        FluentXSharp.NewX86();
-        // mov %esp, %ebp
-        // mov 8(%esp), %eax
-        // mov %eax, %cr3
-        // mov %ebp, %esp
-        // pop %ebp
-        // mov %esp, %ebp
-        // mov %cr0, %eax
-        // or $0x80000000, %eax
-        // mov %eax, %cr0
-        // mov %ebp, %esp
-        // pop %ebp
+        var args = ArgumentBuilder.New();
+        args.Add<uint>("pageDirectory");
+        FluentXSharp.NewX86()
+            .Set(CR3, args.GetArg("pageDirectory"))
+            .Set(EAX, CR0)
+            .Or(EAX, 0x80000000)
+            .Set(CR0, EAX);
     }
 }
 

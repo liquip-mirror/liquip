@@ -1,3 +1,4 @@
+using System;
 using Cosmos.Core.Memory;
 using IL2CPU.API.Attribs;
 

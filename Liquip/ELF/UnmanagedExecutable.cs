@@ -126,7 +126,7 @@ public unsafe class UnmanagedExecutable
                     //nop
                     break;
                 default:
-                    Console.WriteLine($"Error RelocationType({(int)rel.Type}) not implmented");
+                    Console.WriteLine($"Error RelocationType({(int)rel.Type}) not implemented");
                     break;
             }
         }

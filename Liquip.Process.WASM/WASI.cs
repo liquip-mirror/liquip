@@ -1,3 +1,4 @@
+using System;
 using Liquip.WASM;
 using Liquip.WASM.Interfaces;
 

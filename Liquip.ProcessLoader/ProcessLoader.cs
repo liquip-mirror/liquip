@@ -1,4 +1,5 @@
-﻿using Liquip.Common;
+﻿using System.IO;
+using Liquip.Common;
 using Liquip.Threading;
 using Liquip.Process.DotNetParser;
 
@@ -26,8 +27,11 @@ public static class ProcessLoader
                 switch (file.ReadByte())
                 {
                     case 0x00:
-                        if (file.ReadByte() != 0x61 || file.ReadByte() != 0x73 ||
-                            file.ReadByte() != 0x6D)
+                        if (
+                            file.ReadByte() != 0x61 ||
+                            file.ReadByte() != 0x73 ||
+                            file.ReadByte() != 0x6D
+                        )
                         {
                         }
 

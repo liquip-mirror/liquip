@@ -40,23 +40,54 @@ public readonly struct Address
     }
 #endif
 
+    /// <summary>
+    /// cast uint ot address
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
     public static explicit operator Address(uint value)
     {
         return new Address(value);
     }
 
+    /// <summary>
+    /// cast a Address to a uint
+    /// </summary>
+    /// <param name="me"></param>
+    /// <returns></returns>
     public static implicit operator uint(Address me)
     {
         return me._value;
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
     public static Address operator +(Address a, Address b)
     {
         return new Address(a._value + b._value);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
     public static Address operator -(Address a, Address b)
     {
         return new Address(a._value - b._value);
+    }
+
+    /// <summary>
+    /// Address
+    /// </summary>
+    /// <returns></returns>
+    public override int GetHashCode()
+    {
+        return (int)_value;
     }
 }

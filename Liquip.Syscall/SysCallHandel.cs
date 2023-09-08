@@ -1,3 +1,5 @@
+using System;
+
 namespace Liquip.Syscall;
 
 public class SysCallHandelAttribute : Attribute

@@ -1,4 +1,6 @@
-﻿using Liquip.Common;
+﻿using System;
+using System.IO;
+using Liquip.Common;
 using Liquip.WASM.Interfaces;
 using Liquip.WASM.VM;
 

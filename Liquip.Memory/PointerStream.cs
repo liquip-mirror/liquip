@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+
 namespace Liquip.Memory;
 
 public class PointerStream : Stream

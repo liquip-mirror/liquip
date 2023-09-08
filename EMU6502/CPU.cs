@@ -261,9 +261,9 @@ public class CPU
     /// <param name="value"></param>
     public void PushWordToStack(ushort value)
     {
+        SP--;
+        SP--;
         AddressSpace.WriteWord(this, SpToAddress(), value);
-        SP--;
-        SP--;
     }
 
     /// <summary>
@@ -272,8 +272,8 @@ public class CPU
     /// <param name="value"></param>
     public void PushByteToStack(byte value)
     {
-        AddressSpace.WriteByte(this, SpToAddress(), value);
         SP--;
+        AddressSpace.WriteByte(this, SpToAddress(), value);
     }
 
     /// <summary>

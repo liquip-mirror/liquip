@@ -4,7 +4,18 @@
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
   </PropertyGroup>
+
+<!--  <PropertyGroup>-->
+<!--  -->
+<!--    <PackageReference Include="GitBuildInfo.SourceGenerator" IsImplicitlyDefined="true" Version="*-*">-->
+<!--      <PrivateAssets>all</PrivateAssets>-->
+<!--    </PackageReference>-->
+
+<!--  </PropertyGroup>-->
 
 </Project>

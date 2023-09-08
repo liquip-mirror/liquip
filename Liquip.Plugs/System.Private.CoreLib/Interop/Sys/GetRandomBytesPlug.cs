@@ -1,3 +1,4 @@
+using System;
 using IL2CPU.API.Attribs;
 
 namespace Liquip.Plugs.System.Private.CoreLib.Interop.Sys;

@@ -1,5 +1,6 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Zarlo.Cosmos.Logger.Interfaces;
 using Zarlo.Cosmos.Logger.Sinks;

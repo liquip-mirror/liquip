@@ -1,3 +1,5 @@
+using System;
+
 namespace Zarlo.Cosmos.Logger.Interfaces;
 
 public interface ISink : IDisposable

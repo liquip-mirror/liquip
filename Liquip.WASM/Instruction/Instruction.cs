@@ -7,7 +7,7 @@ namespace Liquip.WASM.Instruction;
 
 public class Instruction
 {
-    public static bool Optimizer = true; // The optimizer rewrites instructions to a more optimal form
+    public static bool Optimizer = false; // The optimizer rewrites instructions to a more optimal form
     public int index;
     public Instruction Next;
     public uint offset;
@@ -16,6 +16,12 @@ public class Instruction
     public int Pos;
     public byte type;
 
+    /// <summary>
+    /// Base Instruction
+    /// </summary>
+    /// <param name="parser"></param>
+    /// <param name="implemented"></param>
+    /// <exception cref="Exception"></exception>
     public Instruction(Parser parser, bool implemented = false)
     {
         if (!implemented)
@@ -67,12 +73,12 @@ public class Instruction
                     controlFlowStack.Push(current);
                     break;
                 case 0x05: // else
-                    if (controlFlowStack.Count() == 0)
+                {
+                    if (controlFlowStack.Count == 0)
                     {
                         throw new Exception("Else with no matching if.");
                     }
 
-                {
                     current = new Else(parser);
                     var match = controlFlowStack.Pop();
                     match.End(current); // notify of else
@@ -80,7 +86,7 @@ public class Instruction
                     break;
                 }
                 case 0x0B: // end
-                    if (controlFlowStack.Count() == 0)
+                    if (controlFlowStack.Count == 0)
                     {
                         current = new End(parser);
                         done = true;
@@ -1214,8 +1220,6 @@ public class Instruction
 
                     if (count > 1)
                     {
-//                        Console.WriteLine(count);
-                        //                      Console.ReadKey();
 
                         var n = program[o];
                         n.opCode = 0xFF000000;
@@ -1270,365 +1274,335 @@ public class Instruction
         return program.ToArray();
     }
 
-    public static string Translate(uint opCode)
-    {
-        switch (opCode)
+    /// <summary>
+    /// gets the sting os the opcode
+    /// </summary>
+    /// <param name="opCode"></param>
+    /// <returns></returns>
+    public static string Translate(uint opCode) =>
+        opCode switch
         {
-            case 0x00: return "unreachable";
-            case 0x01: return "nop";
-            case 0x02: return "block";
-            case 0x03: return "loop";
-            case 0x04: return "if";
-            case 0x05: return "else";
-
-            case 0x0B: return "end";
-            case 0x0C: return "br";
-            case 0x0D: return "br_if";
-            case 0x0E: return "br_table";
-            case 0x0F: return "return";
-            case 0x10: return "call";
-            case 0x11: return "call_indirect";
-
-            case 0x1A: return "drop";
-            case 0x1B: return "select";
-
-            case 0x20: return "local.get";
-            case 0x21: return "local.set";
-            case 0x22: return "local.tee";
-            case 0x23: return "global.get";
-            case 0x24: return "global.set";
-
-            case 0x28: return "i32.load";
-            case 0x29: return "i64.load";
-            case 0x2A: return "f32.load";
-            case 0x2B: return "f64.load";
-            case 0x2C: return "i32.load8_s";
-            case 0x2D: return "i32.load8_u";
-            case 0x2E: return "i32.load16_s";
-            case 0x2F: return "i32.load16_u";
-            case 0x30: return "i64.load8_s";
-            case 0x31: return "i64.load8_u";
-            case 0x32: return "i64.load16_s";
-            case 0x33: return "i64.load16_u";
-            case 0x34: return "i64.load32_s";
-            case 0x35: return "i64.load32_u";
-            case 0x36: return "i32.store";
-            case 0x37: return "i64.store";
-            case 0x38: return "f32.store";
-            case 0x39: return "f64.store";
-            case 0x3A: return "i32.store8";
-            case 0x3B: return "i32.store16";
-            case 0x3C: return "i64.store8";
-            case 0x3D: return "i64.store16";
-            case 0x3E: return "i64.store32";
-            case 0x3F: return "memory.size";
-            case 0x40: return "memory.grow";
-            case 0x41: return "i32.const";
-            case 0x42: return "i64.const";
-            case 0x43: return "f32.const";
-            case 0x44: return "f64.const";
-            case 0x45: return "i32.eqz";
-            case 0x46: return "i32.eq";
-            case 0x47: return "i32.ne";
-            case 0x48: return "i32.lt_s";
-            case 0x49: return "i32.lt_u";
-            case 0x4A: return "i32.gt_s";
-            case 0x4B: return "i32.gt_u";
-            case 0x4C: return "i32.le_s";
-            case 0x4D: return "i32.le_u";
-            case 0x4E: return "i32.ge_s";
-            case 0x4F: return "i32.ge_u";
-            case 0x50: return "i64.eqz";
-            case 0x51: return "i64.eq";
-            case 0x52: return "i64.ne";
-            case 0x53: return "i64.lt_s";
-            case 0x54: return "i64.lt_u";
-            case 0x55: return "i64.gt_s";
-            case 0x56: return "i64.gt_u";
-            case 0x57: return "i64.le_s";
-            case 0x58: return "i64.le_u";
-            case 0x59: return "i64.ge_s";
-            case 0x5A: return "i64.ge_u";
-            case 0x5B: return "f32.eq";
-            case 0x5C: return "f32.ne";
-            case 0x5D: return "f32.lt";
-            case 0x5E: return "f32.gt";
-            case 0x5F: return "f32.le";
-            case 0x60: return "f32.ge";
-            case 0x61: return "f64.eq";
-            case 0x62: return "f64.ne";
-            case 0x63: return "f64.lt";
-            case 0x64: return "f64.gt";
-            case 0x65: return "f64.le";
-            case 0x66: return "f64.ge";
-            case 0x67: return "i32.clz";
-            case 0x68: return "i32.ctz";
-            case 0x69: return "i32.popcnt";
-            case 0x6A: return "i32.add";
-            case 0x6B: return "i32.sub";
-            case 0x6C: return "i32.mul";
-            case 0x6D: return "i32.div_s";
-            case 0x6E: return "i32.div_u";
-            case 0x6F: return "i32.rem_s";
-            case 0x70: return "i32.rem_u";
-            case 0x71: return "i32.and";
-            case 0x72: return "i32.or";
-            case 0x73: return "i32.xor";
-            case 0x74: return "i32.shl";
-            case 0x75: return "i32.shr_s";
-            case 0x76: return "i32.shr_u";
-            case 0x77: return "i32.rotl";
-            case 0x78: return "i32.rotr";
-            case 0x79: return "i64.clz";
-            case 0x7A: return "i64.ctz";
-            case 0x7B: return "i64.popcnt";
-            case 0x7C: return "i64.add";
-            case 0x7D: return "i64.sub";
-            case 0x7E: return "i64.mul";
-            case 0x7F: return "i64.div_s";
-            case 0x80: return "i64.div_u";
-            case 0x81: return "i64.rem_s";
-            case 0x82: return "i64.rem_u";
-            case 0x83: return "i64.and";
-            case 0x84: return "i64.or";
-            case 0x85: return "i64.xor";
-            case 0x86: return "i64.shl";
-            case 0x87: return "i64.shr_s";
-            case 0x88: return "i64.shr_u";
-            case 0x89: return "i64.rotl";
-            case 0x8A: return "i64.rotr";
-            case 0x8B: return "f32.abs";
-            case 0x8C: return "f32.neg";
-            case 0x8D: return "f32.ceil";
-            case 0x8E: return "f32.floor";
-            case 0x8F: return "f32.trunc";
-            case 0x90: return "f32.nearest";
-            case 0x91: return "f32.sqrt";
-            case 0x92: return "f32.add";
-            case 0x93: return "f32.sub";
-            case 0x94: return "f32.mul";
-            case 0x95: return "f32.div";
-            case 0x96: return "f32.min";
-            case 0x97: return "f32.max";
-            case 0x98: return "f32.copysign";
-            case 0x99: return "f64.abs";
-            case 0x9A: return "f64.neg";
-            case 0x9B: return "f64.ceil";
-            case 0x9C: return "f64.floor";
-            case 0x9D: return "f64.trunc";
-            case 0x9E: return "f64.nearest";
-            case 0x9F: return "f64.sqrt";
-            case 0xA0: return "f64.add";
-            case 0xA1: return "f64.sub";
-            case 0xA2: return "f64.mul";
-            case 0xA3: return "f64.div";
-            case 0xA4: return "f64.min";
-            case 0xA5: return "f64.max";
-            case 0xA6: return "f64.copysign";
-            case 0xA7: return "i32.wrap_i64";
-            case 0xA8: return "i32.trunc_f32_s";
-            case 0xA9: return "i32.trunc_f32_u";
-            case 0xAA: return "i32.trunc_f64_s";
-            case 0xAB: return "i32.trunc_f64_u";
-            case 0xAC: return "i64.extend_i32_s";
-            case 0xAD: return "i64.extend_i32_u";
-            case 0xAE: return "i64.trunc_f32_s";
-            case 0xAF: return "i64.trunc_f32_u";
-            case 0xB0: return "i64.trunc_f64_s";
-            case 0xB1: return "i64.trunc_f64_u";
-            case 0xB2: return "f32.convert_i32_s";
-            case 0xB3: return "f32.convert_i32_u";
-            case 0xB4: return "f32.convert_i64_s";
-            case 0xB5: return "f32.convert_i64_u";
-            case 0xB6: return "f32.demote_f64";
-            case 0xB7: return "f64.convert_i32_s";
-            case 0xB8: return "f64.convert_i32_u";
-            case 0xB9: return "f64.convert_i64_s";
-            case 0xBA: return "f64.convert_i64.u";
-            case 0xBB: return "f64.promote_f32";
-            case 0xBC: return "i32.reinterpret_f32";
-            case 0xBD: return "i64.reinterpret_i32";
-            case 0xBE: return "f32.reinterpret_i32";
-            case 0xBF: return "f64.reinterpret_i64";
-
-            case 0x200D: return "local.br_if";
-
-            case 0x2021: return "local.copy";
-
-            case 0x2028: return "local.i32.load";
-            case 0x2029: return "local.i64.load";
-            case 0x202A: return "local.f32.load";
-            case 0x202B: return "local.f64.load";
-
-            case 0x202C: return "local.i32.load8_s";
-            case 0x202D: return "local.i32.load8_u";
-            case 0x202E: return "local.i32.load16_s";
-            case 0x202F: return "local.i32.load16_u";
-
-            case 0x2036: return "local.i32.store";
-            case 0x2037: return "local.i64.store";
-            case 0x2038: return "local.f32.store";
-            case 0x2039: return "local.f64.store";
-
-            case 0x203A: return "local.i32.store8";
-            case 0x203B: return "local.i32.store16";
-
-            case 0x2045: return "local.132.eqz";
-            case 0x2046: return "local.i32.eq";
-            case 0x2047: return "local.i32.ne";
-            case 0x2048: return "local.i32.lt_s";
-            case 0x2049: return "local.i32.lt_u";
-            case 0x204A: return "local.i32.gt_s";
-            case 0x204B: return "local.i32.gt_u";
-
-            case 0x206A: return "local.i32.add";
-            case 0x206B: return "local.i32.sub";
-            case 0x206C: return "local.i32.mul";
-            case 0x206D: return "local.i32.div_s";
-            case 0x206E: return "local.i32.div_u";
-            case 0x206F: return "local.i32.rem_s";
-            case 0x2070: return "local.i32.rem_u";
-            case 0x2071: return "local.i32.and";
-            case 0x2072: return "local.i32.or";
-            case 0x2073: return "local.i32.xor";
-            case 0x2074: return "local.i32.shl";
-            case 0x2075: return "local.i32.shr_s";
-            case 0x2076: return "local.i32.shr_u";
-
-            case 0x2099: return "local.f64.abs";
-            case 0x209A: return "local.f64.neg";
-            case 0x209B: return "local.f64.ceil";
-            case 0x209C: return "local.f64.floor";
-            case 0x209D: return "local.f64.trunc";
-            case 0x209E: return "local.f64.nearest";
-            case 0x209F: return "local.f64.sqrt";
-            case 0x20A0: return "local.f64.add";
-            case 0x20A1: return "local.f64.sub";
-            case 0x20A2: return "local.f64.mul";
-            case 0x20A3: return "local.f64.div";
-            case 0x20A4: return "local.f64.min";
-            case 0x20A5: return "local.f64.max";
-            case 0x20A6: return "local.f64.copysign";
-
-            case 0x20B7: return "local.f64.convert_i32_s";
-            case 0x20B8: return "local.f64.convert_i32_u";
-
-            case 0xB721: return "f64.convert_i32_s.local";
-            case 0xB821: return "f64.convert_i32_u.local";
-
-            case 0x4121: return "i32.const.local";
-
-            case 0x4221: return "i64.const.local";
-
-            case 0x202036: return "local.local.i32.store";
-            case 0x202037: return "local.local.i64.store";
-            case 0x202038: return "local.local.f32.store";
-            case 0x202039: return "local.local.f64.store";
-
-            case 0x20203A: return "local.local.i32.store8";
-            case 0x20203B: return "local.local.i32.store16";
-
-            case 0x202046: return "local.local.i32.eq";
-            case 0x202047: return "local.local.i32.ne";
-            case 0x202048: return "local.local.i32.lt_s";
-            case 0x202049: return "local.local.i32.lt_u";
-            case 0x20204A: return "local.local.i32.gt_s";
-            case 0x20204B: return "local.local.i32.gt_u";
-
-            case 0x20206A: return "local.local.i32.add";
-            case 0x20206B: return "local.local.i32.sub";
-            case 0x20206C: return "local.local.i32.mul";
-            case 0x20206D: return "local.local.i32.div_s";
-            case 0x20206E: return "local.local.i32.div_u";
-            case 0x20206F: return "local.local.i32.rem_s";
-            case 0x202070: return "local.local.i32.rem_u";
-            case 0x202071: return "local.local.i32.and";
-            case 0x202072: return "local.local.i32.or";
-            case 0x202073: return "local.local.i32.xor";
-            case 0x202074: return "local.local.i32.shl";
-            case 0x202075: return "local.local.i32.shr_s";
-            case 0x202076: return "local.local.i32.shr_u";
-
-            case 0x202099: return "local.local.f64.abs";
-            case 0x20209A: return "local.local.f64.neg";
-            case 0x20209B: return "local.local.f64.ceil";
-            case 0x20209C: return "local.local.f64.floor";
-            case 0x20209D: return "local.local.f64.trunc";
-            case 0x20209E: return "local.local.f64.nearest";
-            case 0x20209F: return "local.local.f64.sqrt";
-            case 0x2020A0: return "local.local.f64.add";
-            case 0x2020A1: return "local.local.f64.sub";
-            case 0x2020A2: return "local.local.f64.mul";
-            case 0x2020A3: return "local.local.f64.div";
-            case 0x2020A4: return "local.local.f64.min";
-            case 0x2020A5: return "local.local.f64.max";
-            case 0x2020A6: return "local.local.f64.copysign";
-
-            case 0x202821: return "local.i32.load.local";
-            case 0x202921: return "local.i64.load.local";
-
-            case 0x202B21: return "local.f64.load.local";
-
-            case 0x202C21: return "local.i32.load8_s.local";
-            case 0x202D21: return "local.i32.load8_u.local";
-            case 0x202E21: return "local.i32.load16_s.local";
-            case 0x202F21: return "local.i32.load16_u.local";
-
-            case 0x20A021: return "local.f64.add";
-            case 0x20A121: return "local.f64.sub";
-            case 0x20A221: return "local.f64.mul";
-            case 0x20A321: return "local.f64.div";
-            case 0x20A421: return "local.f64.min";
-            case 0x20A521: return "local.f64.max";
-
-            case 0x20B721: return "local.f64.convert_i32_s.local";
-            case 0x20B821: return "local.f64.convert_i32_u.local";
-
-            case 0x20204621: return "local.local.i32.eq.local";
-            case 0x20204721: return "local.local.i32.ne.local";
-            case 0x20204821: return "local.local.i32.lt_s.local";
-            case 0x20204921: return "local.local.i32.lt_u.local";
-            case 0x20204A21: return "local.local.i32.gt_s.local";
-            case 0x20204B21: return "local.local.i32.gt_u.local";
-
-            case 0x20206A21: return "local.local.i32.add.local";
-            case 0x20206B21: return "local.local.i32.sub.local";
-            case 0x20206C21: return "local.local.i32.mul.local";
-            case 0x20206D21: return "local.local.i32.div_s.local";
-            case 0x20206E21: return "local.local.i32.div_u.local";
-            case 0x20206F21: return "local.local.i32.rem_s.local";
-            case 0x20207021: return "local.local.i32.rem_u.local";
-            case 0x20207121: return "local.local.i32.and.local";
-            case 0x20207221: return "local.local.i32.or.local";
-            case 0x20207321: return "local.local.i32.xor.local";
-            case 0x20207421: return "local.local.i32.shl.local";
-            case 0x20207521: return "local.local.i32.shr_s.local";
-            case 0x20207621: return "local.local.i32.shr_u.local";
-            case 0x20207721: return "local.local.i32.rotl.local";
-            case 0x20207821: return "local.local.i32.rotr.local";
-
-            case 0x20207C21: return "local.local.i64.add.local";
-            case 0x20207D21: return "local.local.i64.sub.local";
-            case 0x20207E21: return "local.local.i64.mul.local";
-            case 0x20207F21: return "local.local.i64.div_s.local";
-            case 0x20208021: return "local.local.i64.div_u.local";
-            case 0x20208121: return "local.local.i64.rem_s.local";
-            case 0x20208221: return "local.local.i64.rem_u.local";
-            case 0x20208321: return "local.local.i64.and.local";
-            case 0x20208421: return "local.local.i64.or.local";
-            case 0x20208521: return "local.local.i64.xor.local";
-            case 0x20208621: return "local.local.i64.shl.local";
-            case 0x20208721: return "local.local.i64.shr_s.local";
-            case 0x20208821: return "local.local.i64.shr_u.local";
-            case 0x20208921: return "local.local.i64.rotl.local";
-            case 0x20208A21: return "local.local.i64.rotr.local";
-
-            case 0xFE000000: return "loop of i32.const.local";
-            case 0xFF000000: return "loop of local.i32.load.local";
-
-            case 0xFF: return "Loop Overhead:";
-
-            default: return "unknown opcode: " + opCode.ToString("X");
-        }
-    }
+            0x00 => "unreachable",
+            0x01 => "nop",
+            0x02 => "block",
+            0x03 => "loop",
+            0x04 => "if",
+            0x05 => "else",
+            0x0B => "end",
+            0x0C => "br",
+            0x0D => "br_if",
+            0x0E => "br_table",
+            0x0F => "return",
+            0x10 => "call",
+            0x11 => "call_indirect",
+            0x1A => "drop",
+            0x1B => "select",
+            0x20 => "local.get",
+            0x21 => "local.set",
+            0x22 => "local.tee",
+            0x23 => "global.get",
+            0x24 => "global.set",
+            0x28 => "i32.load",
+            0x29 => "i64.load",
+            0x2A => "f32.load",
+            0x2B => "f64.load",
+            0x2C => "i32.load8_s",
+            0x2D => "i32.load8_u",
+            0x2E => "i32.load16_s",
+            0x2F => "i32.load16_u",
+            0x30 => "i64.load8_s",
+            0x31 => "i64.load8_u",
+            0x32 => "i64.load16_s",
+            0x33 => "i64.load16_u",
+            0x34 => "i64.load32_s",
+            0x35 => "i64.load32_u",
+            0x36 => "i32.store",
+            0x37 => "i64.store",
+            0x38 => "f32.store",
+            0x39 => "f64.store",
+            0x3A => "i32.store8",
+            0x3B => "i32.store16",
+            0x3C => "i64.store8",
+            0x3D => "i64.store16",
+            0x3E => "i64.store32",
+            0x3F => "memory.size",
+            0x40 => "memory.grow",
+            0x41 => "i32.const",
+            0x42 => "i64.const",
+            0x43 => "f32.const",
+            0x44 => "f64.const",
+            0x45 => "i32.eqz",
+            0x46 => "i32.eq",
+            0x47 => "i32.ne",
+            0x48 => "i32.lt_s",
+            0x49 => "i32.lt_u",
+            0x4A => "i32.gt_s",
+            0x4B => "i32.gt_u",
+            0x4C => "i32.le_s",
+            0x4D => "i32.le_u",
+            0x4E => "i32.ge_s",
+            0x4F => "i32.ge_u",
+            0x50 => "i64.eqz",
+            0x51 => "i64.eq",
+            0x52 => "i64.ne",
+            0x53 => "i64.lt_s",
+            0x54 => "i64.lt_u",
+            0x55 => "i64.gt_s",
+            0x56 => "i64.gt_u",
+            0x57 => "i64.le_s",
+            0x58 => "i64.le_u",
+            0x59 => "i64.ge_s",
+            0x5A => "i64.ge_u",
+            0x5B => "f32.eq",
+            0x5C => "f32.ne",
+            0x5D => "f32.lt",
+            0x5E => "f32.gt",
+            0x5F => "f32.le",
+            0x60 => "f32.ge",
+            0x61 => "f64.eq",
+            0x62 => "f64.ne",
+            0x63 => "f64.lt",
+            0x64 => "f64.gt",
+            0x65 => "f64.le",
+            0x66 => "f64.ge",
+            0x67 => "i32.clz",
+            0x68 => "i32.ctz",
+            0x69 => "i32.popcnt",
+            0x6A => "i32.add",
+            0x6B => "i32.sub",
+            0x6C => "i32.mul",
+            0x6D => "i32.div_s",
+            0x6E => "i32.div_u",
+            0x6F => "i32.rem_s",
+            0x70 => "i32.rem_u",
+            0x71 => "i32.and",
+            0x72 => "i32.or",
+            0x73 => "i32.xor",
+            0x74 => "i32.shl",
+            0x75 => "i32.shr_s",
+            0x76 => "i32.shr_u",
+            0x77 => "i32.rotl",
+            0x78 => "i32.rotr",
+            0x79 => "i64.clz",
+            0x7A => "i64.ctz",
+            0x7B => "i64.popcnt",
+            0x7C => "i64.add",
+            0x7D => "i64.sub",
+            0x7E => "i64.mul",
+            0x7F => "i64.div_s",
+            0x80 => "i64.div_u",
+            0x81 => "i64.rem_s",
+            0x82 => "i64.rem_u",
+            0x83 => "i64.and",
+            0x84 => "i64.or",
+            0x85 => "i64.xor",
+            0x86 => "i64.shl",
+            0x87 => "i64.shr_s",
+            0x88 => "i64.shr_u",
+            0x89 => "i64.rotl",
+            0x8A => "i64.rotr",
+            0x8B => "f32.abs",
+            0x8C => "f32.neg",
+            0x8D => "f32.ceil",
+            0x8E => "f32.floor",
+            0x8F => "f32.trunc",
+            0x90 => "f32.nearest",
+            0x91 => "f32.sqrt",
+            0x92 => "f32.add",
+            0x93 => "f32.sub",
+            0x94 => "f32.mul",
+            0x95 => "f32.div",
+            0x96 => "f32.min",
+            0x97 => "f32.max",
+            0x98 => "f32.copysign",
+            0x99 => "f64.abs",
+            0x9A => "f64.neg",
+            0x9B => "f64.ceil",
+            0x9C => "f64.floor",
+            0x9D => "f64.trunc",
+            0x9E => "f64.nearest",
+            0x9F => "f64.sqrt",
+            0xA0 => "f64.add",
+            0xA1 => "f64.sub",
+            0xA2 => "f64.mul",
+            0xA3 => "f64.div",
+            0xA4 => "f64.min",
+            0xA5 => "f64.max",
+            0xA6 => "f64.copysign",
+            0xA7 => "i32.wrap_i64",
+            0xA8 => "i32.trunc_f32_s",
+            0xA9 => "i32.trunc_f32_u",
+            0xAA => "i32.trunc_f64_s",
+            0xAB => "i32.trunc_f64_u",
+            0xAC => "i64.extend_i32_s",
+            0xAD => "i64.extend_i32_u",
+            0xAE => "i64.trunc_f32_s",
+            0xAF => "i64.trunc_f32_u",
+            0xB0 => "i64.trunc_f64_s",
+            0xB1 => "i64.trunc_f64_u",
+            0xB2 => "f32.convert_i32_s",
+            0xB3 => "f32.convert_i32_u",
+            0xB4 => "f32.convert_i64_s",
+            0xB5 => "f32.convert_i64_u",
+            0xB6 => "f32.demote_f64",
+            0xB7 => "f64.convert_i32_s",
+            0xB8 => "f64.convert_i32_u",
+            0xB9 => "f64.convert_i64_s",
+            0xBA => "f64.convert_i64.u",
+            0xBB => "f64.promote_f32",
+            0xBC => "i32.reinterpret_f32",
+            0xBD => "i64.reinterpret_i32",
+            0xBE => "f32.reinterpret_i32",
+            0xBF => "f64.reinterpret_i64",
+            0x200D => "local.br_if",
+            0x2021 => "local.copy",
+            0x2028 => "local.i32.load",
+            0x2029 => "local.i64.load",
+            0x202A => "local.f32.load",
+            0x202B => "local.f64.load",
+            0x202C => "local.i32.load8_s",
+            0x202D => "local.i32.load8_u",
+            0x202E => "local.i32.load16_s",
+            0x202F => "local.i32.load16_u",
+            0x2036 => "local.i32.store",
+            0x2037 => "local.i64.store",
+            0x2038 => "local.f32.store",
+            0x2039 => "local.f64.store",
+            0x203A => "local.i32.store8",
+            0x203B => "local.i32.store16",
+            0x2045 => "local.132.eqz",
+            0x2046 => "local.i32.eq",
+            0x2047 => "local.i32.ne",
+            0x2048 => "local.i32.lt_s",
+            0x2049 => "local.i32.lt_u",
+            0x204A => "local.i32.gt_s",
+            0x204B => "local.i32.gt_u",
+            0x206A => "local.i32.add",
+            0x206B => "local.i32.sub",
+            0x206C => "local.i32.mul",
+            0x206D => "local.i32.div_s",
+            0x206E => "local.i32.div_u",
+            0x206F => "local.i32.rem_s",
+            0x2070 => "local.i32.rem_u",
+            0x2071 => "local.i32.and",
+            0x2072 => "local.i32.or",
+            0x2073 => "local.i32.xor",
+            0x2074 => "local.i32.shl",
+            0x2075 => "local.i32.shr_s",
+            0x2076 => "local.i32.shr_u",
+            0x2099 => "local.f64.abs",
+            0x209A => "local.f64.neg",
+            0x209B => "local.f64.ceil",
+            0x209C => "local.f64.floor",
+            0x209D => "local.f64.trunc",
+            0x209E => "local.f64.nearest",
+            0x209F => "local.f64.sqrt",
+            0x20A0 => "local.f64.add",
+            0x20A1 => "local.f64.sub",
+            0x20A2 => "local.f64.mul",
+            0x20A3 => "local.f64.div",
+            0x20A4 => "local.f64.min",
+            0x20A5 => "local.f64.max",
+            0x20A6 => "local.f64.copysign",
+            0x20B7 => "local.f64.convert_i32_s",
+            0x20B8 => "local.f64.convert_i32_u",
+            0xB721 => "f64.convert_i32_s.local",
+            0xB821 => "f64.convert_i32_u.local",
+            0x4121 => "i32.const.local",
+            0x4221 => "i64.const.local",
+            0x202036 => "local.local.i32.store",
+            0x202037 => "local.local.i64.store",
+            0x202038 => "local.local.f32.store",
+            0x202039 => "local.local.f64.store",
+            0x20203A => "local.local.i32.store8",
+            0x20203B => "local.local.i32.store16",
+            0x202046 => "local.local.i32.eq",
+            0x202047 => "local.local.i32.ne",
+            0x202048 => "local.local.i32.lt_s",
+            0x202049 => "local.local.i32.lt_u",
+            0x20204A => "local.local.i32.gt_s",
+            0x20204B => "local.local.i32.gt_u",
+            0x20206A => "local.local.i32.add",
+            0x20206B => "local.local.i32.sub",
+            0x20206C => "local.local.i32.mul",
+            0x20206D => "local.local.i32.div_s",
+            0x20206E => "local.local.i32.div_u",
+            0x20206F => "local.local.i32.rem_s",
+            0x202070 => "local.local.i32.rem_u",
+            0x202071 => "local.local.i32.and",
+            0x202072 => "local.local.i32.or",
+            0x202073 => "local.local.i32.xor",
+            0x202074 => "local.local.i32.shl",
+            0x202075 => "local.local.i32.shr_s",
+            0x202076 => "local.local.i32.shr_u",
+            0x202099 => "local.local.f64.abs",
+            0x20209A => "local.local.f64.neg",
+            0x20209B => "local.local.f64.ceil",
+            0x20209C => "local.local.f64.floor",
+            0x20209D => "local.local.f64.trunc",
+            0x20209E => "local.local.f64.nearest",
+            0x20209F => "local.local.f64.sqrt",
+            0x2020A0 => "local.local.f64.add",
+            0x2020A1 => "local.local.f64.sub",
+            0x2020A2 => "local.local.f64.mul",
+            0x2020A3 => "local.local.f64.div",
+            0x2020A4 => "local.local.f64.min",
+            0x2020A5 => "local.local.f64.max",
+            0x2020A6 => "local.local.f64.copysign",
+            0x202821 => "local.i32.load.local",
+            0x202921 => "local.i64.load.local",
+            0x202B21 => "local.f64.load.local",
+            0x202C21 => "local.i32.load8_s.local",
+            0x202D21 => "local.i32.load8_u.local",
+            0x202E21 => "local.i32.load16_s.local",
+            0x202F21 => "local.i32.load16_u.local",
+            0x20A021 => "local.f64.add",
+            0x20A121 => "local.f64.sub",
+            0x20A221 => "local.f64.mul",
+            0x20A321 => "local.f64.div",
+            0x20A421 => "local.f64.min",
+            0x20A521 => "local.f64.max",
+            0x20B721 => "local.f64.convert_i32_s.local",
+            0x20B821 => "local.f64.convert_i32_u.local",
+            0x20204621 => "local.local.i32.eq.local",
+            0x20204721 => "local.local.i32.ne.local",
+            0x20204821 => "local.local.i32.lt_s.local",
+            0x20204921 => "local.local.i32.lt_u.local",
+            0x20204A21 => "local.local.i32.gt_s.local",
+            0x20204B21 => "local.local.i32.gt_u.local",
+            0x20206A21 => "local.local.i32.add.local",
+            0x20206B21 => "local.local.i32.sub.local",
+            0x20206C21 => "local.local.i32.mul.local",
+            0x20206D21 => "local.local.i32.div_s.local",
+            0x20206E21 => "local.local.i32.div_u.local",
+            0x20206F21 => "local.local.i32.rem_s.local",
+            0x20207021 => "local.local.i32.rem_u.local",
+            0x20207121 => "local.local.i32.and.local",
+            0x20207221 => "local.local.i32.or.local",
+            0x20207321 => "local.local.i32.xor.local",
+            0x20207421 => "local.local.i32.shl.local",
+            0x20207521 => "local.local.i32.shr_s.local",
+            0x20207621 => "local.local.i32.shr_u.local",
+            0x20207721 => "local.local.i32.rotl.local",
+            0x20207821 => "local.local.i32.rotr.local",
+            0x20207C21 => "local.local.i64.add.local",
+            0x20207D21 => "local.local.i64.sub.local",
+            0x20207E21 => "local.local.i64.mul.local",
+            0x20207F21 => "local.local.i64.div_s.local",
+            0x20208021 => "local.local.i64.div_u.local",
+            0x20208121 => "local.local.i64.rem_s.local",
+            0x20208221 => "local.local.i64.rem_u.local",
+            0x20208321 => "local.local.i64.and.local",
+            0x20208421 => "local.local.i64.or.local",
+            0x20208521 => "local.local.i64.xor.local",
+            0x20208621 => "local.local.i64.shl.local",
+            0x20208721 => "local.local.i64.shr_s.local",
+            0x20208821 => "local.local.i64.shr_u.local",
+            0x20208921 => "local.local.i64.rotl.local",
+            0x20208A21 => "local.local.i64.rotr.local",
+            0xFE000000 => "loop of i32.const.local",
+            0xFF000000 => "loop of local.i32.load.local",
+            0xFF => "Loop Overhead:",
+            _ => "unknown opcode: " + opCode.ToString("X")
+        };
 }

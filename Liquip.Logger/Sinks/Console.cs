@@ -1,3 +1,4 @@
+using System;
 using Zarlo.Cosmos.Logger.Interfaces;
 
 // ReSharper disable InvocationIsSkipped

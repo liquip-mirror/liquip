@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Cosmos.Core;
@@ -258,4 +259,6 @@ public struct Pointer
             return new Span<byte>(Ptr, (int)Size);
         }
     }
+
+
 }

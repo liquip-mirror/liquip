@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Cosmos.HAL.BlockDevice;
 
 namespace Liquip.FileSystems;

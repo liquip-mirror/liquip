@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using XSharp.Assembler;
 
 namespace Liquip.XSharp.Fluent;

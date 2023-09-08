@@ -1,3 +1,5 @@
+using System;
+
 namespace Liquip.Patcher;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]

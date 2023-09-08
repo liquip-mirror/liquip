@@ -137,6 +137,7 @@ public static unsafe class ProcessContextManager
         context.Type = type;
         context.Id = NextCid++;
         context.Name = name;
+
         switch (type)
         {
             case ProcessContextType.THREAD:
@@ -156,6 +157,7 @@ public static unsafe class ProcessContextManager
         context.ESP = (uint)SetupStack((uint*)(context.Stacktop + 4000));
         context.State = ThreadState.PAUSED;
         context.Entry = entry;
+
         if (type == ProcessContextType.PROCESS)
         {
             context.ParentId = 0;
@@ -164,24 +166,31 @@ public static unsafe class ProcessContextManager
         {
             context.ParentId = CurrentContext.Id;
         }
+
         ContextListMutex.Lock();
+
         for (var node = ContextListHead; node != null; node = node.Next)
         {
             if (node.Next == null)
             {
+                _logger.Info("last context " + node.Id);
                 node.Next = context;
             }
         }
+        _logger.Info("total " + Count());
         GCImplementation.IncRootCount((ushort*)GCImplementation.GetPointer(context));
+
         ContextListMutex.Unlock();
 
         if (ContextListHead == null)
         {
+            _logger.Info("ContextListHead == null");
             ContextListHead = context;
         }
 
         if (CurrentContext == null)
         {
+            _logger.Info("CurrentContext == null");
             CurrentContext = ContextListHead;
         }
 
@@ -237,6 +246,7 @@ public static unsafe class ProcessContextManager
         {
             if (node.Next == null)
             {
+                _logger.Info("last context " + node.Id);
                 node.Next = context;
             }
         }
@@ -245,11 +255,13 @@ public static unsafe class ProcessContextManager
 
         if (ContextListHead == null)
         {
+            _logger.Info("ContextListHead == null");
             ContextListHead = context;
         }
 
         if (CurrentContext == null)
         {
+            _logger.Info("CurrentContext == null");
             CurrentContext = ContextListHead;
         }
         return context.Id;

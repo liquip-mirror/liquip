@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Liquip.Common;
 
 public static class CollectibleManager

@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace Liquip.XSharp.Fluent;
 
 public class FluentXSharp

@@ -60,6 +60,6 @@ public class Utils
 
     public static byte SIB(ScaleFactor scale, x86Register index, x86Register _base)
     {
-        return (byte)((byte)scale | index.Code(2) | index.Code(5));
+        return (byte)((byte)scale | index.Code(2) | _base.Code(5));
     }
 }

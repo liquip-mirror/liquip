@@ -1,3 +1,5 @@
+using System;
+
 namespace Liquip.Common;
 
 public interface ICollectible: IDisposable

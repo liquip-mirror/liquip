@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Liquip.Limine.Struct;
 
 namespace Liquip.Limine;

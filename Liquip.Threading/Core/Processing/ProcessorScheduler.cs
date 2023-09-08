@@ -124,6 +124,7 @@ public static unsafe class ProcessorScheduler
         //load stack
         ZINTs.mStackContext = ProcessContextManager.CurrentContext.ESP;
 
+        _logger.Debug("PS-ID: " + nextCtx.Id + ", PS-T:" + interruptCount);
 
         CPU.EnableInterrupts();
         CCore.Global.PIC.EoiMaster();

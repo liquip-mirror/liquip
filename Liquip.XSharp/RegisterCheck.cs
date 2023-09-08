@@ -1,3 +1,4 @@
+using System.Linq;
 using static XSharp.XSRegisters;
 
 namespace Liquip.XSharp;

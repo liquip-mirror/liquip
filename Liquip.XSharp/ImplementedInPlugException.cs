@@ -1,3 +1,5 @@
+using System;
+
 namespace Liquip.XSharp;
 
 public class ImplementedInPlugException : NotImplementedException
