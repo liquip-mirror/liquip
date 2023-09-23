@@ -12,4 +12,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Liquip.Logger\Liquip.Logger.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="LFS\" />
+    </ItemGroup>
 </Project>

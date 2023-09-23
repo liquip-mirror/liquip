@@ -7,9 +7,25 @@ using static XSharp.XSRegisters;
 
 namespace Liquip.Plugs;
 
+/// <summary>
+///
+/// </summary>
 [Plug(Target = typeof(Invoker))]
 public class InvokerPlug
 {
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="offset"></param>
+    /// <param name="stack"></param>
+    /// <param name="eax"></param>
+    /// <param name="ebx"></param>
+    /// <param name="ecx"></param>
+    /// <param name="edx"></param>
+    /// <param name="esi"></param>
+    /// <param name="edi"></param>
+    /// <param name="esp"></param>
+    /// <param name="ebp"></param>
     [Inline]
     public static unsafe void _CallCode(
         ref uint offset,

@@ -6,9 +6,21 @@ using static XSharp.XSRegisters;
 
 namespace Liquip.Plugs;
 
+/// <summary>
+///
+/// </summary>
 [Plug(Target = typeof(CPUID))]
 public class CPUIDPlug
 {
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="subType"></param>
+    /// <param name="eax"></param>
+    /// <param name="ebx"></param>
+    /// <param name="ecx"></param>
+    /// <param name="edx"></param>
     [Inline]
     public static void Raw(uint type, uint subType, ref int eax, ref int ebx, ref int ecx, ref int edx)
     {

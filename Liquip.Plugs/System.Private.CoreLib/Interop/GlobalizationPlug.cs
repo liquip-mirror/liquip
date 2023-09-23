@@ -2,9 +2,21 @@ using IL2CPU.API.Attribs;
 
 namespace Liquip.Plugs.System.Private.CoreLib.Interop;
 
+/// <summary>
+/// GlobalizationPlug
+/// </summary>
 [Plug("Interop+Globalization, System.Private.CoreLib")]
 public class GlobalizationPlug
 {
+    /// <summary>
+    /// ToAscii
+    /// </summary>
+    /// <param name="flags"></param>
+    /// <param name="src"></param>
+    /// <param name="srcLen"></param>
+    /// <param name="dstBuffer"></param>
+    /// <param name="dstBufferCapacity"></param>
+    /// <returns></returns>
     public static unsafe int ToAscii(uint flags, char* src, int srcLen, char* dstBuffer, int dstBufferCapacity)
     {
         var dstIndex = 0;
@@ -27,6 +39,15 @@ public class GlobalizationPlug
         return dstIndex;
     }
 
+    /// <summary>
+    /// ToUnicode
+    /// </summary>
+    /// <param name="flags"></param>
+    /// <param name="src"></param>
+    /// <param name="srcLen"></param>
+    /// <param name="dstBuffer"></param>
+    /// <param name="dstBufferCapacity"></param>
+    /// <returns></returns>
     public static unsafe int ToUnicode(uint flags, char* src, int srcLen, char* dstBuffer, int dstBufferCapacity)
     {
         var dstIndex = 0;

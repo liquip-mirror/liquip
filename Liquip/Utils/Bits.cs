@@ -3,15 +3,33 @@ using System.Runtime.CompilerServices;
 
 namespace Liquip.Utils;
 
+/// <summary>
+/// bit utils
+/// </summary>
 public static class Bits
 {
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int GetBitRange(int data, int start, int end)
     {
         return (int)GetBitRange((uint)data, start, end);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static uint GetBitRange(uint data, int start, int end)
     {

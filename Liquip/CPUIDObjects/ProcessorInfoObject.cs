@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using Zarlo.Cosmos.Logger;
 
 namespace Liquip.CPUIDObjects;
 
@@ -7,7 +8,8 @@ public class ProcessorInfoObject
 {
     public ProcessorInfoObject()
     {
-        Console.WriteLine("LOADING ProcessorInfoObject");
+        var logger = Log.GetLogger("ProcessorInfoObject");
+        logger.Info("LOADING ProcessorInfoObject");
         var eax = 0;
         var ebx = 0;
         var ecx = 0;
@@ -19,7 +21,7 @@ public class ProcessorInfoObject
         this.ebx = ebx;
         this.ecx = ecx;
         this.edx = edx;
-        Console.WriteLine("eax");
+        logger.Info("eax");
         SteppingID = (byte)CPUID.GetBitRange(eax, 0, 3);
         Model = (byte)CPUID.GetBitRange(eax, 4, 7);
         FamilyID = (byte)CPUID.GetBitRange(eax, 8, 11);
@@ -27,13 +29,13 @@ public class ProcessorInfoObject
         ExtendedModelID = (byte)CPUID.GetBitRange(eax, 16, 19);
         ExtendedFamilyID = (byte)CPUID.GetBitRange(eax, 20, 27);
 
-        Console.WriteLine("ebx");
+        logger.Info("ebx");
         BrandID = (byte)CPUID.GetBitRange(ebx, 0, 7);
         CLFLUSH = (byte)CPUID.GetBitRange(ebx, 8, 15);
         CPUcount = (byte)CPUID.GetBitRange(ebx, 16, 23);
         APICID = (byte)CPUID.GetBitRange(ebx, 24, 31);
 
-        Console.WriteLine("ecx");
+        logger.Info("ecx");
         SSE3 = CPUID.HasFlag(ref ecx, 0);
         PCLMUL = CPUID.HasFlag(ref ecx, 1);
         DTES64 = CPUID.HasFlag(ref ecx, 2);
@@ -66,7 +68,7 @@ public class ProcessorInfoObject
         RDRAND = CPUID.HasFlag(ref ecx, 30);
         HV = CPUID.HasFlag(ref ecx, 31);
 
-        Console.WriteLine("edx");
+        logger.Info("edx");
         FPU = CPUID.HasFlag(ref edx, 0);
         VME = CPUID.HasFlag(ref edx, 1);
         DE = CPUID.HasFlag(ref edx, 2);
@@ -98,12 +100,12 @@ public class ProcessorInfoObject
         IA_64 = CPUID.HasFlag(ref edx, 30);
         PBE = CPUID.HasFlag(ref edx, 31);
 
-        Console.WriteLine("DONE ProcessorInfoObject");
+        logger.Info("DONE ProcessorInfoObject");
     }
 
     public int eax { get; }
     public int ebx { get; }
-    public int ecx { get; private set; }
+    public int ecx { get; }
     public int edx { get; }
 
     // eax
@@ -185,6 +187,10 @@ public class ProcessorInfoObject
     public bool IA_64 { get; init; }
     public bool PBE { get; init; }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     public string DebugString()
     {
         var sb = new StringBuilder();

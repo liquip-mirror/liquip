@@ -1,8 +1,9 @@
 ﻿using System;
+using Liquip.Common.Exceptions;
 
 namespace Liquip.WASM;
 
-public class TrapException : Exception
+public class TrapException : LiquipException
 {
     public string Details;
 

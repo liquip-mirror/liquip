@@ -38,7 +38,6 @@ public readonly struct Address
     {
         _value = value;
     }
-#endif
 
     /// <summary>
     /// cast uint ot address
@@ -59,6 +58,7 @@ public readonly struct Address
     {
         return me._value;
     }
+#endif
 
     /// <summary>
     ///

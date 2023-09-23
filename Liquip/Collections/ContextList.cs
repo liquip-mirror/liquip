@@ -4,16 +4,29 @@ using Cosmos.Core;
 
 namespace Liquip.Collections;
 
+/// <summary>
+/// a linked list
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class ContextList<T>: IEnumerable<T>
 {
+    /// <summary>
+    /// the current item in the list
+    /// </summary>
     private CLinkedListItem<T>? current;
 
     // private Mutex Lock = new Mutex();
 
     private CLinkedListItem<T>? Head { get; set; }
 
+    /// <summary>
+    /// the total items in the list
+    /// </summary>
     public uint Count { get; private set; }
 
+    /// <summary>
+    ///
+    /// </summary>
     public CLinkedListItem<T>? Current
     {
         get
@@ -24,9 +37,14 @@ public class ContextList<T>: IEnumerable<T>
         }
     }
 
+    /// <summary>
+    ///
+    /// </summary>
     public T? CurrentItem => Current.Item;
 
-
+    /// <summary>
+    ///
+    /// </summary>
     public void Next()
     {
         // Lock.Lock();
@@ -37,6 +55,9 @@ public class ContextList<T>: IEnumerable<T>
         // Lock.Unlock();
     }
 
+    /// <summary>
+    /// go back 1 item
+    /// </summary>
     public void Previous()
     {
         // Lock.Lock();
@@ -44,6 +65,10 @@ public class ContextList<T>: IEnumerable<T>
         // Lock.Unlock();
     }
 
+    /// <summary>
+    /// adds an item to the list
+    /// </summary>
+    /// <param name="item"></param>
     public void Add(T item)
     {
         // Lock.Lock();
@@ -83,6 +108,10 @@ public class ContextList<T>: IEnumerable<T>
         // Lock.Unlock();
     }
 
+    /// <summary>
+    /// removes item from the list
+    /// </summary>
+    /// <param name="item"></param>
     public void Remove(T? item)
     {
         if (Head == null)
@@ -103,7 +132,6 @@ public class ContextList<T>: IEnumerable<T>
         Count--;
         // Lock.Unlock();
     }
-
 
     private CLinkedListItem<T>? Find(T? item)
     {
@@ -183,13 +211,30 @@ public class ContextList<T>: IEnumerable<T>
         return null;
     }
 
+    /// <summary>
+    /// Linked list item
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class CLinkedListItem<T>
     {
+        /// <summary>
+        /// value of the item
+        /// </summary>
         public T? Item { get; set; }
+        /// <summary>
+        /// the next item of the list
+        /// </summary>
         public CLinkedListItem<T>? Next { get; set; }
+        /// <summary>
+        /// the previous item of the list
+        /// </summary>
         public CLinkedListItem<T>? Previous { get; set; }
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator<T> GetEnumerator()
     {
         var item = Head;
@@ -200,6 +245,10 @@ public class ContextList<T>: IEnumerable<T>
         }
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();

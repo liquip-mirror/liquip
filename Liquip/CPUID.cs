@@ -11,18 +11,39 @@ namespace Liquip;
 
 // https://sandpile.org/x86/cpuid.htm
 
+/// <summary>
+/// a wrapper around CpuId
+/// </summary>
 public class CPUID
 {
+    /// <summary>
+    /// ProcessorInfo
+    /// </summary>
     public static readonly ProcessorInfoObject ProcessorInfo;
 
+    /// <summary>
+    /// CacheConfiguration
+    /// </summary>
     public static readonly CacheConfigurationObject CacheConfiguration;
 
+    /// <summary>
+    /// PowerManagementInformation
+    /// </summary>
     public static readonly PowerManagementInformationObject PowerManagementInformation;
 
+    /// <summary>
+    /// ProcessorFrequencyInformation
+    /// </summary>
     public static readonly ProcessorFrequencyInformationObject ProcessorFrequencyInformation;
 
+    /// <summary>
+    /// FeatureFlags
+    /// </summary>
     public static readonly FeatureFlagsObject FeatureFlags;
 
+    /// <summary>
+    /// load data in the the objects
+    /// </summary>
     static CPUID()
     {
         ProcessorInfo = new ProcessorInfoObject();
@@ -32,17 +53,42 @@ public class CPUID
         FeatureFlags = new FeatureFlagsObject();
     }
 
+    /// <summary>
+    /// a raw call to CpuId
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="subType"></param>
+    /// <param name="eax"></param>
+    /// <param name="ebx"></param>
+    /// <param name="ecx"></param>
+    /// <param name="edx"></param>
+    /// <exception cref="ImplementedInPlugException"></exception>
     public static void Raw(uint type, uint subType, ref int eax, ref int ebx, ref int ecx, ref int edx)
     {
         throw new ImplementedInPlugException();
     }
 
+    /// <summary>
+    /// a raw call to CpuId
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="eax"></param>
+    /// <param name="ebx"></param>
+    /// <param name="ecx"></param>
+    /// <param name="edx"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Raw(uint type, ref int eax, ref int ebx, ref int ecx, ref int edx)
     {
         CPU.ReadCPUID(type, ref eax, ref ebx, ref ecx, ref edx);
     }
 
+    /// <summary>
+    /// gets if a bit is set
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="flagOffset"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool HasFlag(ref int data, int flagOffset)
     {
@@ -56,12 +102,27 @@ public class CPUID
         // return (flag & 1) == 1;
     }
 
+    /// <summary>
+    /// gets a range of bits
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int GetBitRange(int data, int start, int end)
     {
         return (int)GetBitRange((uint)data, start, end);
     }
 
+    /// <summary>
+    /// gets a range of bits
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static uint GetBitRange(uint data, int start, int end)
     {

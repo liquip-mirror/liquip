@@ -20,17 +20,19 @@ public static class ProcessLoader
     {
         IProcess? process = null;
         using var file = new FileStream(startOptions.Exe, FileMode.Open);
-        switch (file.ReadByte())
+        byte[] header = new byte[10];
+        file.Read(header);
+        switch (header[0])
         {
 
             case 0xAD:
-                switch (file.ReadByte())
+                switch (header[1])
                 {
                     case 0x00:
                         if (
-                            file.ReadByte() != 0x61 ||
-                            file.ReadByte() != 0x73 ||
-                            file.ReadByte() != 0x6D
+                            header[2] != 0x61 ||
+                            header[3] != 0x73 ||
+                            header[4] != 0x6D
                         )
                         {
                         }

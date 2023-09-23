@@ -11,6 +11,10 @@ namespace Liquip;
 
 public static class RDseed
 {
+    /// <summary>
+    /// detect if RdSeed is supported
+    /// </summary>
+    /// <returns></returns>
     public static bool IsSupported() => CPUID.FeatureFlags.RDSEED;
 
     // ReSharper disable once InconsistentNaming
@@ -36,8 +40,16 @@ public static class RDseed
     }
 }
 
+/// <summary>
+///
+/// </summary>
 public class GetRDSeed32Asm : AssemblerMethod
 {
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="aAssembler"></param>
+    /// <param name="aMethodInfo"></param>
     public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
     {
         var done = Label.Get(".done");

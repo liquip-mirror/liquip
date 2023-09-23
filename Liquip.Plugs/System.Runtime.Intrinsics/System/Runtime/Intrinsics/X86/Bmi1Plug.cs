@@ -9,9 +9,15 @@ using Registers = XSharp.Assembler.x86.Registers;
 
 namespace Liquip.Plugs.System.Runtime.Intrinsics.System.Runtime.Intrinsics.X86;
 
+/// <summary>
+/// Bmi1Plug
+/// </summary>
 [Plug(target: typeof(Bmi1))]
 public class Bmi1Plug
 {
+    /// <summary>
+    ///
+    /// </summary>
     public static bool get_IsSupported => CPUID.FeatureFlags.BMI1;
 
     /// <summary>
@@ -22,6 +28,10 @@ public class Bmi1Plug
     /// <param name="right" />
     [PlugMethod(Assembler = typeof(AndNotAsm))]
     public static uint AndNot(uint left, uint right) => throw new ImplementedInPlugException();
+
+    /// <summary>
+    /// asm plug
+    /// </summary>
     public class AndNotAsm : AssemblerMethod
     {
         public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
@@ -59,6 +69,10 @@ public class Bmi1Plug
     /// <param name="control" />
     [PlugMethod(Assembler = typeof(BitFieldExtractAsm))]
     public static uint BitFieldExtract(uint value, ushort control) => Bmi1.BitFieldExtract(value, control);
+
+    /// <summary>
+    /// asm plug
+    /// </summary>
     public class BitFieldExtractAsm : AssemblerMethod
     {
         public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
@@ -82,6 +96,10 @@ public class Bmi1Plug
     /// <param name="value" />
     [PlugMethod(Assembler = typeof(ExtractLowestSetBitAsm))]
     public static uint ExtractLowestSetBit(uint value) => Bmi1.ExtractLowestSetBit(value);
+
+    /// <summary>
+    /// asm plug
+    /// </summary>
     public class ExtractLowestSetBitAsm : AssemblerMethod
     {
         public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
@@ -103,6 +121,10 @@ public class Bmi1Plug
     /// <param name="value" />
     [PlugMethod(Assembler = typeof(GetMaskUpToLowestSetBitAsm))]
     public static uint GetMaskUpToLowestSetBit(uint value) => Bmi1.GetMaskUpToLowestSetBit(value);
+
+    /// <summary>
+    /// asm plug
+    /// </summary>
     public class GetMaskUpToLowestSetBitAsm : AssemblerMethod
     {
         public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
@@ -124,6 +146,10 @@ public class Bmi1Plug
     /// <param name="value" />
     [PlugMethod(Assembler = typeof(ResetLowestSetBitAsm))]
     public static uint ResetLowestSetBit(uint value) => Bmi1.ResetLowestSetBit(value);
+
+    /// <summary>
+    /// asm plug
+    /// </summary>
     public class ResetLowestSetBitAsm : AssemblerMethod
     {
         public override void AssembleNew(Assembler aAssembler, object aMethodInfo)
@@ -145,6 +171,10 @@ public class Bmi1Plug
     /// <param name="value" />
     [PlugMethod(Assembler = typeof(TrailingZeroCountAsm))]
     public static uint TrailingZeroCount(uint value) => Bmi1.TrailingZeroCount(value);
+
+    /// <summary>
+    /// asm plug
+    /// </summary>
     public class TrailingZeroCountAsm : AssemblerMethod
     {
         public override void AssembleNew(Assembler aAssembler, object aMethodInfo)

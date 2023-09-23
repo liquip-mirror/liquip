@@ -73,13 +73,13 @@ public static unsafe class ProcessorScheduler
     public static void SwitchTask()
     {
 
-        CPU.DisableInterrupts();
+        // CPU.DisableInterrupts();
         unchecked
         {
             interruptCount++;
         }
 
-        // Console.WriteLine("SwitchTask {0}", interruptCount);
+        _logger.Info("SwitchTask " + interruptCount);
         var totalTasks = 0;
         for (var node = ProcessContextManager.ContextListHead; node != null; node = node.Next)
         {
@@ -88,7 +88,12 @@ public static unsafe class ProcessorScheduler
                 node.SleepUntil -= 1000 / 25;
                 if (node.SleepUntil <= 0)
                 {
+                    _logger.Trace("thread waking up: " + node.Id);
                     node.State = ThreadState.ALIVE;
+                }
+                else
+                {
+                    _logger.Trace("thread still sleeping: " + node.Id);
                 }
             }
 
@@ -108,7 +113,6 @@ public static unsafe class ProcessorScheduler
             if (nextCtx.State == ThreadState.DEAD)
             {
                 nextCtx = nextCtx.Next;
-
             }
             else
             {
@@ -120,13 +124,12 @@ public static unsafe class ProcessorScheduler
         ProcessContextManager.CurrentContext.ESP = ZINTs.mStackContext;
         // update context
         ProcessContextManager.CurrentContext = nextCtx;
-        // Console.WriteLine("context count: {1}, Id: {0}", ProcessContextManager.CurrentContext.Id, totalTasks);
+        _logger.Trace("context count: " + totalTasks + ", Id: " + ProcessContextManager.CurrentContext.Id);
         //load stack
         ZINTs.mStackContext = ProcessContextManager.CurrentContext.ESP;
 
         _logger.Debug("PS-ID: " + nextCtx.Id + ", PS-T:" + interruptCount);
 
-        CPU.EnableInterrupts();
         CCore.Global.PIC.EoiMaster();
         CCore.Global.PIC.EoiSlave();
     }

@@ -100,5 +100,7 @@ public class Kernel : Sys.Kernel
 
     protected override void Run()
     {
+        Console.SetCursorPosition(0, 0);
+        Console.WriteLine("Cycle {0}", Cycle.Value);
     }
 }

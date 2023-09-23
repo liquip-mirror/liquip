@@ -3,10 +3,18 @@ using IL2CPU.API.Attribs;
 
 namespace Liquip.Plugs.System.Private.CoreLib.Interop.Sys;
 
+/// <summary>
+/// GetRandomBytesPlug
+/// </summary>
 [Plug("Interop, System.Private.CoreLib")]
 public class GetRandomBytesPlug
 {
     private static readonly Random Random = new Random();
+    /// <summary>
+    /// GetRandomBytes
+    /// </summary>
+    /// <param name="buffer"></param>
+    /// <param name="length"></param>
     public static unsafe void GetRandomBytes(byte* buffer, int length)
     {
         var b = new byte[length];
@@ -17,6 +25,11 @@ public class GetRandomBytesPlug
         }
     }
 
+    /// <summary>
+    /// GetCryptographicallySecureRandomBytes
+    /// </summary>
+    /// <param name="buffer"></param>
+    /// <param name="length"></param>
     public static unsafe void GetCryptographicallySecureRandomBytes(byte* buffer, int length)
     {
         var random = new Random(RDseed.GetRDSeed32());

@@ -3,7 +3,7 @@ using PORT = Cosmos.Core.IOPort;
 namespace Liquip;
 
 /// <summary>
-///     an object oriented IO Port class to lower the changes of typos.
+///  an object oriented IO Port class to lower the changes of typos.
 /// </summary>
 public class OIOPort
 {

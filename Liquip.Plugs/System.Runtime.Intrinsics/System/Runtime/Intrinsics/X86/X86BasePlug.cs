@@ -3,10 +3,19 @@ using IL2CPU.API.Attribs;
 
 namespace Liquip.Plugs.System.Runtime.Intrinsics.System.Runtime.Intrinsics.X86;
 
+/// <summary>
+/// X86BasePlug
+/// </summary>
 [Plug(target: typeof(X86Base))]
 public class X86BasePlug
 {
 
+    /// <summary>
+    /// raw cpuid call
+    /// </summary>
+    /// <param name="cpuInfo"></param>
+    /// <param name="functionId"></param>
+    /// <param name="subFunctionId"></param>
     private static unsafe void __cpuidex(int* cpuInfo, int functionId, int subFunctionId)
     {
         int Eax = 0;

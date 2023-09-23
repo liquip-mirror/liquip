@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -54,6 +55,21 @@ public class InstallCommand : Command<InstallCommand.Settings>
             {
                 Utils.RunShellCommand("git", "-C", project_path, "apply", Path.Join(project_patch_path, patch));
             }
+
+            var os = Environment.OSVersion.Platform.ToString();
+
+            if (Directory.Exists(project_patch_path + os))
+            {
+                foreach (var patch in Directory.GetFiles(project_patch_path + os))
+                {
+                    Utils.RunShellCommand("git", "-C", project_path, "apply", Path.Join(project_patch_path, os, patch));
+                }
+            }
+            else
+            {
+                AnsiConsole.MarkupLine("no patches for platform {0} found", project);
+            }
+
         }
         else
         {
