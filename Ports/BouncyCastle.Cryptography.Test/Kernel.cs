@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
 using Sys = Cosmos.System;
 
 
-namespace BouncyCastle.Test;
+namespace BouncyCastle.Cryptography.Test;
 
 public class Kernel : Sys.Kernel
 {

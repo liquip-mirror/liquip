@@ -1,0 +1,6 @@
+[submodule "3rdparty/cosmos-corout"]
+	path = 3rdparty/cosmos-corout
+	url = https://gitlab.com/liquip/cosmos-coroutines.git
+[submodule "3rdparty/cosmos-coroute"]
+	path = 3rdparty/cosmos-coroute
+	url = https://gitlab.com/liquip/cosmos-coroutines.git
