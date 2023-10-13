@@ -7,15 +7,30 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+
+    <LiquipRunTimePlatform Condition="'$(LIQUIPRUNTIMEPLATFORM)' == ''">COSMOS</LiquipRunTimePlatform>
+
   </PropertyGroup>
 
-<!--  <PropertyGroup>-->
-<!--  -->
-<!--    <PackageReference Include="GitBuildInfo.SourceGenerator" IsImplicitlyDefined="true" Version="*-*">-->
-<!--      <PrivateAssets>all</PrivateAssets>-->
-<!--    </PackageReference>-->
+  <ItemGroup>
 
-<!--  </PropertyGroup>-->
+    <Compile Include="**/*.cs"
+             Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);*.mosa.cs;**/*.mosa.cs*.dotnet.cs;**/*.dotnet.cs"
+             Condition="$(LiquipRunTimePlatform) == 'COSMOS'" />
+    <Compile Include="**/*.cs"
+             Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);*.cosmos.cs;**/*.cosmos.cs;*.mosa.cs;**/*.mosa.cs"
+             Condition="$(LiquipRunTimePlatform) == 'DOTNET'" />
+    <Compile Include="**/*.cs"
+             Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);*.cosmos.cs;**/*.cosmos.cs;*.dotnet.cs;**/*.dotnet.cs"
+             Condition="$(LiquipRunTimePlatform) == 'MOSA'" />
+
+    <EmbeddedResource Include="**/*.resx" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <None Include="**/*" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+
+  </ItemGroup>
 
 </Project>

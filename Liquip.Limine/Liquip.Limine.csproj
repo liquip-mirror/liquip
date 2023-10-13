@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-
+        
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Title>Liquip.Limine</Title>
         <Authors>Zarlo</Authors>

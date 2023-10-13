@@ -90,7 +90,7 @@ public class ProcessContext
     public ParameterizedThreadStart ParamEntry { get; set; }
 
     /// <summary>
-    ///
+    /// used to handle events
     /// </summary>
     public ThreadHandle HadleEntry { get; set; }
 

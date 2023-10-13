@@ -7,7 +7,7 @@
         <Authors>Zarlo</Authors>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604"/>
+        <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" Condition="$(LiquipRunTimePlatform) == 'COSMOS'"/>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Liquip.Logger\Liquip.Logger.csproj" />

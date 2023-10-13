@@ -1,9 +1,9 @@
 using System.Diagnostics;
-using Zarlo.Cosmos.Logger.Interfaces;
+using Liquip.Logger.Interfaces;
 
 // ReSharper disable InvocationIsSkipped
 
-namespace Zarlo.Cosmos.Logger.Sinks;
+namespace Liquip.Logger.Sinks;
 
 public class CosmosDebugger : ISink
 {

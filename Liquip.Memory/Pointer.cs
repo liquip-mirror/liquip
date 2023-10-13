@@ -5,6 +5,9 @@ using Cosmos.Core;
 
 namespace Liquip.Memory;
 
+/// <summary>
+/// a manages pointer
+/// </summary>
 [StructLayout(LayoutKind.Auto)]
 public struct Pointer
 {
@@ -22,7 +25,6 @@ public struct Pointer
     ///     get a pointer to of an object with the given size
     /// </summary>
     /// <param name="size">size in bytes</param>
-    /// <param name="autoCleanUp"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe Pointer New(uint size)
@@ -34,9 +36,16 @@ public struct Pointer
     /// <summary>
     ///     get a pointer to of an object with the given size
     /// </summary>
+    /// <param name="size">size in bytes</param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe Pointer New(int size) => New((uint)size);
+
+    /// <summary>
+    ///     get a pointer to of an object with the given size
+    /// </summary>
     /// <param name="ptr"></param>
     /// <param name="size">size in bytes</param>
-    /// <param name="autoCleanUp"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe Pointer MakeFrom(uint* ptr, uint size)
@@ -50,7 +59,6 @@ public struct Pointer
     /// </summary>
     /// <param name="ptr"></param>
     /// <param name="size">size in bytes</param>
-    /// <param name="autoCleanUp"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe Pointer MakeFrom(Address ptr, uint size)
@@ -60,11 +68,9 @@ public struct Pointer
     }
 
     /// <summary>
-    ///     get a pointer to of an object with the given size
+    ///     get a pointer to of a byte array
     /// </summary>
-    /// <param name="ptr"></param>
-    /// <param name="size">size in bytes</param>
-    /// <param name="autoCleanUp"></param>
+    /// <param name="data"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Pointer MakeFrom(byte[] data)
@@ -95,7 +101,14 @@ public struct Pointer
         Size = size;
     }
 
+    /// <summary>
+    /// the raw pointer
+    /// </summary>
     public unsafe uint* Ptr { get; private set; }
+
+    /// <summary>
+    /// the size of the object
+    /// </summary>
     public uint Size { get; }
 
     /// <summary>
@@ -115,6 +128,15 @@ public struct Pointer
         GCImplementation.IncRootCount((ushort*)Ptr);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public unsafe void Resize(ulong size) => Resize((uint)size);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public unsafe void Resize(long size) => Resize((ulong)size);
+    /// <summary>
+    /// casts to a int
+    /// </summary>
+    /// <returns></returns>
     public int ToInt()
     {
         unsafe
@@ -167,11 +189,29 @@ public struct Pointer
         }
     }
 
-    public uint GetAddress()
+    public Address GetAddress()
     {
         unsafe
         {
-            return (uint)Ptr;
+            return (Address)(uint)Ptr;
+        }
+    }
+
+    public uint this[ulong index]
+    {
+        get
+        {
+            unsafe
+            {
+                return Ptr[index];
+            }
+        }
+        set
+        {
+            unsafe
+            {
+                Ptr[index] = value;
+            }
         }
     }
 

@@ -1,7 +1,6 @@
 using System;
-using System.Runtime.CompilerServices;
 
-namespace Zarlo.Cosmos.Logger.Interfaces;
+namespace Liquip.Logger.Interfaces;
 
 public interface ILogger : IDisposable
 {

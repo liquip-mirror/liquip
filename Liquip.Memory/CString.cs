@@ -6,6 +6,9 @@ namespace Liquip.Memory;
 public class CString: IDisposable
 {
 
+    /// <summary>
+    /// the raw pointer
+    /// </summary>
     public Pointer Pointer;
 
     public bool AutoCleanUp { get; private set; }

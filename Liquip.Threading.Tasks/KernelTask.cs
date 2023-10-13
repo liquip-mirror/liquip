@@ -5,25 +5,11 @@ using System.Threading.Tasks;
 
 namespace Liquip.Threading.Tasks;
 
-public enum KernelTaskStatus
-{
-    Pending = 0,
-    Success = 1,
-    Failed = 2
-}
-
-[AsyncMethodBuilder(typeof(KernelTaskBuilder<>))]
-public class KernelTask<T>
+[AsyncMethodBuilder(typeof(KernelTaskBuilder))]
+public class KernelTask
 {
     private KernelTaskStatus _status;
-    private T result;
-    private Action continuation;
-
-    public KernelTask(T result)
-    {
-        _status = KernelTaskStatus.Success;
-        this.result = result;
-    }
+    private Action _continuation;
 
     public KernelTask(Exception exception)
     {
@@ -36,32 +22,16 @@ public class KernelTask<T>
         _status = KernelTaskStatus.Pending;
     }
 
-    public T Result
-    {
-        get
-        {
-            switch (_status)
-            {
-                case KernelTaskStatus.Success: return result;
-                case KernelTaskStatus.Failed:
-                    //ExceptionDispatchInfo.Capture(Exception).Throw();
-                    return default;
-                default:
-                    throw new InvalidOperationException("Fiber didn't complete");
-            }
-        }
-    }
-
     public Exception Exception { get; private set; }
 
     public bool IsCompleted => _status != KernelTaskStatus.Pending;
 
-    public KernelTaskAwaiter<T> GetAwaiter()
+    public KernelTaskAwaiter GetAwaiter()
     {
-        return new KernelTaskAwaiter<T>(this);
+        return new KernelTaskAwaiter(this);
     }
 
-    internal bool TrySetResult(T result)
+    internal bool TrySetResult()
     {
         if (_status != KernelTaskStatus.Pending)
         {
@@ -70,8 +40,7 @@ public class KernelTask<T>
         else
         {
             _status = KernelTaskStatus.Success;
-            this.result = result;
-            continuation?.Invoke();
+            _continuation?.Invoke();
             return true;
         }
     }
@@ -86,7 +55,7 @@ public class KernelTask<T>
         {
             _status = KernelTaskStatus.Failed;
             Exception = exception;
-            continuation?.Invoke();
+            _continuation?.Invoke();
             return true;
         }
     }
@@ -95,14 +64,14 @@ public class KernelTask<T>
     {
         if (_status == KernelTaskStatus.Pending)
         {
-            if (continuation is null)
+            if (_continuation is null)
             {
-                continuation = cont;
+                _continuation = cont;
             }
             else
             {
-                var prev = continuation;
-                continuation = () =>
+                var prev = _continuation;
+                _continuation = () =>
                 {
                     prev();
                     cont();
@@ -114,28 +83,23 @@ public class KernelTask<T>
             cont();
         }
     }
-
-    public static KernelTask<T> From(T value)
-    {
-        return new KernelTask<T>(value);
-    }
-
 }
 
-public readonly struct KernelTaskAwaiter<T> : INotifyCompletion
-{
-    private readonly KernelTask<T> task;
 
-    public KernelTaskAwaiter(KernelTask<T> task)
+public readonly struct KernelTaskAwaiter : INotifyCompletion
+{
+    private readonly KernelTask task;
+
+    public KernelTaskAwaiter(KernelTask task)
     {
         this.task = task;
     }
 
     public bool IsCompleted => task.IsCompleted;
 
-    public T GetResult()
+    public void GetResult()
     {
-        return task.Result;
+
     }
 
     public void OnCompleted(Action continuation)

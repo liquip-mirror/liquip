@@ -1,6 +1,11 @@
 using System.Runtime.InteropServices;
 
 namespace Liquip.Memory;
+
+
+/// <summary>
+/// a struct that holds an Address
+/// </summary>
 #if IS64BIT
 [StructLayout(LayoutKind.Explicit, Size = 8)]
 #else
@@ -58,6 +63,17 @@ public readonly struct Address
     {
         return me._value;
     }
+
+    /// <summary>
+    /// cast a Address to a int
+    /// </summary>
+    /// <param name="me"></param>
+    /// <returns></returns>
+    public static implicit operator int(Address me)
+    {
+        return (int)me._value;
+    }
+
 #endif
 
     /// <summary>

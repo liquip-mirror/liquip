@@ -1,9 +1,7 @@
 using System;
-using System.Runtime.CompilerServices;
-using System.Text;
-using Zarlo.Cosmos.Logger.Interfaces;
+using Liquip.Logger.Interfaces;
 
-namespace Zarlo.Cosmos.Logger;
+namespace Liquip.Logger;
 
 public class BaseLogger : ILogger
 {

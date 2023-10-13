@@ -1,6 +1,6 @@
 using System;
 
-namespace Zarlo.Cosmos.Logger.Interfaces;
+namespace Liquip.Logger.Interfaces;
 
 public interface ISink : IDisposable
 {

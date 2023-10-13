@@ -8,5 +8,8 @@
   <ItemGroup>
     <None Remove="output\**"/>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="IL2CPU.API" Version="0.1.0-localbuild" />
+  </ItemGroup>
 
 </Project>

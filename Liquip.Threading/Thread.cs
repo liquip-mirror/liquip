@@ -3,6 +3,7 @@ using System;
 using Cosmos.Core;
 using Liquip.Threading.Core.Context;
 using Liquip.Threading.Core.Processing;
+using ThreadState = Liquip.Threading.Core.Context.ThreadState;
 
 namespace Liquip.Threading;
 

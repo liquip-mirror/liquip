@@ -5,17 +5,17 @@ using System.Threading.Tasks;
 
 namespace Liquip.Threading.Tasks;
 
-public class KernelTaskBuilder<T>
+public class KernelTaskBuilder
 {
-    private KernelTask<T>? task;
+    private KernelTask? task;
 
-    public static KernelTaskBuilder<T> Create() => default;
+    public static KernelTaskBuilder Create() => default;
 
-    public KernelTask<T> Task => task ??= new KernelTask<T>();
+    public KernelTask Task => task ??= new KernelTask();
 
     public void SetException(Exception e) => Task.TrySetException(e);
 
-    public void SetResult(T result) =>  Task.TrySetResult(result);
+    public void SetResult() =>  Task.TrySetResult();
 
     public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
         where TAwaiter : INotifyCompletion
@@ -34,7 +34,6 @@ public class KernelTaskBuilder<T>
     public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine
     {
         var move = stateMachine.MoveNext;
-
         ThreadPool.QueueUserWorkItem(_ =>
         {
             move();

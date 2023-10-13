@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 
 using Cosmos.Core;
-
+using Liquip.Logger;
+using Liquip.Logger.Interfaces;
 using Liquip.Threading.Core.Context;
-using Zarlo.Cosmos.Logger;
-using Zarlo.Cosmos.Logger.Interfaces;
+using ThreadState = Liquip.Threading.Core.Context.ThreadState;
 
 namespace Liquip.Threading.Core.Processing;
 
@@ -244,7 +244,7 @@ public static unsafe class ProcessContextManager
         ContextListMutex.Lock();
         for (var node = ContextListHead; node != null; node = node.Next)
         {
-            if (node.Next == null)
+            if (node.Next == ProcessContext.NULL)
             {
                 _logger.Info("last context " + node.Id);
                 node.Next = context;

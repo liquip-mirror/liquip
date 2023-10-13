@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Intrinsics;
 using Liquip.XSharp.Fluent.FPU;
 using Liquip.XSharp.Fluent.SSE;
 using XSharp;
@@ -51,4 +52,11 @@ public static class MiscEx
         XS.LiteralCode(string.Format("INT {0:X}", interrupt));
         return me;
     }
+
+    public static FluentXSharpX86 Serialize(this FluentXSharpX86 me)
+    {
+        _ = new LiteralAssemblerCode("SERIALIZE");
+        return me;
+    }
+
 }

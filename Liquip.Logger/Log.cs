@@ -2,10 +2,10 @@
 
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Zarlo.Cosmos.Logger.Interfaces;
-using Zarlo.Cosmos.Logger.Sinks;
+using Liquip.Logger.Interfaces;
+using Liquip.Logger.Sinks;
 
-namespace Zarlo.Cosmos.Logger;
+namespace Liquip.Logger;
 
 public static class Log
 {

@@ -4,12 +4,13 @@ using Cosmos.Core;
 using Cosmos.Core.Memory;
 using IL2CPU.API.Attribs;
 using Liquip.Core;
+using Liquip.Logger;
+using Liquip.Logger.Interfaces;
 using Liquip.Threading.Core.Context;
 using XSharp.Assembler;
-using Zarlo.Cosmos.Logger;
-using Zarlo.Cosmos.Logger.Interfaces;
 using CCore = Cosmos.Core;
 using HAL = Cosmos.HAL;
+using ThreadState = Liquip.Threading.Core.Context.ThreadState;
 
 namespace Liquip.Threading.Core.Processing;
 
@@ -79,10 +80,12 @@ public static unsafe class ProcessorScheduler
             interruptCount++;
         }
 
-        _logger.Info("SwitchTask " + interruptCount);
+        _logger.Trace("SwitchTask " + interruptCount);
         var totalTasks = 0;
         for (var node = ProcessContextManager.ContextListHead; node != null; node = node.Next)
         {
+
+            _logger.Trace($@"processing {node.Id}");
             if (node.State == ThreadState.WAITING_SLEEP)
             {
                 node.SleepUntil -= 1000 / 25;
@@ -98,6 +101,17 @@ public static unsafe class ProcessorScheduler
             }
 
             totalTasks++;
+            _logger.Trace($@"node.Next == null is {node.Next == null}");
+            if (node.Next != null)
+            {
+                _logger.Trace($@"node.Id = {node.Id}, node.Next.Id = {node.Next.Id}");
+                _logger.Trace($@"node.Id = node.Next.Id is {node.Id == node.Next.Id}");
+                if (node.Id == node.Next.Id)
+                {
+                    break;
+                }
+            }
+            node = node.Next;
         }
 
         // find the next none dead thread
@@ -108,16 +122,31 @@ public static unsafe class ProcessorScheduler
             nextCtx = ProcessContextManager.ContextListHead;
         }
 
+        var trys = totalTasks;
         while (nextCtx != null)
         {
-            if (nextCtx.State == ThreadState.DEAD)
+            _logger.Trace($@"1 processing {nextCtx.Id}");
+            if (nextCtx.State != ThreadState.ALIVE)
             {
+                _logger.Trace("Task state is not ALIVE");
                 nextCtx = nextCtx.Next;
             }
             else
             {
                 break;
             }
+
+            trys--;
+            if (trys < 0)
+            {
+                _logger.Trace($@"cant find a living task");
+                break;
+            }
+        }
+
+        if (nextCtx == null)
+        {
+            nextCtx = ProcessContextManager.ContextListHead;
         }
 
         // save stack
@@ -128,7 +157,7 @@ public static unsafe class ProcessorScheduler
         //load stack
         ZINTs.mStackContext = ProcessContextManager.CurrentContext.ESP;
 
-        _logger.Debug("PS-ID: " + nextCtx.Id + ", PS-T:" + interruptCount);
+        _logger.Trace("PS-ID: " + nextCtx.Id + ", PS-T:" + interruptCount);
 
         CCore.Global.PIC.EoiMaster();
         CCore.Global.PIC.EoiSlave();

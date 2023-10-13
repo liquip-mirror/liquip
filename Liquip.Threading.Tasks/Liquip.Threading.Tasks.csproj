@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\3rdparty\cosmos-coroute\src\Cosmos.Coroutines\Cosmos.Coroutines.csproj" />
+        <ProjectReference Include="..\Liquip.Logger\Liquip.Logger.csproj" />
+<!--        <ProjectReference Include="..\Liquip.Common\Liquip.Common.csproj" />-->
+<!--        <ProjectReference Include="..\Liquip.Logger\Liquip.Logger.csproj" />-->
+    </ItemGroup>
+</Project>

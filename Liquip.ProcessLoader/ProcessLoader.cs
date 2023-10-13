@@ -1,9 +1,8 @@
 ﻿using System.IO;
 using Liquip.Common;
-using Liquip.Threading;
-using Liquip.Process.DotNetParser;
+using Liquip.DotNetParser;
 
-namespace Liquip;
+namespace Zarlo.Cosmos;
 
 public class StartOptions
 {
@@ -16,7 +15,7 @@ public class StartOptions
 public static class ProcessLoader
 {
 
-    public static Threading.Process? Start(StartOptions startOptions)
+    public static Liquip.Threading.Process? Start(StartOptions startOptions)
     {
         IProcess? process = null;
         using var file = new FileStream(startOptions.Exe, FileMode.Open);
@@ -54,7 +53,7 @@ public static class ProcessLoader
             process.Main(startOptions.Args);
         }
 
-        return new Threading.Process(run);
+        return new Liquip.Threading.Process(run);
     }
 
 }

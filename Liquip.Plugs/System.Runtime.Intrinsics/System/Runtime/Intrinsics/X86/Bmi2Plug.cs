@@ -12,13 +12,13 @@ namespace Liquip.Plugs.System.Runtime.Intrinsics.System.Runtime.Intrinsics.X86;
 /// <summary>
 /// Bmi1Plug
 /// </summary>
-[Plug(target: typeof(Bmi1))]
-public class Bmi1Plug
+[Plug(target: typeof(Bmi2))]
+public class Bmi2Plug
 {
     /// <summary>
     ///
     /// </summary>
-    public static bool get_IsSupported => CPUID.FeatureFlags.BMI1;
+    public static bool get_IsSupported => CPUID.FeatureFlags.BMI2;
 
     /// <summary>
     ///   <para>unsigned int _andn_u32 (unsigned int a, unsigned int b)</para>

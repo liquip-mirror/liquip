@@ -2,6 +2,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.Intrinsics.X86;
 using Cosmos.Core;
 using Liquip.CPUIDObjects;
 using Liquip.Utils;
@@ -65,7 +66,7 @@ public class CPUID
     /// <exception cref="ImplementedInPlugException"></exception>
     public static void Raw(uint type, uint subType, ref int eax, ref int ebx, ref int ecx, ref int edx)
     {
-        throw new ImplementedInPlugException();
+        (eax, ebx, ecx, edx) = X86Base.CpuId((int)type, (int)subType);
     }
 
     /// <summary>
@@ -79,7 +80,7 @@ public class CPUID
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Raw(uint type, ref int eax, ref int ebx, ref int ecx, ref int edx)
     {
-        CPU.ReadCPUID(type, ref eax, ref ebx, ref ecx, ref edx);
+        (eax, ebx, ecx, edx) = X86Base.CpuId((int)type, 0);
     }
 
     /// <summary>

@@ -16,7 +16,7 @@ public class X86BasePlug
     /// <param name="cpuInfo"></param>
     /// <param name="functionId"></param>
     /// <param name="subFunctionId"></param>
-    private static unsafe void __cpuidex(int* cpuInfo, int functionId, int subFunctionId)
+    public static unsafe void __cpuidex(int* cpuInfo, int functionId, int subFunctionId)
     {
         int Eax = 0;
         int Ebx = 0;
@@ -30,5 +30,6 @@ public class X86BasePlug
         cpuInfo[2] = Ecx;
         cpuInfo[3] = Edx;
     }
+
 
 }

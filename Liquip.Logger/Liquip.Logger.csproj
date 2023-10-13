@@ -5,7 +5,6 @@
 
         <Title>Liquip.Logger</Title>
         <Authors>Zarlo</Authors>
-        <RootNamespace>Zarlo.Cosmos.Logger</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

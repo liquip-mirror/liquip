@@ -1,4 +1,4 @@
-namespace Zarlo.Cosmos.Logger;
+namespace Liquip.Logger;
 
 public enum LogLevel
 {

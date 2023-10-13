@@ -3,7 +3,7 @@ using libDotNetClr;
 using LibDotNetParser.CILApi;
 using Liquip.Common;
 
-namespace Liquip.Process.DotNetParser;
+namespace Liquip.DotNetParser;
 
 public class DotNetParserProcess: IProcess
 {
