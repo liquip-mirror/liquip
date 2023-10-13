@@ -1,12 +1,15 @@
 ﻿using System.Text;
 
 namespace Liquip.WASM;
-
-public class Type
+/// <summary>
+/// wasm vm type
+/// </summary>
+public class WasmType
 {
     // ReSharper disable InconsistentNaming
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public const byte i32 = 0x7F,
-                      i64 = 0x7E,
+        i64 = 0x7E,
                       f32 = 0x7D,
                       f64 = 0x7C,
                       localGet = 0xFF,
@@ -17,12 +20,13 @@ public class Type
                       store32 = 0xFA,
                       and32 = 0xF9,
                       add32 = 0xF8;
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     // ReSharper restore InconsistentNaming
 
     public byte[] Parameters { get; init; }
     public byte[] Results { get; init; }
 
-    public Type(byte[]? parameters, byte[]? results)
+    public WasmType(byte[]? parameters, byte[]? results)
     {
 
         Parameters = parameters ?? Array.Empty<byte>();
@@ -30,12 +34,12 @@ public class Type
         Results = results ?? Array.Empty<byte>();
     }
 
-    public bool SameAs(Type item)
+    public bool SameAs(WasmType item)
     {
         return Parameters.SequenceEqual(item.Parameters) && Results.SequenceEqual(item.Results);
     }
 
-    public static string Pretify(Value v)
+    public static string Pretify(WasmValue v)
     {
         return v.type switch
         {

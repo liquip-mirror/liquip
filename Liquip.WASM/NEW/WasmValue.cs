@@ -8,7 +8,7 @@ namespace Liquip.WASM;
 ///
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
-public struct Value
+public struct WasmValue
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     [FieldOffset(8)] public byte type;
@@ -31,37 +31,37 @@ public struct Value
     /// </summary>
     /// <param name="v"></param>
     /// <returns></returns>
-    public static implicit operator Value(uint v) => From(v);
+    public static implicit operator WasmValue(uint v) => From(v);
 
     /// <summary>
     ///
     /// </summary>
     /// <param name="v"></param>
     /// <returns></returns>
-    public static implicit operator Value(ulong v) => From(v);
+    public static implicit operator WasmValue(ulong v) => From(v);
 
     /// <summary>
     ///
     /// </summary>
     /// <param name="v"></param>
     /// <returns></returns>
-    public static implicit operator Value(float v) => From(v);
+    public static implicit operator WasmValue(float v) => From(v);
 
     /// <summary>
     ///
     /// </summary>
     /// <param name="v"></param>
     /// <returns></returns>
-    public static implicit operator Value(double v) => From(v);
+    public static implicit operator WasmValue(double v) => From(v);
 
     /// <summary>
     /// make a uint in to a value type
     /// </summary>
     /// <param name="v"></param>
     /// <returns></returns>
-    public static Value From(uint v) => new Value
+    public static WasmValue From(uint v) => new WasmValue
     {
-        type = Type.i32,
+        type = WasmType.i32,
         i32 = v
     };
 
@@ -70,9 +70,9 @@ public struct Value
     /// </summary>
     /// <param name="v"></param>
     /// <returns></returns>
-    public static Value From(ulong v) => new Value
+    public static WasmValue From(ulong v) => new WasmValue
     {
-        type = Type.i64,
+        type = WasmType.i64,
         i64 = v
     };
 
@@ -81,9 +81,9 @@ public struct Value
     /// </summary>
     /// <param name="v"></param>
     /// <returns></returns>
-    public static Value From(float v) => new Value
+    public static WasmValue From(float v) => new WasmValue
     {
-        type = Type.f32,
+        type = WasmType.f32,
         f32 = v
     };
 
@@ -92,9 +92,9 @@ public struct Value
     /// </summary>
     /// <param name="v"></param>
     /// <returns></returns>
-    public static Value From(double v) => new Value
+    public static WasmValue From(double v) => new WasmValue
     {
-        type = Type.f64,
+        type = WasmType.f64,
         f64 = v
     };
 
@@ -104,7 +104,7 @@ public struct Value
     /// <param name="v"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public static Value From(object v)
+    public static WasmValue From(object v)
     {
         return v switch
         {
