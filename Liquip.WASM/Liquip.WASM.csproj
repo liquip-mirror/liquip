@@ -4,25 +4,11 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-
-
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-
-
-  <ItemGroup>
-    <None Include="VM\Inst.cs" />
-    <None Include="VM\Label.cs" />
-    <None Include="VM\Runtime.cs" />
-    <None Include="VM\State.cs" />
-  </ItemGroup>
-
-
-
-
-
   <ItemGroup>
     <ProjectReference Include="..\Liquip.Common\Liquip.Common.csproj" />
+    <ProjectReference Include="..\Liquip.Memory\Liquip.Memory.csproj" />
   </ItemGroup>
-
 
 </Project>
