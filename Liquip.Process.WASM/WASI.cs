@@ -11,232 +11,232 @@ public class WASI: IWasi
     {
     }
 
-    public Value[] args_get(Value[] args)
+    public WasmValue[] args_get(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] args_sizes_get(Value[] args)
+    public WasmValue[] args_sizes_get(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] environ_get(Value[] args)
+    public WasmValue[] environ_get(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] environ_sizes_get(Value[] args)
+    public WasmValue[] environ_sizes_get(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] clock_res_get(Value[] args)
+    public WasmValue[] clock_res_get(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] clock_time_get(Value[] args)
+    public WasmValue[] clock_time_get(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_advise(Value[] args)
+    public WasmValue[] fd_advise(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_allocate(Value[] args)
+    public WasmValue[] fd_allocate(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_close(Value[] args)
+    public WasmValue[] fd_close(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_datasync(Value[] args)
+    public WasmValue[] fd_datasync(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_fdstat_get(Value[] args)
+    public WasmValue[] fd_fdstat_get(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_fdstat_set_flags(Value[] args)
+    public WasmValue[] fd_fdstat_set_flags(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_fdstat_set_rights(Value[] args)
+    public WasmValue[] fd_fdstat_set_rights(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_filestat_get(Value[] args)
+    public WasmValue[] fd_filestat_get(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_filestat_set_size(Value[] args)
+    public WasmValue[] fd_filestat_set_size(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_filestat_set_times(Value[] args)
+    public WasmValue[] fd_filestat_set_times(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_pread(Value[] args)
+    public WasmValue[] fd_pread(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_prestat_get(Value[] args)
+    public WasmValue[] fd_prestat_get(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_prestat_dir_name(Value[] args)
+    public WasmValue[] fd_prestat_dir_name(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_pwrite(Value[] args)
+    public WasmValue[] fd_pwrite(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_read(Value[] args)
+    public WasmValue[] fd_read(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_readdir(Value[] args)
+    public WasmValue[] fd_readdir(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_renumber(Value[] args)
+    public WasmValue[] fd_renumber(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_seek(Value[] args)
+    public WasmValue[] fd_seek(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_sync(Value[] args)
+    public WasmValue[] fd_sync(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_tell(Value[] args)
+    public WasmValue[] fd_tell(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] fd_write(Value[] args)
+    public WasmValue[] fd_write(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] path_create_directory(Value[] args)
+    public WasmValue[] path_create_directory(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] path_filestat_get(Value[] args)
+    public WasmValue[] path_filestat_get(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] path_filestat_set_times(Value[] args)
+    public WasmValue[] path_filestat_set_times(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] path_link(Value[] args)
+    public WasmValue[] path_link(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] path_open(Value[] args)
+    public WasmValue[] path_open(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] path_readlink(Value[] args)
+    public WasmValue[] path_readlink(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] path_remove_directory(Value[] args)
+    public WasmValue[] path_remove_directory(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] path_rename(Value[] args)
+    public WasmValue[] path_rename(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] path_symlink(Value[] args)
+    public WasmValue[] path_symlink(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] path_unlink_file(Value[] args)
+    public WasmValue[] path_unlink_file(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] poll_oneoff(Value[] args)
+    public WasmValue[] poll_oneoff(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] proc_exit(Value[] args)
+    public WasmValue[] proc_exit(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] proc_raise(Value[] args)
+    public WasmValue[] proc_raise(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] sched_yield(Value[] args)
+    public WasmValue[] sched_yield(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] random_get(Value[] args)
+    public WasmValue[] random_get(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] sock_accept(Value[] args)
+    public WasmValue[] sock_accept(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] sock_recv(Value[] args)
+    public WasmValue[] sock_recv(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] sock_send(Value[] args)
+    public WasmValue[] sock_send(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
 
-    public Value[] sock_shutdown(Value[] args)
+    public WasmValue[] sock_shutdown(WasmValue[] args)
     {
         throw new NotImplementedException();
     }
