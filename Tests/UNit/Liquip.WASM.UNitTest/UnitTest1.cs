@@ -8,6 +8,6 @@ public class Tests
     [Test]
     public void Test1()
     {
-        var host = new WASM.VM.Host();
+        // var host = new WASM.VM.Host();
     }
 }

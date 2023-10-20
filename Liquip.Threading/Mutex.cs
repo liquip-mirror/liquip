@@ -24,7 +24,6 @@ public class Mutex
             {
                 throw new TimeoutException("failed to get log in time ");
             }
-            Thread.Yield();
         }
 
         gate = 1;

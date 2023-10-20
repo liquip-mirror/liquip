@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using Liquip.Memory;
 
@@ -8,10 +10,17 @@ namespace Liquip.Common;
 ///
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-public struct Leb128
+public readonly struct Leb128
 {
-    public bool IsSigned;
-    public byte[] Raw;
+    /// <summary>
+    /// denotes if its signed
+    /// </summary>
+    public readonly bool IsSigned;
+
+    /// <summary>
+    /// the raw data
+    /// </summary>
+    public readonly byte[] Raw;
 
     public Leb128(Span<byte> data, bool isSigned = false)
     {
@@ -29,10 +38,14 @@ public struct Leb128
         }
     }
 
-    public Leb128(ref Pointer ptr, bool isSigned = false)
+    public Leb128(ref Pointer ptr, int offset = 0, bool isSigned = false): this(ref ptr, out _, offset, isSigned)
+    {
+
+    }
+    public Leb128(ref Pointer ptr, out int size, int offset = 0, bool isSigned = false)
     {
         IsSigned = isSigned;
-        var index = 0;
+        var index = offset;
         byte b;
         do
         {
@@ -49,6 +62,8 @@ public struct Leb128
                 Raw[i] = (byte)(byte*)ptr.Ptr[i];
             }
         }
+
+        size = Raw.Length;
     }
 
 
@@ -99,5 +114,52 @@ public struct Leb128
 
         return (long)result;
     }
+
+    /// <summary>
+    /// make a Leb128 from a ulong
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static Leb128 From(ulong value) {
+        var data = new List<byte>();
+        var more = true;
+
+        while (more) {
+            var chunk = (byte)(value & 0x7fUL); // extract a 7-bit chunk
+            value >>= 7;
+
+            more = value != 0;
+            if (more) { chunk |= 0x80; } // set msb marker that more bytes are coming
+
+            data.Add(chunk);
+        };
+
+        return new Leb128(data.ToArray(), false);
+    }
+
+    /// <summary>
+    /// make a Leb128 from a long
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static Leb128 From(long value)
+    {
+        var data = new List<byte>();
+        var more = true;
+
+        while (more) {
+            var chunk = (byte)(value & 0x7fL); // extract a 7-bit chunk
+            value >>= 7;
+
+            var signBitSet = (chunk & 0x40) != 0; // sign bit is the msb of a 7-bit byte, so 0x40
+            more = !((value == 0 && !signBitSet) || (value == -1 && signBitSet));
+            if (more) { chunk |= 0x80; } // set msb marker that more bytes are coming
+
+            data.Add(chunk);
+        };
+
+        return new Leb128(data.ToArray(), true);
+    }
+
 
 }

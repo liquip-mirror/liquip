@@ -7,7 +7,7 @@ public class AddOpCode : IBaseOpCode
     private readonly Address? _destinationMemory;
     private readonly x86IndirectRegister? _destinationIndirectRegister;
     private readonly x86Register? _destinationRegister;
-    
+
     private readonly short? _toAdd16;
     private readonly int? _toAdd32;
     private readonly byte? _toAdd8;
@@ -34,13 +34,17 @@ public class AddOpCode : IBaseOpCode
 
     public void Emit(IBaseAssembler assembler)
     {
-        throw new NotImplementedException();
+
     }
 
-    public uint Size()
+    List<byte> Output()
     {
-        throw new NotImplementedException();
+        var output = new List<byte>();
+        output.Add(0b_0000_0011);
+        return output;
     }
+
+    public uint Size() => (uint)Output().Count;
 }
 
 public static class AddOpCodeEx
