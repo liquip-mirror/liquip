@@ -1,0 +1,8 @@
+<Project>
+
+    <PropertyGroup>
+        <CosmosDir>$(MSBuildThisFileDirectory)..\bin</CosmosDir>
+        <KernelAssembliesDir>$(CosmosDir)/Kernel/</KernelAssembliesDir>
+    </PropertyGroup>
+
+</Project>
