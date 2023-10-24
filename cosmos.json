@@ -2,8 +2,8 @@
     "repos": [
         {
             "name": "Cosmos",
-            "uri": "https://github.com/zarlo/Cosmos.git",
-            "branch": "packages",
+            "uri": "https://github.com/CosmosOS/Cosmos.git",
+            "branch": "master",
             "commit": null
         },
         {
