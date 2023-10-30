@@ -10,6 +10,7 @@ default:
 stages:
   - setup
   - test
+  - build
   - deploy
 
 pages:
@@ -38,83 +39,94 @@ XSharp-test:
   script:
     - cd ./Tests/UNit/Liquip.XSharp.UNitTest
     - dotnet test
-#
+  only:
+    changes:
+      - Liquip.XSharp/**/*
+      - Liquip.XSharp/**
+      - Tests/UNit/Liquip.XSharp.UNitTest/**
+      - Tests/UNit/Liquip.XSharp.UNitTest/**/*
+
 XSharp-deploy:
-  stage: deploy
+  stage: build
   script:
     - ./CICD/build_and_push_nuget.sh ./Liquip.XSharp
-
+  only:
+    changes:
+      - Liquip.XSharp/**/*
+      - Liquip.XSharp/**
+      - Tests/UNit/Liquip.XSharp.UNitTest/**
+      - Tests/UNit/Liquip.XSharp.UNitTest/**/*
 
 Plugs:
-  stage: deploy
+  stage: build
   script:
     - ./CICD/build_and_push_nuget.sh ./Liquip.Plugs
 
 
 Liquip:
-  stage: deploy
+  stage: build
   script:
     - ./CICD/build_and_push_nuget.sh ./Liquip
 
 
 Liquip.Core:
-  stage: deploy
+  stage: build
   script:
     - ./CICD/build_and_push_nuget.sh ./Liquip.Core
 
 
 Liquip.Common:
-  stage: deploy
+  stage: build
   script:
     - ./CICD/build_and_push_nuget.sh ./Liquip.Common
 
 
 Logger:
-  stage: deploy
+  stage: build
   script:
     - ./CICD/build_and_push_nuget.sh ./Liquip.Logger
 
 
 
 Memory:
-  stage: deploy
+  stage: build
   script:
     - ./CICD/build_and_push_nuget.sh ./Liquip.Memory
 
-
-
 Threading:
-  stage: deploy
+  stage: build
   script:
     - ./CICD/build_and_push_nuget.sh ./Liquip.Threading
 
 
 Threading.Plug:
-  stage: deploy
+  stage: build
   script:
     - ./CICD/build_and_push_nuget.sh ./Liquip.Threading.Plugs
 
 
 Limine:
-  stage: deploy
+  stage: build
   script:
     - ./CICD/build_and_push_nuget.sh ./Liquip.Limine
 
 
 FileSystems:
-  stage: deploy
+  stage: build
   script:
     - ./CICD/build_and_push_nuget.sh ./Liquip.FileSystems
 
 
 VirtIO:
-  stage: deploy
+  stage: build
   script:
     - ./CICD/build_and_push_nuget.sh ./Liquip.Driver.VirtIO
 
 
 CosmosManager:
-  stage: deploy
+  stage: build
   script:
     - ./CICD/build_and_push_nuget.sh ./CosmosManager
-
+  only:
+    changes:
+      - CosmosManager/**
